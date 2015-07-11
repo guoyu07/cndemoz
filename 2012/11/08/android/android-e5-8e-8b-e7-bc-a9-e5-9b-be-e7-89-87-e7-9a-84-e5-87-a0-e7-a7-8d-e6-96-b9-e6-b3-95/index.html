@@ -1,0 +1,275 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android压缩图片的几种方法和实例demo | 全科-梦想起航的地方</title>
+  <meta name="author" content="全科">
+  
+  <meta name="description" content="在移动设备上进行图片相关软件的开发，一定得先压缩图片，毕竟移动设备的内存有限，稍不注意就会导致内存溢出，刚好用到这里，就学习了一下相关的压缩图片，现在总结出来和大家共享。
+    一般情况下，我们要将图片按照固定大小取缩略图，一般取缩略图的方法是使用 BitmapFactory的decodeFile">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Android压缩图片的几种方法和实例demo"/>
+  <meta property="og:site_name" content="全科-梦想起航的地方"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-梦想起航的地方" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-梦想起航的地方</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-07T17:49:11.000Z"><a href="/2012/11/08/android/android-e5-8e-8b-e7-bc-a9-e5-9b-be-e7-89-87-e7-9a-84-e5-87-a0-e7-a7-8d-e6-96-b9-e6-b3-95/">2012-11-08</a></time>
+      
+      
+  
+    <h1 class="title">Android压缩图片的几种方法和实例demo</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>在移动设备上进行图片相关软件的开发，一定得先压缩图片，毕竟移动设备的内存有限，稍不注意就会导致内存溢出，刚好用到这里，就学习了一下相关的压缩图片，现在总结出来和大家共享。</p>
+<p><wbr> <wbr> <wbr> <wbr> 一般情况下，我们要将图片按照固定大小取缩略图，一般取缩略图的方法是使用 BitmapFactory的decodeFile方法，然后通过传递进去 BitmapFactory.Option类型的参数进行取缩略图，在Option中，属性值inSampleSize表示缩略图大小为原始图片大小的几分之一，即如果这个值为2，则取出的缩略图的宽和高都是原始图片的1/2，图片大小就为原始大小的1/4。 Options中有个属性inJustDecodeBounds，SDK中的英文引用如下：<br>If set totrue, the decoder will return null (no bitmap), but the out… fields will stillbe set, allowing the caller to query the bitmap without having to allocate thememory for its pixels.<br>大致意思就是说如果该值设为true那么将不返回实际的bitmap不给其分配内存空间而里面只包括一些解码边界信息即图片大小信息，那么相应的方法也就出来了，通过设置inJustDecodeBounds为true，获取到outHeight(图片原始高度)和 outWidth(图片的原始宽度)，然后计算一个inSampleSize(缩放值)，然后就可以取图片了，这里要注意的是，inSampleSize 可能小于0，必须做判断。</p>
+<p><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>  <wbr>BitmapFactory.Options options = new BitmapFactory.Options();<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> options.inJustDecodeBounds = true;<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>pic[i] <wbr> = BitmapFactory.decodeFile(path[i], options); //此时返回bm为空<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>options.inJustDecodeBounds = false;<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> //缩放比<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> int be = (int)(options.outHeight / (float)215);<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> if (be &lt;= 0)<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> be = 1;<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> options.inSampleSize = be;<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>options.inSampleSize = computeSampleSize(options, -1, 300*350); <wbr><br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>  <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> //重新读入图片，注意这次要把options.inJustDecodeBounds 设为 false哦<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>pic[i] <wbr> = BitmapFactory.decodeFile(path[i], options);</p>
+<p>这是option的UML图：</p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html#blogid=7f311ef501017zhs&amp;url=http://s4.sinaimg.cn/orignal/7f311ef5gc8b3e16c3f33" target="_blank" rel="external"><img src="http://s4.sinaimg.cn/middle/7f311ef5gc8b3e16c3f33&amp;690" alt="Android压缩图片的几种方法" title="Android压缩图片的几种方法"></a><br><wbr>  <wbr>  <wbr>  <wbr>  <wbr>  <wbr></p>
+<p>这样出来的图片一般不会失真，但是当你压缩的长宽比例相差较大时还会有失真现象。</p>
+<p>这个是等比例缩放:<br>bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);width和height是缩放后的大小，true表示过滤，可消除锯齿感。</p>
+<p><span style="color: #000000; font-family: 'Times New Roman'; font-size: small;">newBitmap = Bitmap.createBitmap(oldBitmap, 0, 0, width, height, matrix, true);//用距阵的方式缩放</span></p>
+<p>这个是截取图片某部分:<br>bitmap = Bitmap.createBitmap(bitmap, x, y, width, height);，意思是从（x，y）开始截取width宽和height高大小的图片。</p>
+<p>这些就是android系统中压缩图片的几个方法了。</p>
+<p>&nbsp;</p>
+<h2 id="实例">实例</h2><p>&nbsp;<br>[code lang=”java”]<br>//对图片进行压缩<br>           BitmapFactory.Options options = new BitmapFactory.Options();<br>           options.inJustDecodeBounds = true;  </p>
+<pre><code>   <span class="comment">//获取这个图片的宽和高  </span>
+   Bitmap bitmap = BitmapFactory.decodeFile<span class="params">(&amp;quot;/sdcard/dcim/Camera/hello.jpg&amp;quot;,options)</span>;<span class="comment">//此时返回bm为空  </span>
+   options.inJustDecodeBounds =<span class="literal">false</span>;  
+   <span class="comment">//计算缩放比  </span>
+   int be = <span class="params">(int)</span><span class="params">(options.outHeight / <span class="params">(float)</span><span class="number">200</span>)</span>;  
+   <span class="keyword">if</span><span class="params">(be &amp;lt;= <span class="number">0</span>)</span>  
+        be =<span class="number">1</span>;  
+   options.inSampleSize =be;  
+   <span class="comment">//重新读入图片，注意这次要把options.inJustDecodeBounds设为false哦  </span>
+   bitmap = BitmapFactory.decodeFile<span class="params">(&amp;quot;/sdcard/dcim/Camera/hello.jpg&amp;quot;,options)</span>;  
+   int w = bitmap.getWidth<span class="params">()</span>;  
+   int h=bitmap.getHeight<span class="params">()</span>;  
+   System.out.println<span class="params">(w+&amp;quot; &amp;quot;+h)</span>;  
+   myImageView.setImageBitmap<span class="params">(bitmap)</span>;  
+
+   <span class="comment">//保存入sdCard  </span>
+   File file2= new File<span class="params">(&amp;quot;/sdcard/dcim/Camera/test.jpg&amp;quot;)</span>;  
+   try {  
+    FileOutputStream out = new FileOutputStream<span class="params">(file2)</span>;  
+    <span class="keyword">if</span><span class="params">(bitmap.compress<span class="params">(Bitmap.CompressFormat.JPEG, <span class="number">100</span>, out)</span>)</span>{  
+        out.flush<span class="params">()</span>;  
+        out.close<span class="params">()</span>;  
+    }  
+} catch <span class="params">(Exception e)</span> {  
+    <span class="comment">// <span class="doctag">TODO</span>: handle exception  </span>
+}  
+
+<span class="comment">//读取sd卡  </span>
+   File file =new File<span class="params">(&amp;quot;/sdcard/dcim/Camera/test.jpg&amp;quot;)</span>;  
+   int maxBufferSize = <span class="number">16</span> <span class="built_in">*</span> <span class="number">1024</span>;  
+
+    int len = <span class="number">0</span>;  
+    ByteArrayOutputStream outStream = new ByteArrayOutputStream<span class="params">()</span>;  
+     BufferedInputStream bufferedInputStream;  
+    try {  
+        bufferedInputStream = new BufferedInputStream<span class="params">(new FileInputStream<span class="params">(file)</span>)</span>;  
+        int bytesAvailable = bufferedInputStream.available<span class="params">()</span>;  
+        int bufferSize = Math.<span class="built_in">min</span><span class="params">(bytesAvailable, maxBufferSize)</span>;  
+        byte[] buffer = new byte[bufferSize];  
+        while <span class="params">(<span class="params">(len = bufferedInputStream.read<span class="params">(buffer)</span>)</span> != -<span class="number">1</span>)</span>  
+        {  
+            outStream.write<span class="params">(buffer, <span class="number">0</span>, bufferSize)</span>;  
+        }  
+         data = outStream.toByteArray<span class="params">()</span>;  
+        outStream.close<span class="params">()</span>;  
+        bufferedInputStream.close<span class="params">()</span>;  
+
+    } catch <span class="params">(FileNotFoundException e)</span> {  
+        e.printStackTrace<span class="params">()</span>;  
+    } catch <span class="params">(IOException e)</span> {  
+        e.printStackTrace<span class="params">()</span>;  
+    }  
+</code></pre><p>[/code] </p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/android开发/">android开发</a>
+  </div>
+
+        
+        
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+<!-- 多说评论框 start -->
+  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"quanke"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>1</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>2</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>11</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>1</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

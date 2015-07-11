@@ -1,0 +1,230 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title> ZXing改横屏识别为竖屏识别 | 全科-梦想起航的地方</title>
+  <meta name="author" content="全科">
+  
+  <meta name="description" content="Apache License 2.0 开源的 ZXing项目
+ZXing的android项目东西太多了，有很多是我们不需要的，得新建另一个项目简化它。
+在开始前大致介绍一下简化ZXing需要用到各个包 、类的职责。 
+CaptureActivity。这个是启动Activity 也就是扫描器（如果是第">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content=" ZXing改横屏识别为竖屏识别"/>
+  <meta property="og:site_name" content="全科-梦想起航的地方"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-梦想起航的地方" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-梦想起航的地方</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-28T06:47:01.000Z"><a href="/2012/11/28/zxing-e6-94-b9-e6-a8-aa-e5-b1-8f-e8-af-86-e5-88-ab-e4-b8-ba-e7-ab-96-e5-b1-8f-e8-af-86-e5-88-ab/">2012-11-28</a></time>
+      
+      
+  
+    <h1 class="title"> ZXing改横屏识别为竖屏识别</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Apache License 2.0 开源的 ZXing项目</p>
+<p>ZXing的android项目东西太多了，有很多是我们不需要的，得新建另一个项目简化它。</p>
+<p>在开始前大致介绍一下简化ZXing需要用到各个包 、类的职责。 </p>
+<pre><code>CaptureActivity。这个是启动Activity 也就是扫描器（如果是第一安装，它还会跳转到帮助界面）。 
+CaptureActivityHandler 解码处理类，负责调用另外的线程进行解码。 
+DecodeThread 解码的线程。 
+com<span class="class">.google</span><span class="class">.zxing</span><span class="class">.client</span><span class="class">.android</span><span class="class">.camera</span> 包，摄像头控制包。 
+ViewfinderView 自定义的View，就是我们看见的拍摄时中间的框框了。   
+</code></pre><p> 解决方法：</p>
+<p>1.在DecodeHandler.java中，修改decode方法<br>  PlanarYUVLuminanceSource source = CameraManager.get().buildLuminanceSource(data, width, height);<br>为<br>    byte[] rotatedData = new byte[data.length];<br>    for (int y = 0; y &lt; height; y++) {<br>        for (int x = 0; x &lt; width; x++)<br>            rotatedData[x <em> height + height - y - 1] = data[x + y </em> width];<br>    }<br>    int tmp = width; // Here we are swapping, that’s the difference to #11<br>    width = height;<br>    height = tmp;</p>
+<pre><code>PlanarYUVLuminanceSource source = CameraManager.<span class="built_in">get</span>().buildLuminanceSource(rotatedData, <span class="variable">width</span>, <span class="variable">height</span>);
+</code></pre><p>2.在CameraManager.java中，注释代码：<br>            // rect.left = rect.left <em> cameraResolution.x / screenResolution.x;<br>            // rect.right = rect.right </em> cameraResolution.x / screenResolution.x;<br>            // rect.top = rect.top <em> cameraResolution.y / screenResolution.y;<br>            // rect.bottom = rect.bottom </em> cameraResolution.y / screenResolution.y;<br>修改为<br>            rect.left = rect.left <em> cameraResolution.y / screenResolution.x;<br>            rect.right = rect.right </em> cameraResolution.y / screenResolution.x;<br>            rect.top = rect.top <em> cameraResolution.x / screenResolution.y;<br>            rect.bottom = rect.bottom </em> cameraResolution.x / screenResolution.y;</p>
+<p>3.在CameraConfigurationManager.java中，在setDesiredCameraParameters方法中添加一句<br>  camera.setDisplayOrientation(90);</p>
+<p>4.在AndroidManifest.xml中，把Activity的属性android:screenOrientation=”landscape”<br>改为<br>  android:screenOrientation=”portrait”</p>
+<p>编译运行即可！</p>
+<p>参考：</p>
+<p><a href="http://code.google.com/p/zxing/issues/detail?id=178#c46" target="_blank" rel="external">http://code.google.com/p/zxing/issues/detail?id=178#c46</a></p>
+<p>代码：<br><a href="https://github.com/pplante/zxing-android" target="_blank" rel="external">https://github.com/pplante/zxing-android</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/android开发/">android开发</a>
+  </div>
+
+        
+        
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+<!-- 多说评论框 start -->
+  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"quanke"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>1</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>2</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>11</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>1</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

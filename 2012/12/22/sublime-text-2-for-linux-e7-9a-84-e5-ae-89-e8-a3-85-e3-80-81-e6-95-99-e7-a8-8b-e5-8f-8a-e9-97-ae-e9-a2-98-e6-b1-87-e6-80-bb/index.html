@@ -1,0 +1,259 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Sublime Text 2 for Linux 的安装、教程及问题汇总 | 全科-梦想起航的地方</title>
+  <meta name="author" content="全科">
+  
+  <meta name="description" content="Sublime Text 2是一款跨平台文本编辑器，支持Windows，Linux，Mac os
+自从用上了Sublime Text 2这款文本编辑器后就爱不释手了，美观、大方、简介的界面，方便的操作和丰富的扩展造就了这么一款出色的文本编辑器。
+开始我只在Windows系统安装使用，因为某些原因，今">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Sublime Text 2 for Linux 的安装、教程及问题汇总"/>
+  <meta property="og:site_name" content="全科-梦想起航的地方"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-梦想起航的地方" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-梦想起航的地方</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-12-22T06:15:17.000Z"><a href="/2012/12/22/sublime-text-2-for-linux-e7-9a-84-e5-ae-89-e8-a3-85-e3-80-81-e6-95-99-e7-a8-8b-e5-8f-8a-e9-97-ae-e9-a2-98-e6-b1-87-e6-80-bb/">2012-12-22</a></time>
+      
+      
+  
+    <h1 class="title">Sublime Text 2 for Linux 的安装、教程及问题汇总</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Sublime Text 2是一款跨平台文本编辑器，支持Windows，Linux，Mac os</p>
+<p>自从用上了Sublime Text 2这款文本编辑器后就爱不释手了，美观、大方、简介的界面，方便的操作和丰富的扩展造就了这么一款出色的文本编辑器。</p>
+<p>开始我只在Windows系统安装使用，因为某些原因，今天在Linux下进行安装，问题还是相当多的，还是推荐大家在官方修复这些问题之前使用Vim吧。</p>
+<p>程序是共享软件，<strong>永久</strong>免费试用！</p>
+<p>如果要购买，费用为：USD $59</p>
+<h3 id="测试平台：">测试平台：</h3><p><strong>系统版本号</strong>：Ubuntu 12.04</p>
+<p><strong>Sublime Text版本号</strong>：Version 2.0.1，Build 2217</p>
+<h3 id="安装：">安装：</h3><p>Sublime Text 2在Linux下的安装还是相当简单的：</p>
+<ol>
+<li>在<a href="http://www.sublimetext.com/2" title="官方网站" target="_blank" rel="external">官方网站</a>下载Linux版本</li>
+<li>得到一个“.tar.bz2”格式的压缩文件</li>
+<li>进行解压</li>
+<li>双击文件中的“sublime_text”即可打开</li>
+</ol>
+<h3 id="中文显示：">中文显示：</h3><p>软件在Linux下是无法显示中文的，可以通过如下操作解决：</p>
+<p>菜单栏 -&gt; Preferences -&gt; Settings – User，在配置文件中增加（前半部分原本就有，可看情况进行替换）：</p>
+<blockquote>
+<p>// Settings in here override those in “Default/Base File.sublime-settings”, and</p>
+<p>// are overridden in turn by file type specific settings. Place your settings</p>
+<p>// here, to ensure they’re preserved when upgrading.</p>
+<p>{</p>
+<p>“font_face”: “WenQuanYi Micro Hei Mono”</p>
+<p>}<br>其中“文泉驿”是著名的开源字体 <a href="http://wenq.org/" title="http://wenq.org/" target="_blank" rel="external">http://wenq.org/</a></p>
+</blockquote>
+<h3 id="中文输入：">中文输入：</h3><p>设置fcitx输入法的切换键，将默认的Ctrl+Space方式设置Ctrl+Shift，但是这样效果不太好，经常中文会启动不了。</p>
+<p>可以在其他地方输入后进行复制粘贴。</p>
+<p>在以后的Sublime Text 2或许可以得到解决。</p>
+<h3 id="快捷键冲突：">快捷键冲突：</h3><p>默认的代码提示快捷键是“Ctrl+Space”，与输入法切换冲突，导致两方均失效。</p>
+<p>可以在菜单栏 -&gt; Preferences -&gt; Key Bindings – Default 里搜索 “insert_best_completion” 出现：</p>
+<blockquote>
+<p>{ “keys”: [“tab”], “command”: “insert_best_completion”, “args”: {“default”: “\t”, “exact”: true} },<br>改变keys的值为需要的快捷键即可，推荐：<br>{ “keys”: [“alt+/“], “command”: “insert_best_completion”, “args”: {“default”: “\t”, “exact”: true} },</p>
+</blockquote>
+<h3 id="特色功能：">特色功能：</h3><ul>
+<li>良好的扩展功能(Package)</li>
+<li>右边没有滚动条，取而代之的是代码缩略图</li>
+<li>强大的快捷命令：可实时搜索相应的命令、选项、Snippet 和 Syntex， 回车即可执行</li>
+<li>即时的文件切换</li>
+<li>随心所欲的跳转到任意文件的任意位置</li>
+<li>多重选择(Multi-Selection)功能允许在页面中同时存在多个光标。</li>
+<li>支持 VIM 模式</li>
+<li>支持<a href="http://zh.wikipedia.org/wiki/%E5%AE%8F" target="_blank" rel="external">宏</a></li>
+<li>更新非常快</li>
+<li>……</li>
+</ul>
+<h3 id="小技巧：">小技巧：</h3><ol>
+<li>选择文字之后，按下 Tab 和 Shift + Tab 可以控制缩进。</li>
+<li>文件无需保存就可以直接退出程序，下次启动会自动恢复。</li>
+</ol>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Go语言/">Go语言</a>
+  </div>
+
+        
+        
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+<!-- 多说评论框 start -->
+  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"quanke"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>1</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>2</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>11</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>1</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

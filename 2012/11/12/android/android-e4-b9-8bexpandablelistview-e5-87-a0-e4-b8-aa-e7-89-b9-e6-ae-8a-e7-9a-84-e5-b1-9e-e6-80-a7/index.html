@@ -1,0 +1,233 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android 之ExpandableListView几个特殊的属性 | 全科-梦想起航的地方</title>
+  <meta name="author" content="全科">
+  
+  <meta name="description" content="1. 设置ExpandableListView 默认是展开的:先实例化 exListView然后   exListView.setAdapter(exlvAdapter);   //遍历所有group,将所有项设置成默认展开   int groupCount = exListView.getCoun">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Android 之ExpandableListView几个特殊的属性"/>
+  <meta property="og:site_name" content="全科-梦想起航的地方"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-梦想起航的地方" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-梦想起航的地方</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-12T02:17:22.000Z"><a href="/2012/11/12/android/android-e4-b9-8bexpandablelistview-e5-87-a0-e4-b8-aa-e7-89-b9-e6-ae-8a-e7-9a-84-e5-b1-9e-e6-80-a7/">2012-11-12</a></time>
+      
+      
+  
+    <h1 class="title">Android 之ExpandableListView几个特殊的属性</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>1. 设置ExpandableListView 默认是展开的:<br>先实例化 exListView<br>然后<br>   exListView.setAdapter(exlvAdapter);<br>   //遍历所有group,将所有项设置成默认展开<br>   int groupCount = exListView.getCount();<br>   for (int i=0; i&lt;groupCount; i++) {<br>       exListView.expandGroup(i);<br>       };</p>
+<p>2. 去掉ExpandableListView 默认的箭头<br>  用到ExpandableListView时有个箭头图标系统自带的在你自定义布局也不能去掉只要设置一个属性即可，如下：<br>  settingLists.setGroupIndicator(null);  <del>~</del><del>~</del><del>~</del>~~此处就是设置自定义的箭头图标的。置空则没有了。</p>
+<p>也可以自定义（但是位置还是在那个地方不推荐）如下：<br>首先，自定义一个expandablelistviewselector.xml文件，具体内容如下：<br>Java代码<br>&lt;?xml version=”1.0” encoding=”utf-8”?&gt;   </p>
+<p><selector xmlns:android="http://schemas.android.com/apk/res/android"><br>    <item android:state_expanded="true" android:drawable="@drawable/expandablelistviewindicatordown"><br>    <item android:drawable="@drawable/expandablelistviewindicator"><br></item></item></selector><br>加一句代码如下：<br>settingLists.setGroupIndicator(this.getResources().getDrawable(R.layout.expandablelistviewselector));<br>大功告成<br>3. 将默认的箭头修改到右边显示:</p>
+<p>1首先 ExpandableListView elistview;<br>         elistview.setGroupIndicator(null);//将控件默认的左边箭头去掉，<br>2在 自定义的继承自BaseExpandableListAdapter的adapter中有一个方法<br>/**</p>
+<ul>
+<li><p>父类view<br>*/<br> @Override<br> public View getGroupView(int groupPosition, boolean isExpanded,</p>
+<pre><code>    View convertView, ViewGroup parent) {
+Log.i<span class="params">(<span class="string">"zhaoxiong"</span>,<span class="string">"parent view"</span>)</span>;
+    LinearLayout parentLayout=<span class="params">(LinearLayout)</span> View.inflate<span class="params">(context, R.layout.wowocoupons_parent_item, null)</span>;
+    TextView parentTextView=<span class="params">(TextView)</span> parentLayout.findViewById<span class="params">(R.id.parentitem)</span>;
+    parentTextView.setText<span class="params">(parentlist.get<span class="params">(groupPosition)</span>)</span>;
+    ImageView parentImageViw=<span class="params">(ImageView)</span> parentLayout.findViewById<span class="params">(R.id.arrow)</span>;
+</code></pre><p>//判断isExpanded就可以控制是按下还是关闭，同时更换图片</p>
+<pre><code>    <span class="keyword">if</span><span class="params">(isExpanded)</span>{
+        parentImageViw.setBackgroundResource<span class="params">(R.drawable.arrow_down)</span>;
+    }<span class="keyword">else</span>{
+        parentImageViw.setBackgroundResource<span class="params">(R.drawable.arrow_up)</span>;
+    }
+
+return parentLayout;
+</code></pre><p> }</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/android开发/">android开发</a>
+  </div>
+
+        
+        
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+<!-- 多说评论框 start -->
+  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"quanke"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>1</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>2</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>11</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>1</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

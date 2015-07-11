@@ -1,0 +1,905 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>全科-梦想起航的地方</title>
+  <meta name="author" content="全科">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="全科-梦想起航的地方"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-梦想起航的地方" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-梦想起航的地方</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-07-10T15:35:21.000Z"><a href="/2015/07/10/MBaaS-LiveOak系列一-LiveOak简介/">2015-07-10</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/07/10/MBaaS-LiveOak系列一-LiveOak简介/">MBaaS-LiveOak系列一:LiveOak简介</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <ul>
+<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
+<li>交流群：231419585</li>
+<li>转载请注明出处，谢谢</li>
+</ul>
+<p><code>LiveOak</code> 是一个来自红帽的全开源的 MBaaS 解决方案。MBaaS 通过提供关键的后端服务来加速移动应用的开发。</p>
+<p>官网原话</p>
+<blockquote>
+<p>The Open Source Mobile Services Platform</p>
+<p>开源移动服务平台</p>
+</blockquote>
+<p>现在国内的<code>MBaaS</code>服务商有不少，比如APPCan、Bmob、 Uncode（国内开源）、苹果的CloudKit和现在大红大紫的重新定义移动应用开发的APICloud，都属于MBaaS。</p>
+<p>那什么是<a href="http://mobile.51cto.com/news-464546.htm" target="_blank" rel="external">MBaaS</a>呢？</p>
+<p><a href="http://mobile.51cto.com/news-464546.htm" target="_blank" rel="external">http://mobile.51cto.com/news-464546.htm</a></p>
+<p><code>LiveOak</code>提供什么功能？</p>
+<p>提供数据存储、账户管理、安全授权（SSO）、推送（但是这个推送是使用Google的，国内用户要哭，我计划写一个支持国内推送的插件，欢迎关注quanke.name）、客户端管理（比较弱）、业务逻辑使用js写，可以在线编辑业务逻辑、统计等功能，提供Android、iOS、js的SDK，很容易集成到自己的程序里，现在还是1.0版本，功能比较弱。</p>
+<p>LiveOak是jboss系列的，支持jboss插件化开发，扩展非常简单，之后的文章里会一一讲到</p>
+<p>LiveOak的官网</p>
+<p><a href="http://liveoak.io" target="_blank" rel="external">http://liveoak.io</a></p>
+<p>LiveOak源码地址</p>
+<p><a href="https://github.com/liveoak-io/liveoak/" target="_blank" rel="external">https://github.com/liveoak-io/liveoak/</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-05-09T01:03:33.000Z"><a href="/2015/05/09/android/android-development-summary-and-matters-needing-attention/">2015-05-09</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/05/09/android/android-development-summary-and-matters-needing-attention/">android开发总结和注意事项</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <ul>
+<li>做好详细设计<ul>
+<li>功能设计</li>
+<li>数据结构设计</li>
+</ul>
+</li>
+<li>统一的异常处理</li>
+<li>统一的网络请求发送</li>
+<li>统一的命名</li>
+<li><p>所有的耗时操作不能在ui线程里处理，比如数据库操作</p>
+</li>
+<li><p>统一配置文件</p>
+</li>
+<li>统一定义常量</li>
+<li>统一注释</li>
+<li>书写方法要求</li>
+<li>书写类要求</li>
+<li>写通用工具</li>
+<li>统一日志打印</li>
+<li>需要统一处理调试模式和正式发布（）<ul>
+<li>百度key不同</li>
+<li>日志打印不同</li>
+<li>api地址不同</li>
+</ul>
+</li>
+<li>统一线程处理</li>
+<li>集成分享平台sdk，自己实现</li>
+<li>ui方面找出相同的地方，写出样式，写出公共布局</li>
+<li>信息修改统一通知其他界面（把详细设计写好），主要处理返回数据，点击进入需要重新从本地加载数据</li>
+<li>怎么做详细设计<ul>
+<li>一定要细看需求，理解需求（怎么快速理解需求）</li>
+<li>不管是谁，完整的看完需求</li>
+<li>找到相同点和不同点</li>
+<li>找到关联性</li>
+<li>找出不合逻辑的需求</li>
+</ul>
+</li>
+<li><p>储备技术</p>
+<ul>
+<li>图片处理<ul>
+<li>图片滤镜</li>
+<li>图片压缩</li>
+</ul>
+</li>
+<li>文件后台断点上传</li>
+<li>群功能</li>
+</ul>
+</li>
+<li><p>怎么沟通？</p>
+<ul>
+<li>在软件开发过程中，可能需要和负责不同工作的人沟通，可以很多人会向你反馈问题，需要怎么解决</li>
+<li>相关人员找你你沟通时，首先需要判断问题的重要性，如果自己可以解决自己解决，不能解决的，向负责人反应</li>
+<li>你找相关人员沟通时，首先需要判断问题是谁的，一定要尽量排除自己的问题，再去找人沟通，沟通时需要想好，不要耽误别人时间</li>
+</ul>
+</li>
+<li><p>软件开发流程</p>
+<ul>
+<li>写项目的时候不比写demo，写demo可能就是一个人写，写了有bug也没有关系，但是项目就不同了，项目不能出现过多bug，需要多人合作开发！</li>
+<li>接任务</li>
+<li>分析任务：如果不理解和自己不能胜任，一定要和负责人说，这关系到整个项目进度</li>
+<li>详细设计：把命名想好……</li>
+<li>开始编码</li>
+<li>反复测试</li>
+<li>提交任务</li>
+</ul>
+</li>
+<li>习惯<ul>
+<li>做笔记，屡逻辑</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>随便写的有点乱，有时间继续补充</p>
+</blockquote>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-05-07T14:37:48.000Z"><a href="/2015/05/07/open-souce-and-data/">2015-05-07</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/05/07/open-souce-and-data/">值得学习的一些开源项目和资料</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><a href="https://github.com/github/android" target="_blank" rel="external">https://github.com/github/android</a> github的android开源项目</p>
+<p><a href="https://github.com/owncloud/android" target="_blank" rel="external">https://github.com/owncloud/android</a>  一个私有云项目，里面涉及同步相关的东西</p>
+<p><a href="https://github.com/aporter/coursera-android/tree/master/Examples" target="_blank" rel="external">https://github.com/aporter/coursera-android/tree/master/Examples</a> Coursera是免费大型公开在线课程项目（<a href="https://www.coursera.org/）" target="_blank" rel="external">https://www.coursera.org/）</a></p>
+<p><a href="https://github.com/commonsguy/cw-android" target="_blank" rel="external">https://github.com/commonsguy/cw-android</a> 一本书的源码，适合android初学者研究</p>
+<p><a href="https://github.com/novoda/android-demos" target="_blank" rel="external">https://github.com/novoda/android-demos</a>  android demo 适合新手研究</p>
+<p><a href="http://www.trinea.cn/" target="_blank" rel="external">http://www.trinea.cn/</a> 国人整理的一些工具，可以研究研究源码</p>
+<p><a href="https://github.com/zxing/zxing" target="_blank" rel="external">https://github.com/zxing/zxing</a> ZXing 二维码扫描工具，现在市面上很多应用的二维码扫描功能都是从这个修改而来，需要好好研究</p>
+<p><a href="https://github.com/chrisbanes/photup" target="_blank" rel="external">https://github.com/chrisbanes/photup</a>  photup 编辑机批量上传照片到facebook上，值得研究</p>
+<p><a href="https://github.com/codinguser/gnucash-android" target="_blank" rel="external">https://github.com/codinguser/gnucash-android</a> 四次元-新浪微博客户端 </p>
+<p><a href="https://github.com/eluleci/FlatUI" target="_blank" rel="external">https://github.com/eluleci/FlatUI</a>  FlatUI实现主题定制，扁平化UI效果，可以轻松实现主体切换.</p>
+<p><a href="https://github.com/ikocijan/MagicViews" target="_blank" rel="external">https://github.com/ikocijan/MagicViews</a> MagicViews实现控件使用自定义字体，只需要在xml上设置字体</p>
+<p><a href="http://androidkickstartr.com/" target="_blank" rel="external">http://androidkickstartr.com/</a> 生成android项目</p>
+<p><a href="https://github.com/daimajia/AndroidViewAnimations" target="_blank" rel="external">https://github.com/daimajia/AndroidViewAnimations</a>  实现了很多动画</p>
+<p><a href="http://easysoft.github.io/zui/" target="_blank" rel="external">http://easysoft.github.io/zui/</a> <a href="http://www.tinygroup.org" target="_blank" rel="external">http://www.tinygroup.org</a> 这是一个国人写的跨平台ui框架</p>
+<p><a href="http://www.amsoft.cn/" target="_blank" rel="external">http://www.amsoft.cn/</a>  andbase源码： 国人写的一个框架包含很多工具类，基本的android技术都能在这里找到</p>
+<p><a href="https://github.com/Trinea/android-open-project" target="_blank" rel="external">https://github.com/Trinea/android-open-project</a> Android开源项目分类汇总 ，非常全面的GitHub开源项目汇总，不需要重复发明轮子，尽情遨游在开源世界里吧</p>
+<p><a href="http://www.23code.com" target="_blank" rel="external">http://www.23code.com</a>  整理了很多开源项目</p>
+<p>google demo <a href="https://github.com/googlesamples" target="_blank" rel="external">https://github.com/googlesamples</a></p>
+<p><a href="http://yeasy.gitbooks.io/docker_practice/" target="_blank" rel="external">http://yeasy.gitbooks.io/docker_practice/</a> docker 开源书籍</p>
+<p><a href="https://github.com/sd6352051/NiftyNotification" target="_blank" rel="external">https://github.com/sd6352051/NiftyNotification</a>  一个不错的通知ui</p>
+<p><a href="http://coolgithubprojects.com/" target="_blank" rel="external">http://coolgithubprojects.com/</a>  github 项目排名</p>
+<p><a href="https://github.com/gcacace/android-signaturepad" target="_blank" rel="external">https://github.com/gcacace/android-signaturepad</a>  一个签名的项目</p>
+<p><a href="https://github.com/bayandin/awesome-awesomeness" target="_blank" rel="external">https://github.com/bayandin/awesome-awesomeness</a> 国外的开源书籍</p>
+<p><a href="https://android-arsenal.com" target="_blank" rel="external">https://android-arsenal.com</a> 国外整理的开源项目</p>
+<p><a href="http://www.ddpush.net" target="_blank" rel="external">http://www.ddpush.net</a>  推送解决方案</p>
+<p><a href="https://github.com/Trinea/android-open-project" target="_blank" rel="external">https://github.com/Trinea/android-open-project</a>  Android开源项目分类汇总</p>
+<p>带进度显示的Button  项目地址：<a href="https://github.com/dmytrodanylyk/circular-progress-button" target="_blank" rel="external">https://github.com/dmytrodanylyk/circular-progress-button</a></p>
+<p><a href="https://github.com/mikepenz/Android-LollipopShowcase" target="_blank" rel="external">https://github.com/mikepenz/Android-LollipopShowcase</a>  一个悬浮按钮</p>
+<p><a href="https://github.com/traex/RippleEffect" target="_blank" rel="external">https://github.com/traex/RippleEffect</a>  <a href="https://github.com/siriscac/RippleView" target="_blank" rel="external">https://github.com/siriscac/RippleView</a><br>点击有扩散效果的ui</p>
+<p><a href="https://github.com/google/material-design-icons" target="_blank" rel="external">https://github.com/google/material-design-icons</a>  </p>
+<p><a href="https://github.com/baoyongzhang/SwipeMenuListView" target="_blank" rel="external">https://github.com/baoyongzhang/SwipeMenuListView</a>  滑动删除</p>
+<p><a href="https://github.com/JakeWharton/DiskLruCache" target="_blank" rel="external">https://github.com/JakeWharton/DiskLruCache</a>   大牛写的缓存框架</p>
+<p><a href="https://github.com/atermenji/IconicDroid" target="_blank" rel="external">https://github.com/atermenji/IconicDroid</a> 大量矢量图标，怎么放大也不变形</p>
+<p><a href="https://github.com/ksky521/nodePPT" target="_blank" rel="external">https://github.com/ksky521/nodePPT</a>  网页ppt</p>
+<p><a href="http://www.ui.cn/Material/" target="_blank" rel="external">http://www.ui.cn/Material/</a>  </p>
+<p>免费编程书籍 </p>
+<p><a href="http://siberiawolf.com/free_programming/index.html" target="_blank" rel="external">http://siberiawolf.com/free_programming/index.html</a></p>
+<p>android周报（内容很nice）<br><a href="http://www.androidweekly.cn" target="_blank" rel="external">http://www.androidweekly.cn</a></p>
+<p><a href="http://square.github.io/" target="_blank" rel="external">http://square.github.io/</a></p>
+<p><a href="https://github.com/r0adkll/Slidr滑动关闭" target="_blank" rel="external">https://github.com/r0adkll/Slidr滑动关闭</a></p>
+<p><a href="http://blog.csdn.net/qiujuer/article/details/42471119（打造极致Material" target="_blank" rel="external">http://blog.csdn.net/qiujuer/article/details/42471119（打造极致Material</a> Design动画风格Button）</p>
+<p><a href="https://github.com/JakeWharton/Telecine（屏幕录制软件）" target="_blank" rel="external">https://github.com/JakeWharton/Telecine（屏幕录制软件）</a></p>
+<p><a href="https://github.com/Raizlabs/Singleton" target="_blank" rel="external">https://github.com/Raizlabs/Singleton</a> （一个非常简洁的库，可以帮助你方便将一个对象存储在磁盘。）</p>
+<p><a href="http://blog.csdn.net/lovelion" target="_blank" rel="external">http://blog.csdn.net/lovelion</a>  刘伟老师的博客</p>
+<p><a href="https://github.com/inaka/galgo" target="_blank" rel="external">https://github.com/inaka/galgo</a> (可以把日志打印在屏幕的工具)</p>
+<p><a href="http://www.imooc.com" target="_blank" rel="external">http://www.imooc.com</a></p>
+<p>AndroidSigning (<a href="https://github.com/dodocat/AndroidSigning" target="_blank" rel="external">https://github.com/dodocat/AndroidSigning</a>)</p>
+<p>AndroidSigning是一个可以方便你配置和管理Android签名信息的Gradle插件，使用本插件可以让所有的开发机以及持续交付设备使用完全相同的代码进行工作.避免陷入本地配置兼容性的泥淖中, 防止私密信息泄露.</p>
+<p><a href="http://www.devtf.cn" target="_blank" rel="external">http://www.devtf.cn</a></p>
+<p><a href="https://github.com/bboyfeiyu/android-tech-frontier" target="_blank" rel="external">https://github.com/bboyfeiyu/android-tech-frontier</a></p>
+<p><a href="https://github.com/cjwirth/awesome-ios-ui" target="_blank" rel="external">https://github.com/cjwirth/awesome-ios-ui</a></p>
+<p><a href="https://github.com/Aufree/trip-to-iOS/blob/master/Top-100.md" target="_blank" rel="external">https://github.com/Aufree/trip-to-iOS/blob/master/Top-100.md</a></p>
+<p><a href="http://chuansong.me/account/awesomeport" target="_blank" rel="external">http://chuansong.me/account/awesomeport</a>  微信推送一些技术资料</p>
+<p><a href="https://github.com/wasabeef/richeditor-android" target="_blank" rel="external">https://github.com/wasabeef/richeditor-android</a>  </p>
+<p><a href="https://fossdroid.com" target="_blank" rel="external">https://fossdroid.com</a> android开源项目</p>
+<blockquote>
+<p>随便写的有点乱，有时间继续补充</p>
+</blockquote>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-04-08T14:44:19.000Z"><a href="/2015/04/08/ios/ios-development-self-study-program/">2015-04-08</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/04/08/ios/ios-development-self-study-program/">iOS 开发工程师自学计划</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>预备</p>
+<p>1、文件管理器 Finder<br>2、iWork 使用 Numbers,Keynote,Pages<br>3、Safari 浏览器 Mac Os 的使用，iWork 的使用</p>
+<p>iOS 开发基础</p>
+<p>1、Xcode、SVN、Git<br>2、C 语言是 iOS 开发的入门基础 语言，本部分主要介绍 C语言 的基本语法，程序结构，以 及指针的各种操作。为接下 来 Objective-C 语言的学习打下基础。</p>
+<p>1、iOS 开发的系统环境介绍、 Xcode 集成开发环境详解、常用软件的介绍<br>2、数据类型、常量和变量、运算符、赋值语句和表达式；分支、循环<br>3、函数，数组（一维数组、二维数组、多维数组） ，结构体<br>4、指针数组、数组指针，结构体指针<br>5、指向指针的指针，宏定义、枚举，const，static</p>
+<p>Objective-C 是 iOS 与 Mac OS 开发的主要语言， 它是对 C 语言的扩展，并融入了面向对 象的特点。包含封装、继 承、多态三大特性， 本部分 主要介绍 OC 的基本语法， 新 的特性，内存管理等内容</p>
+<p>1、面向对象 （OOP） 和面向过程、 类 （Class）和对象（Object） 、类的定义<br>2、创建对象、self 和 super 关键字、属性以及点语法 （nonatomic， assign、 retain 、 copy，readonly、readwrite）<br>3、便利构造器、单例（Singleton）<br>4、堆栈、内存管理（ alloc、copy、retain ，release、autorelease， strong、weak）<br>5、键值编码 （KVC） 、 键值监听 （KVO） 、 通知中 心 （ NSNotificationCenter ）、 通 知（NSNotification）<br>6、类目（Category） 、延展（Extention） 、协议（protocol）</p>
+<p>iOS 的基础框架，包含了 iOS 开发的基本数据类型，在 iOSSDK 中几乎全部 NS 开头的类都 属于这个框架，我们将详细介绍开发中常用的类。</p>
+<p>1、字符串（ NSString NSMutableString) 、数值对象(NSNumber NSValue)<br>2 、数组（ NSArray,NSMutableArray ） 、字典(NSDictionary,NSMutableDictionary) 、 集 合(NSSet,NSMutableSet) 、快速 枚举 (for…in)NSIndexPath<br>3 、日 期 与 时 间 (NSDate) 、 日 期 格 式(NSDataFormatter)、日历 (NSCalendar)、定时器(NSTimer)<br>4 、文 件 管 理 (NSFileManager) 、 程 序 包(NSBundle)、缓冲区(NSData)<br>5 、网络连接 (NSURLConnection) 、网络地址(NSURL)、网络请求 (NSURLRequest)、请求回应(NSResponse)、错误信息处理(NSError)<br>6 、MVC 编程,简单控件一:标签(UILabel)、文本输入(UITextField)、 按钮 (UIButton)、 提示框(UIAlertView、UIActionSheet)、<br>7、使用面向对象 OOP 方法, 实施计算机 APP应用. 要求学员应用前期学习中的大部 分知识点.<br>8、沙箱</p>
+<p>iOS 开发高级</p>
+<p>UIKit 处于 Cocoa 四层结构的 最上层 CocoaTouch 层， 是 iOS开发中的控件框架， 定义了 几乎全部可视化控件， 在 iOS 开发中占据绝对地位，我们 不仅会学习各个控件的用 法，而且会讲述各个控件在 不同版本系统里的样式，教 大家如何自定义控件样式。 学完他们我们就可以做自己 个性化的界面了。<br>1、窗口(UIWindow)、视图(UIView)、应用程序(UIApplication)<br>2 、绘图（ drawRect ） 、 QuartzCoreDemo 、CGContextRef<br>3 、触摸 (UITouch) 、事件 (UIEvent) 、手势(UIGestureRecognizer)、 UIResponder、 消息传递、响应者链<br>4、 UIView 以及 CALayer 动画 （CAAnimation、CABasicAnimation、 CAKeyFrameAnimation）<br>5、活动提示(UIActivityIndicatorView)、图像(UIImageView)<br>6、 控件二:滚动视图(UIScrollView)、 页控制器(UIPageControl) 、 开关 (UISwitch) 、 单选(UISegmentControl)、滑块(UISlider)<br>7、控件三:多行文本(UITextView)、网页视图(UIWebView)、滚轮 (UIPickerView)、日期滚轮 (UIDatePickerView) 、 表 格 视 图(UITableView)、 表格项(UITableViewCell)<br>8、视图控制器(UIViewController)、导航控制器 (UINavigationController) 、 标 签 控制 器(UITabBarController) 、 表 格 控 制 器(UITableViewController) 、 相 册 控 制 器(UIImagePickerController)</p>
+<p>iphone Safari 浏览器原型 App。<br>1、结合前期所学知识，应用 UIKit 框架详解中所学的高级 UI 控件及知识点，模拟 实现Safari 浏览器</p>
+<p>iOS 应用特性框架是对上述两 个框架之外其他框架的统 称。主要内容为：音 频、视频的播放、照相机的 使用、加速计的应用，地图 框架的使用、短信、邮件的 应用等等，而且也会介绍当 前应用开发中使用非常广泛 的开源框架，同时还将讲解 开发者帐号的注册、真机调 试、以及程序上传。<br>1 、音 频 播放 (AVAudioPlayer) 、 视 频 播放(MPMoviePlayerViewController) 以 及 播 放ipod 音乐<br>2、 照相机(UIImagePickerController)以及相册的使用<br>3 、短 信(MFMessageComposeViewController) 、 邮件(MFMailComposeViewController)的使用<br>4、加速计(UIAccelerometer)的使用、帐号注册、真机调试、上传程序<br>5 、地图(MKMapView) 的使用以及定位 (CoreLocation)<br>6、数据持久化（文件读写、sqlite 数据库、 归档、NSCoding 协议） 、云存储 （iCloud）<br>7、多线程开发（NSThread、NSLock）,操作队列(NSOperationQueue)<br>8、网络请求（GET、POST） 、xml 解析、json解析、Socket 编程</p>
+<p>iOS 游戏开发</p>
+<p>2D 游戏引擎的使用, 全部课程 内容以”植物大战僵尸”为例,<br>贯穿其中</p>
+<p>1 、 Cocos2D HelloWorld,CCDirector( 导 演类),CCScene(场景类),CCLayer<br>2、CCSprite(精灵类),CCAction(动作)<br>3、CCMemu(菜单),CCLabelTTF(标签)<br>4、CCPointParticleSystem(点粒子系统)<br>5、练习:植物大战僵尸游戏开发</p>
+<p>C++是目前最流行的开发语言 之一,C++基本语法,C++面象对像的特性.在 XCode 下如何 使用 C++语言编程.</p>
+<p>1、在 Xcode 下编译 C++ 程序,C++ 类 Class,成员变量,成员函数,对象的创建<br>2、构造函数与析构函数,new delete 关键字,内存管理<br>3、继承,函数重载,操作符重载,拷贝构造<br>4、模版 template 与泛型<br>5、Objective-C 与 C++混合编程</p>
+<p>iOS 游戏开发中使用最多的物 理引擎,以愤怒的小鸟为例学习 Box2D 开发.</p>
+<p>1、物理世界(b2World),刚体(b2Body),精灵与刚体连接<br>2、碰撞测试(b2ContactListener)<br>3、刚体的连接关节(b2Joint)<br>4、练习:愤怒的小鸟开发<br>5、OpenGL ES 开发基础</p>
+<p>项目实训</p>
+<p>做一个真 实项目，可以整理成教程发到博客，然后开源 从需求分析开始，然后技术调研，工期评 估、编码、测试、优化代 码、上传程序等 项目内容会包括几点: 1.网络数据解析 2.音视频播放3.微薄分享 4.LBS 定位应用 5.SQLite 数据库</p>
+<p>项目会用到网络、数据库、各种常用控件、 以及各种 Foundation 类。 目前有 很多项目可以选择使用，比如：互动百科（新闻类应用） 、<br>乐视 （电影类应 用） 、 创业邦 （杂志类应用） 、尚品网 （购物类应用） 、 雅座空间 （团购类 应用） 、 找地（定位类应用） 、 我是学家（教育类应用） 、 YY 客户端 （语 音类应用） 、麦咨达（条码扫描类应用） 、 中国建行 （银行类应用） 、CuteMath（游戏类应用） 、车震摇摇乐（娱乐类应用） 、新浪微博（微博类 应用）等等</p>
+<p>支持聊天功能的相册应用 - 微相册</p>
+<p>实现功能</p>
+<p>主要是照片的展示，播放照片时播放音乐，音乐照片来自互联网<br>分享照片到各大社交平台<br>支持开放平台登录<br>支持滑动出菜单<br>TableView动画<br>下拉刷新<br>反馈建议<br>关于</p>
+<p>扩展功能</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-11-29T19:53:51.000Z"><a href="/2014/11/30/sublime-text-2-shortcut key/">2014-11-30</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/11/30/sublime-text-2-shortcut key/">sublime text 2快捷键大全</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><table width="500" border="1" cellspacing="0" cellpadding="3" align="center"></table></p>
+<p><tbody></tbody></p>
+<p><tr></tr></p>
+<p><td><strong>Ctrl+L </strong></td></p>
+<p><td><strong>选择整行（按住-继续选择下行） </strong></td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+KK</td></p>
+<p><td>从光标处删除至行尾</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+Shift+K</td></p>
+<p><td>删除整行</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+Shift+D</td></p>
+<p><td>复制光标所在整行，插入在该行之前</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+J</td></p>
+<p><td>合并行（已选择需要合并的多行时）</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+KU</td></p>
+<p><td>改为大写</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+KL</td></p>
+<p><td>改为小写</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+D</td></p>
+<p><td>选词 （按住-继续选择下个相同的字符串）</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+M</td></p>
+<p><td>光标移动至括号内开始或结束的位置</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+Shift+M</td></p>
+<p><td>选择括号内的内容（按住-继续选择父括号）</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+/</td></p>
+<p><td>注释整行（如已选择内容，同“Ctrl+Shift+/”效果）</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+Shift+/</td></p>
+<p><td>注释已选择内容</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+Space</td></p>
+<p><td>自动完成（win与系统快捷键冲突，需修改）</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+Z</td></p>
+<p><td>撤销</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+Y</td></p>
+<p><td>恢复撤销</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+Shift+V</td></p>
+<p><td>粘贴并自动缩进（其它兄弟写的，实测win系统自动缩进无效）</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+M</td></p>
+<p><td>光标跳至对应的括号</td><br></p>
+<p><tr></tr></p>
+<p><td>Alt+.</td></p>
+<p><td>闭合当前标签</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+Shift+A</td></p>
+<p><td>选择光标位置父标签对儿</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+Shift+[</td></p>
+<p><td>折叠代码</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+Shift+]</td></p>
+<p><td>展开代码</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+KT</td></p>
+<p><td>折叠属性</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+K0</td></p>
+<p><td>展开所有</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+U</td></p>
+<p><td>软撤销</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+T</td></p>
+<p><td>词互换</td><br></p>
+<p><tr></tr></p>
+<p><td>Tab</td></p>
+<p><td>缩进</td><br></p>
+<p><tr></tr></p>
+<p><td>Shift+Tab</td></p>
+<p><td>去除缩进</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+Shift+UP</td></p>
+<p><td>与上行互换</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+Shift+DOWN</td></p>
+<p><td>与下行互换</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+K Backspace</td></p>
+<p><td>从光标处删除至行首</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+Enter</td></p>
+<p><td>插入行后</td><br></p>
+<p><tr></tr></p>
+<p><td>Ctrl+Shift Enter</td></p>
+<p><td>插入行前</td><br></p>
+<p><tr></tr></p>
+<p><td>F9</td></p>
+<p><td>行排序（按a-z）</td><br><br><br><br></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-11-02T17:28:56.000Z"><a href="/2014/11/03/android/android-textview-word-too-long/">2014-11-03</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/11/03/android/android-textview-word-too-long/">android中textview字数过长解决方法</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>为了解决textview中内容过长的话自动换行，但是调用measureText函数时发现返回值很不准确，单位也不确定，是pixel还是dip，都不准。后来想起textview中有个内容过长加省略号的属性，即ellipsize，可以解决这个问题，用法如下：<br>在xml中<br>[code lang=”xml”]<br>android:ellipsize = &quot;end&quot;　　  省略号在结尾<br>android:ellipsize = &quot;start&quot; 　　省略号在开头<br>android:ellipsize = &quot;middle&quot;     省略号在中间<br>android:ellipsize = &quot;marquee&quot;  跑马灯<br>[/code]<br>最好加一个约束android:singleline = “true”</p>
+<p>当然也可以用代码语句<br>[code lang=”java”]<br>tv.setEllipsize(TextUtils.TruncateAt.valueOf(&quot;END&quot;));<br>tv.setEllipsize(TextUtils.TruncateAt.valueOf(&quot;START&quot;));<br>tv.setEllipsize(TextUtils.TruncateAt.valueOf(&quot;MIDDLE&quot;));<br>tv.setEllipsize(TextUtils.TruncateAt.valueOf(&quot;MARQUEE&quot;));<br>[/code]<br>最好再加一个约束tv.setSingleLine(true);<br>不仅对于textview有此属性，对于editext也有，不过它不支持marquee</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-06-21T18:10:43.000Z"><a href="/2014/06/22/android/android-change-system/">2014-06-22</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/06/22/android/android-change-system/">Android中如何修改系统时间（应用程序获得系统权限）</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>在 android 的API中有提供 SystemClock.setCurrentTimeMillis()函数来修改系统时间，可惜无论你怎么调用这个函数都是没用的，无论模拟器还是真机，在logcat中总会得到”Unable to open alarm driver: Permission denied “.这个函数需要root权限或者运行与系统进程中才可以用。</p>
+<pre><code>本来以为就没有办法在应用程序这一层改系统时间了，后来在网上搜了好久，知道这个目的还是可以达到的。
+
+第一个方法简单点，不过需要在<span class="constant">Android</span>系统源码的环境下用make来编译：
+
+<span class="number">1</span>\. 在应用程序的<span class="constant">Android</span>Manifest.xml中的<span class="literal">manifest</span>节点中加入android:sharedUserId=<span class="string">"android.uid.system"</span>这个属性。
+
+<span class="number">2</span>\. 修改<span class="constant">Android</span>.mk文件，加入<span class="constant">L</span>OCAL_CERTIFICATE := <span class="literal">platform</span>这一行
+
+<span class="number">3</span>\. 使用mm命令来编译，生成的apk就有修改系统时间的权限了。
+
+第二个方法麻烦点，不过不用开虚拟机跑到源码环境下用make来编译：
+
+<span class="number">1</span>\. 同上，加入android:sharedUserId=<span class="string">"android.uid.system"</span>这个属性。
+
+<span class="number">2</span>\. 使用eclipse编译出apk文件，但是这个apk文件是不能用的。
+
+<span class="number">3</span>\. 用压缩软件打开apk文件，删掉<span class="constant">M</span>ETA-<span class="constant">I</span>NF目录下的<span class="constant">C</span>ERT.<span class="constant">S</span>F和<span class="constant">C</span>ERT.<span class="constant">R</span>SA两个文件。
+
+<span class="number">4</span>\. 使用目标系统的<span class="literal">platform</span>密钥来重新给apk文件签名。这步比较麻烦，首先找到密钥文件，在我的<span class="constant">Android</span>源码目录中的位置是<span class="string">"build/target/product/security"</span>，下面的<span class="literal">platform</span>.pk8和<span class="literal">platform</span>.x509.pem两个文件。然后用<span class="constant">Android</span>提供的<span class="constant">Signapk</span>工具来签名，signapk的源代码是在<span class="string">"build/tools/signapk"</span>下，用法为<span class="string">"signapk platform.x509.pem platform.pk8 input.apk output.apk"</span>，文件名最好使用绝对路径防止找不到，也可以修改源代码直接使用。
+
+这样最后得到的apk和第一个方法是一样的。
+
+最后解释一下原理，首先加入android:sharedUserId=<span class="string">"android.uid.system"</span>这个属性。通过<span class="constant">Shared</span> <span class="constant">User</span> <span class="built_in">id</span>,拥有同一个<span class="constant">User</span> <span class="built_in">id</span>的多个<span class="constant">A</span>PK可以配置成运行在同一个进程中。那么把程序的<span class="constant">U</span>ID配成android.<span class="literal">uid</span>.<span class="literal">system</span>，也就是要让程序运行在系统进程中，这样就有权限来修改系统时间了。
+
+只是加入<span class="constant">U</span>ID还不够，如果这时候安装<span class="constant">A</span>PK的话发现无法安装，提示签名不符，原因是程序想要运行在系统进程中还要有目标系统的<span class="literal">platform</span> key，就是上面第二个方法提到的<span class="literal">platform</span>.pk8和<span class="literal">platform</span>.x509.pem两个文件。用这两个key签名后apk才真正可以放入系统进程中。第一个方法中加入<span class="constant">L</span>OCAL_CERTIFICATE := <span class="literal">platform</span>其实就是用这两个key来签名。
+
+这也有一个问题，就是这样生成的程序只有在原始的<span class="constant">Android</span>系统或者是自己编译的系统中才可以用，因为这样的系统才可以拿到<span class="literal">platform</span>.pk8和<span class="literal">platform</span>.x509.pem两个文件。要是别家公司做的<span class="constant">Android</span>上连安装都安装不了。试试原始的<span class="constant">Android</span>中的key来签名，程序在模拟器上运行<span class="constant">O</span>K，不过放到<span class="constant">G</span>3上安装直接提示<span class="string">"Package ... has no signatures that match those in shared user android.uid.system"</span>，这样也是保护了系统的安全。
+
+最最后还说下，这个android:sharedUserId属性不只可以把apk放到系统进程中，也可以配置多个<span class="constant">A</span>PK运行在一个进程中，这样可以共享数据，应该会很有用的。
+</code></pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-02-25T01:36:16.000Z"><a href="/2014/02/25/e4-bb-8a-e5-a4-a9-e5-8f-91-e7-8e-b0-e7-9a-84-e4-b8-80-e4-ba-9b-e4-bc-98-e7-a7-80-e7-9a-84-e8-b5-84-e6-ba-90-e7-bd-91-e7-ab-99/">2014-02-25</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/02/25/e4-bb-8a-e5-a4-a9-e5-8f-91-e7-8e-b0-e7-9a-84-e4-b8-80-e4-ba-9b-e4-bc-98-e7-a7-80-e7-9a-84-e8-b5-84-e6-ba-90-e7-bd-91-e7-ab-99/">今天发现的一些优秀的资源网站</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><div style="TEXT-TRANSFORM: none; TEXT-INDENT: 0px; LETTER-SPACING: normal; FONT: 14px 微软雅黑; WHITE-SPACE: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; -webkit-text-stroke-width: 0px"><a href="http://www.trinea.cn/" target="_blank" rel="external">http://www.trinea.cn</a></div> <div style="TEXT-TRANSFORM: none; TEXT-INDENT: 0px; LETTER-SPACING: normal; FONT: 14px 微软雅黑; WHITE-SPACE: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; -webkit-text-stroke-width: 0px"><br></div> <div style="TEXT-TRANSFORM: none; TEXT-INDENT: 0px; LETTER-SPACING: normal; FONT: 14px 微软雅黑; WHITE-SPACE: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; -webkit-text-stroke-width: 0px">一些开源项目</div> <div style="TEXT-TRANSFORM: none; TEXT-INDENT: 0px; LETTER-SPACING: normal; FONT: 14px 微软雅黑; WHITE-SPACE: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; -webkit-text-stroke-width: 0px"><a href="http://www.trinea.cn/android/android-open-source-projects-view/" target="_blank" rel="external">http://www.trinea.cn/android/android-open-source-projects-view/</a></div> <div style="TEXT-TRANSFORM: none; TEXT-INDENT: 0px; LETTER-SPACING: normal; FONT: 14px 微软雅黑; WHITE-SPACE: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; -webkit-text-stroke-width: 0px"><br></div> <div style="TEXT-TRANSFORM: none; TEXT-INDENT: 0px; LETTER-SPACING: normal; FONT: 14px 微软雅黑; WHITE-SPACE: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; -webkit-text-stroke-width: 0px"><br></div> <div style="TEXT-TRANSFORM: none; TEXT-INDENT: 0px; LETTER-SPACING: normal; FONT: 14px 微软雅黑; WHITE-SPACE: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; -webkit-text-stroke-width: 0px">android的一些工具</div> <div style="TEXT-TRANSFORM: none; TEXT-INDENT: 0px; LETTER-SPACING: normal; FONT: 14px 微软雅黑; WHITE-SPACE: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; -webkit-text-stroke-width: 0px"><a href="https://github.com/Trinea/android-common" target="_blank" rel="external">https://github.com/Trinea/android-common</a></div> <div style="TEXT-TRANSFORM: none; TEXT-INDENT: 0px; LETTER-SPACING: normal; FONT: 14px 微软雅黑; WHITE-SPACE: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; -webkit-text-stroke-width: 0px"> <div style="TEXT-TRANSFORM: none; TEXT-INDENT: 0px; LETTER-SPACING: normal; FONT: 14px 微软雅黑; WHITE-SPACE: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; -webkit-text-stroke-width: 0px"></div></div></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-02-25T00:21:20.000Z"><a href="/2014/02/25/e7-94-a8wifi-e8-bf-9e-e6-8e-a5-e7-94-b5-e8-84-91-e6-9f-a5-e7-9c-8blogcat-e7-9a-84-e6-96-b9-e6-b3-95/">2014-02-25</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/02/25/e7-94-a8wifi-e8-bf-9e-e6-8e-a5-e7-94-b5-e8-84-91-e6-9f-a5-e7-9c-8blogcat-e7-9a-84-e6-96-b9-e6-b3-95/">用wifi连接电脑查看logcat的方法</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <div>通过wifi将Android设备连接到电脑。</div><br><div>从SDK 的 platform-tools 目录，在命令行输入adb tcpip 5555</div><br><div>输入：adb connect &lt;设备的IP地址&gt;:5555 ，你现在将被连接到Android设备并能像adb logcat一样发出通用的adb命令。</div>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-03-03T22:04:53.000Z"><a href="/2013/03/04/e5-ad-a6-e4-b9-a0-e4-ba-a4-e6-b5-81-e7-bd-91-e7-ab-99-e6-94-b6-e8-97-8f/">2013-03-04</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/03/04/e5-ad-a6-e4-b9-a0-e4-ba-a4-e6-b5-81-e7-bd-91-e7-ab-99-e6-94-b6-e8-97-8f/">学习交流网站收藏</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><table width="753" border="0"></table></p>
+<p><tbody></tbody></p>
+<p><tr></tr></p>
+<p><td colspan="6"><strong>论坛社区:</strong></td><br></p>
+<p><tr></tr></p>
+<p><td width="32">&nbsp;</td></p>
+<p><td width="17"><strong>◤</strong></td></p>
+<p><td align="middle" width="120"><strong>安卓巴士</strong></td></p>
+<p><td width="27"><strong>◢</strong></td></p>
+<p><td width="373">[一个人数较多的一个安卓开发交流论坛]</td></p>
+<p><td><a href="http://www.apkbus.com/?fromuid=71835" target="_blank" rel="external">♫ ♬ ♪</a></td><br></p>
+<p><tr></tr></p>
+<p><td>&nbsp;</td></p>
+<p><td><strong>◤</strong></td></p>
+<p><td align="middle"><strong>AndroidFans</strong></td></p>
+<p><td><strong>◢</strong></td></p>
+<p><td>[我所在一个群某人建的,也算多人吧]</td></p>
+<p><td><a href="http://www.android-fans.net/?fromuid=116" target="_blank" rel="external">♫ ♬ ♪</a></td><br></p>
+<p><tr></tr></p>
+<p><td>&nbsp;</td></p>
+<p><td><strong>◤</strong></td></p>
+<p><td align="middle"><strong>eoeAndroid</strong></td></p>
+<p><td><strong>◢</strong></td></p>
+<p><td>[也是一个比较大的社区,源码多]</td></p>
+<p><td><a href="http://www.eoeandroid.com/?fromuid=595491" target="_blank" rel="external">♫ ♬ ♪</a></td><br></p>
+<p><tr></tr></p>
+<p><td>&nbsp;</td></p>
+<p><td><strong>◤</strong></td></p>
+<p><td align="middle"><strong>巨卓网</strong></td></p>
+<p><td><strong>◢</strong></td></p>
+<p><td>[比较新的源码交流论坛,起码不是陈旧代码]</td></p>
+<p><td><a href="http://www.juapk.com/?fromuid=679" target="_blank" rel="external">♫ ♬ ♪</a></td><br></p>
+<p><tr></tr></p>
+<p><td>&nbsp;</td></p>
+<p><td><strong>◤</strong></td></p>
+<p><td align="middle"><strong>Mars论坛</strong></td></p>
+<p><td><strong>◢</strong></td></p>
+<p><td>[他做的视频教程很不错,我很喜欢看]</td></p>
+<p><td><a href="http://www.marschen.com/bbs/?fromuid=73279" target="_blank" rel="external">♫ ♬ ♪</a></td><br></p>
+<p><tr></tr></p>
+<p><td colspan="6"><strong><br>项目源码:</strong></td><br></p>
+<p><tr></tr></p>
+<p><td>&nbsp;</td></p>
+<p><td><strong>◤</strong></td></p>
+<p><td align="middle"><strong>GoogleSource</strong></td></p>
+<p><td><strong>◢</strong></td></p>
+<p><td>[google送的开源项目,非常丰富,用git就可以下载了]</td></p>
+<p><td><a href="https://android.googlesource.com/?format=HTML" target="_blank" rel="external">♫ ♬ ♪</a></td><br></p>
+<p><tr></tr></p>
+<p><td>&nbsp;</td></p>
+<p><td><strong>◤</strong></td></p>
+<p><td align="middle"><strong> WAP地带</strong></td></p>
+<p><td><strong>◢</strong></td></p>
+<p><td>[里面有大量项目,功能源码]</td></p>
+<p><td><a href="http://www.iwapzone.com/" target="_blank" rel="external">♫ ♬ ♪</a></td><br></p>
+<p><tr></tr></p>
+<p><td>&nbsp;</td></p>
+<p><td><strong>◤</strong></td></p>
+<p><td align="middle"><strong>开源中国</strong></td></p>
+<p><td><strong>◢</strong></td></p>
+<p><td>[一个跟CSDN差不多的社区吧]</td></p>
+<p><td><a href="http://www.oschina.net/" target="_blank" rel="external">♫ ♬ ♪</a></td><br><br><br><br><strong>
+</strong></p>
+<p><strong>热闹的千人Q群:</strong></p>
+<p>[86577594] -&gt; [84132937] -&gt; [199511256] -&gt; [83936534] -&gt; 适合问问题,偷窥技术,以及闲聊…</p>
+<p>&nbsp;</p>
+<p><strong>单独项目:</strong></p>
+<p>&nbsp;</p>
+<ol>
+<li>Android PDF 阅读器 <a href="http://sourceforge.net/projects/andpdf/files/" target="_blank" rel="external">http://sourceforge.net/projects/andpdf/files/</a></li>
+<li>个人记账工具 OnMyMeans <a href="http://sourceforge.net/projects/onmymeans/develop" target="_blank" rel="external">http://sourceforge.net/projects/onmymeans/develop</a></li>
+<li>Android电池监控 Android Battery Dog <a href="http://sourceforge.net/projects/andbatdog/" target="_blank" rel="external">http://sourceforge.net/projects/andbatdog/</a></li>
+<li>RSS阅读软件 Android RSS <a href="http://code.google.com/p/android-rss/" target="_blank" rel="external">http://code.google.com/p/android-rss/</a></li>
+<li>Android的PDF阅读器 DroidReader <a href="http://code.google.com/p/droidreader/" target="_blank" rel="external">http://code.google.com/p/droidreader/</a></li>
+<li>Android Scripting Environment <a href="http://code.google.com/p/android-scripting/" target="_blank" rel="external">http://code.google.com/p/android-scripting/</a></li>
+<li>Android小游戏 Android Shapes <a href="http://sourceforge.net/projects/shapes/" target="_blank" rel="external">http://sourceforge.net/projects/shapes/</a></li>
+<li>Android JSON RPC <a href="http://code.google.com/p/android-json-rpc/" target="_blank" rel="external">http://code.google.com/p/android-json-rpc/</a></li>
+<li>Android VNC <a href="http://code.google.com/p/android-vnc/" target="_blank" rel="external">http://code.google.com/p/android-vnc/</a></li>
+<li>魅族M8的Android移植 M8 Android <a href="http://code.google.com/p/m8-android-kernel/" target="_blank" rel="external">http://code.google.com/p/m8-android-kernel/</a></li>
+<li>Android 游戏 Amazed <a href="http://code.google.com/p/apps-for-android/" target="_blank" rel="external">http://code.google.com/p/apps-for-android/</a></li>
+<li>Android的社交网络 HelloWorld goes mobile <a href="http://sourceforge.net/projects/helloworldgm/" target="_blank" rel="external">http://sourceforge.net/projects/helloworldgm/</a></li>
+<li>手机聊天程序 Android jChat <a href="http://code.google.com/p/jchat4android/" target="_blank" rel="external">http://code.google.com/p/jchat4android/</a></li>
+<li>Android的GPS轨迹记录 MyTracks <a href="http://code.google.com/p/mytracks/" target="_blank" rel="external">http://code.google.com/p/mytracks/</a></li>
+<li>Android国际象棋游戏 Honzovy achy <a href="http://sourceforge.net/projects/honzovysachy/" target="_blank" rel="external">http://sourceforge.net/projects/honzovysachy/</a></li>
+<li>Android旅行记录软件 AndTripLog <a href="http://sourceforge.net/projects/andtriplog/" target="_blank" rel="external">http://sourceforge.net/projects/andtriplog/</a></li>
+<li>音乐播放器 Ambient <a href="http://sourceforge.net/projects/ambientmp/" target="_blank" rel="external">http://sourceforge.net/projects/ambientmp/</a></li>
+<li>Android的邮件客户端 K9mail <a href="http://code.google.com/p/k9mail/" target="_blank" rel="external">http://code.google.com/p/k9mail/</a></li>
+<li>多平台应用开发库 QuickConnect <a href="http://sourceforge.net/projects/quickconnect/" target="_blank" rel="external">http://sourceforge.net/projects/quickconnect/</a></li>
+<li>gPhone手机空战游戏 <a href="http://code.google.com/p/wireless-apps/" target="_blank" rel="external">http://code.google.com/p/wireless-apps/</a></li>
+<li>Android 照片小软件 Panoramio <a href="http://code.google.com/p/apps-for-android/" target="_blank" rel="external">http://code.google.com/p/apps-for-android/</a></li>
+<li>i-jetty <a href="http://code.google.com/p/i-jetty/" target="_blank" rel="external">http://code.google.com/p/i-jetty/</a></li>
+<li>Android 小游戏 DivideAndConquer <a href="http://code.google.com/p/apps-for-android/" target="_blank" rel="external">http://code.google.com/p/apps-for-android/</a></li>
+<li>Android 全球时间 AndroidGlobalTime <a href="http://code.google.com/p/apps-for-android/" target="_blank" rel="external">http://code.google.com/p/apps-for-android/</a></li>
+<li>Android 2D游戏引擎 Android Angle <a href="http://code.google.com/p/angle/" target="_blank" rel="external">http://code.google.com/p/angle/</a></li>
+<li>Android Ruby <a href="http://code.google.com/p/android-ruby/" target="_blank" rel="external">http://code.google.com/p/android-ruby/</a></li>
+<li>Android-N810 <a href="http://sourceforge.net/projects/android-n810/" target="_blank" rel="external">http://sourceforge.net/projects/android-n810/</a></li>
+<li>Android的短信应用 Ecclesia <a href="http://sourceforge.net/projects/ecclesia" target="_blank" rel="external">http://sourceforge.net/projects/ecclesia</a></li>
+<li>Android平台上的JXTA客户端 Peerdroid <a href="http://code.google.com/p/peerdroid/" target="_blank" rel="external">http://code.google.com/p/peerdroid/</a></li>
+<li>Android游戏引擎 libgdx <a href="http://code.google.com/p/libgdx/" target="_blank" rel="external">http://code.google.com/p/libgdx/</a></li>
+<li>Android 照片小软件 Photostream <a href="http://code.google.com/p/apps-for-android/" target="_blank" rel="external">http://code.google.com/p/apps-for-android/</a></li>
+<li>Alien3d logo Android 3D游戏引擎 Alien3d <a href="http://code.google.com/p/alien3d/" target="_blank" rel="external">http://code.google.com/p/alien3d/</a></li>
+<li>Winamp Remote Android Server <a href="http://sourceforge.net/projects/winampdroid" target="_blank" rel="external">http://sourceforge.net/projects/winampdroid</a></li>
+<li>Android的Facebook客户端 Andrico <a href="http://code.google.com/p/andrico/" target="_blank" rel="external">http://code.google.com/p/andrico/</a></li>
+<li>Android Applications Manager <a href="http://sourceforge.net/projects/aam/" target="_blank" rel="external">http://sourceforge.net/projects/aam/</a></li>
+<li>Java 3D图形引擎 Catcake <a href="http://code.google.com/p/catcake/" target="_blank" rel="external">http://code.google.com/p/catcake/</a></li>
+<li>android-gcc-objc2-0 <a href="http://code.google.com/p/android-gcc-objc2-0/" target="_blank" rel="external">http://code.google.com/p/android-gcc-objc2-0/</a></li>
+<li>九宫格数独游戏 OpenSudoku <a href="http://code.google.com/p/opensudoku-android/" target="_blank" rel="external">http://code.google.com/p/opensudoku-android/</a></li>
+<li>Android 铃声扩展工具 RingsExtended <a href="http://code.google.com/p/apps-for-android/" target="_blank" rel="external">http://code.google.com/p/apps-for-android/</a></li>
+<li>JavaEye Android client <a href="http://code.google.com/p/javaeye-android-client/" target="_blank" rel="external">http://code.google.com/p/javaeye-android-client/</a></li>
+<li>RemoteDroid <a href="http://code.google.com/p/remotedroid/" target="_blank" rel="external">http://code.google.com/p/remotedroid/</a></li>
+<li>Android 小游戏 Clickin2DaBeat <a href="http://code.google.com/p/apps-for-android/" target="_blank" rel="external">http://code.google.com/p/apps-for-android/</a></li>
+<li>中医大夫助理信息系统 zz-doctor <a href="http://code.google.com/p/zz-doctor/" target="_blank" rel="external">http://code.google.com/p/zz-doctor/</a></li>
+<li>Facebook Connect for Android <a href="http://code.google.com/p/fbconnect-android/" target="_blank" rel="external">http://code.google.com/p/fbconnect-android/</a></li>
+<li>Android SMSPopup <a href="http://code.google.com/p/android-smspopup/" target="_blank" rel="external">http://code.google.com/p/android-smspopup/</a></li>
+<li>FreeTTS-Android <a href="http://sourceforge.net/projects/freettsandroidi" target="_blank" rel="external">http://sourceforge.net/projects/freettsandroidi</a></li>
+<li>Foursquare.com的客户端 Foursquar <a href="http://code.google.com/p/foursquared/" target="_blank" rel="external">http://code.google.com/p/foursquared/</a></li>
+<li>条形码扫描仪 Android PC_BCR <a href="http://code.google.com/p/android-pcbcr/" target="_blank" rel="external">http://code.google.com/p/android-pcbcr/</a></li>
+</ol>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+<nav id="pagination">
+  
+  
+    <a href="/page/2/" class="alignright next">下一页</a>
+  
+  <div class="clearfix"></div>
+</nav></div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>1</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>2</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>11</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>1</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

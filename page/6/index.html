@@ -1,0 +1,673 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>第 6 页 | 全科-梦想起航的地方</title>
+  <meta name="author" content="全科">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="全科-梦想起航的地方"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-梦想起航的地方" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-梦想起航的地方</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-04T19:01:07.000Z"><a href="/2012/11/05/android/android-xml-graphics/">2012-11-05</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/05/android/android-xml-graphics/">Android下基于XML的Graphics （转）</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>原文地址：<a href="http://qq361119908.iteye.com/blog/656281" target="_blank" rel="external">http://qq361119908.iteye.com/blog/656281</a></p>
+<p>以前作图一般有两种方式：<br>1、UI把图形设计好我们直接贴。<br>2对于那些简单的图形，如矩形、扇形这样的图形，一般的系统的API会提供这样的接口。<br>但是在Android下，有第三种画图方式，介于二者之间，结合二者的长处。<br>如下的代码：<br>这是一个Progress的style里面的代码，描述的是进度条的未达到的图形。原本以为这是一个图片，后来仔细的跟踪代码，发现居然是xml。像这种shape corners gradient等等这还是第一次碰到。shape 表示是一个图形，corners表示是有半径为5像素的圆角，gradient表示一个渐变。这样作图简单明了，并且可以做出要求很好的图形，并且节省资源。<br>属性 android:shape=”rectangle”  表示 默认的是长方形。</p>
+<p>gradient  产生颜色渐变 ,属性 android:angle 表示从哪个角度开始变，貌似只有90的整数倍可以 。</p>
+<pre><code><span class="hexcolor">#ff4100</span>ff蓝色  
+<span class="hexcolor">#ff4100</span>ff绿色 
+ &lt;solid android:<span class="attribute">color</span>=<span class="string">"#ff4100ff"</span>/&gt;实心的 填充里面 
+ &lt;stroke 描边，采用那样的方式将外形轮廓线画出来 
+
+  android:dashWidth=<span class="string">"3dp"</span> android:dashGap=<span class="string">"2dp"</span> 默认值为<span class="number">0</span> 
+  android:<span class="attribute">width</span>=<span class="string">"2dp"</span> android:<span class="attribute">color</span>=<span class="string">"#FF00ff00"</span> 笔的粗细， 
+  android:dashWidth=<span class="string">"5dp"</span> android:dashGap=<span class="string">"5dp"</span> 实现“- - -”这样的效果。
+  dashWidth指的是一条小横线的宽度 
+  android:dashGap 指的是小横线与小横线的间距。
+</code></pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-03T19:30:43.000Z"><a href="/2012/11/04/e8-bd-acwebp-e6-a0-bc-e5-bc-8f-e5-9b-be-e7-89-87-e7-9a-84-e6-96-b0-e5-8a-9f-e8-83-bd/">2012-11-04</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/04/e8-bd-acwebp-e6-a0-bc-e5-bc-8f-e5-9b-be-e7-89-87-e7-9a-84-e6-96-b0-e5-8a-9f-e8-83-bd/">[转]WebP格式图片的新功能</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>自从我们宣布WebP格式图片后，我们一直在努力提高和增强WebP。今天，我们很高兴分享一些关于WebP的新的功能和扩展。</p>
+<p><strong>新功能</strong></p>
+<p>WebP的压缩算法有了显著的提高，同时完全保持了与以前版本的兼容。在解码方面，亦有所增强。</p>
+<p>新的解码方式，可以逐步从网络上下载图片到您的计算机中，这一特性在Chrome 12以上的浏览器中得到应用，用户不必等待下载整个图片。</p>
+<p>在编码方面，我们更加注重压缩图片的细节。对于其中的每一个环节，我们调整压缩和过滤图片的不同部分，重新分配，以达到最好的效果。WebP现在能够保留图像的原始许多细节。</p>
+<p><strong>更多支持</strong></p>
+<p>Chrome浏览器和Opera浏览器现在原生支持WebP图片。Gmail和Picasa网络相册也可以分享、发送和接收WebP图片。WebP格式图片已经应用于Google搜索结果的即时预览功能中，这样可以增加用户访问的速度。</p>
+<p>如果你想使用或编辑WebP图片，你可以使用<a href="http://www.pixelmator.com/weblog/2010/10/06/pixelmator-1-6-2-adds-webp-support/" target="_blank" rel="external">Pixelmator</a>，<a href="http://www.imagemagick.org/script/index.php" target="_blank" rel="external">ImageMagick</a>软件，或Photoshop专门针对<a href="http://www.telegraphics.com.au/sw/product/WebPFormat" target="_blank" rel="external">WebP的开发插件</a>和<a href="http://sourceforge.net/projects/javavp8decoder/" target="_blank" rel="external">Java VP8的解码器</a>。在开源社区，Mac用户可使用<a href="http://distfiles.macports.org/webp/" target="_blank" rel="external">MacPorts Mac OS X</a>的软件包，Linux用户可使用<a href="http://packages.debian.org/unstable/main/libwebp-dev" target="_blank" rel="external">Debian</a>，或<a href="https://build.opensuse.org/package/show?package=libwebp&amp;project=devel%3Alibraries%3Ac_c%2B%2B" target="_blank" rel="external">openSUSE</a>和<a href="http://packages.gentoo.org/package/media-libs/libwebp" target="_blank" rel="external">Gentoo</a>的包，<a href="http://httpd.apache.org/" target="_blank" rel="external">Apache HTTP服务器</a>包亦可使用。Windows用户，可以下载<a href="http://code.google.com/speed/webp/docs/webp_codec.html" target="_blank" rel="external">WebP编解码器</a>。在微软Office 2010，Windows媒体中心和照片编辑等软件中，将会支持解码WebP。</p>
+<p>好了。这些新功能让你我感到非常的兴奋，一如既往的，谢谢你们的反馈和对开源社区的源码贡献。</p>
+<p>via <a href="http://blog.chromium.org/2011/05/webp-in-chrome-picasa-gmail-with-slew.html" target="_blank" rel="external">Chromium官方博客</a></p>
+<div>转载文章请注明：文章转载自：<strong>Chrome迷</strong> (<a href="http://www.chromi.org/" target="_blank" rel="external">http://www.chromi.org</a>)<br>本文标题：WebP格式图片的新功能<br>本文地址：<a href="http://www.chromi.org/archives/11920" target="_blank" rel="external">http://www.chromi.org/archives/11920</a></div>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-03T00:19:39.000Z"><a href="/2012/11/03/android/android-listview-e5-b8-83-e5-b1-80-e5-b1-9e-e6-80-a7/">2012-11-03</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/03/android/android-listview-e5-b8-83-e5-b1-80-e5-b1-9e-e6-80-a7/">android ListView 布局属性</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>去除listview缓存颜色，当然也可以改缓存颜色，此时将缓存色设成透明的<br> （设置滑动时生成的item底色为透明，以此来显示父控件的背景）:<br> listview.setCacheColorHint(0); 或者，<br> android:cacheColorHint=”#00000000”</p>
+<p> 去除view与view之间的阴影在xml中配置:<br> android:fadingEdge=”none”</p>
+<p> 去除listview边界线，null可以设成其他drawable中的资源可以设置间隔线样式:<br> listview.setDivider(null);</p>
+<p> 设置ListView中Item被选中（聚焦）时的底色:<br> android:listSelector=”@android:color/transparent”</p>
+<p> 去除ListView滑动时的滚动条:<br>  android:scrollbars=”none”</p>
+<p> 其他ListView相关设置：<br> android:scrollbarThumbHorizontal=””   //滚动轴游标<br> android:scrollbarTrackVertical=””  //滚动轴背景、</p>
+<p> 对应分辨率<br> 120dpi对象ldpi，160dpi对应mdpi，240dpi对应hdpi</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-02T22:15:16.000Z"><a href="/2012/11/03/e7-bc-96-e8-af-91android-e5-87-ba-e9-94-99-ef-bc-9aunable-to-execute-dex-java-heap-space/">2012-11-03</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/03/e7-bc-96-e8-af-91android-e5-87-ba-e9-94-99-ef-bc-9aunable-to-execute-dex-java-heap-space/">编译Android出错：Unable to execute dex: Java heap space </a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>昨天在编译运行(Run As Android Application)同事写的应用(移植)时，提示Unable to execute dex: Java heap space，刚开始以为是Android SDK没装好，于是我写了个Hello Android程序来验证，Hello Android可以运行。</p>
+<p>于是，我Google了一下，据说是因为升级了ADT缘故(好像是Android小组的回复)，将最新的ADT换回之前的，或者使用Android小组(?)说的Fix了的版本就可以了(这一点我没有试验)。</p>
+<p>其实，继续使用ADT14也是可以的，这需要修改Eclipse的配置文件，也就是网上很多人说的那样，修改Eclipse安装目录下eclipse.ini文件:</p>
+<p>1)在文件开头添加</p>
+<p>-vm<br>D:\Program Files\Java\jre6\bin\javaw.exe</p>
+<p>其中，D:\Program Files\Java\jre6是本人机器上JRE的路径，需要根据实际情况修改</p>
+<p>2)搜索–launcher.XXMaxPermSize，将其下一行的</p>
+<p>256m</p>
+<p>改为</p>
+<p>512m</p>
+<p>其中，红色标出的部分可能不同的Eclipse版本，数字(256)不同。</p>
+<p>3)搜索-vmargs</p>
+<p>-vmargs<br>-Xms40m<br>-Xmx384m</p>
+<p>将</p>
+<p>-Xms40m<br>-Xmx384m</p>
+<p>改为</p>
+<p>-Xms512m<br>-Xmx1024m</p>
+<p>并在其后加上</p>
+<p>-XX:MaxPermSize=256m</p>
+<p>同上，可能不同版本的Eclipse，红色标出的部分，数字(40和384)会不同。</p>
+<p>然后重启Eclipse，编译出错的工程即可。</p>
+<p>出处：<a href="http://blog.sina.com.cn/s/blog_69b1501d01013b00.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_69b1501d01013b00.html</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-02T20:32:54.000Z"><a href="/2012/11/03/android/android-view-e5-a6-82-e4-bd-95-e8-8e-b7-e5-8f-96-e7-84-a6-e7-82-b9/">2012-11-03</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/03/android/android-view-e5-a6-82-e4-bd-95-e8-8e-b7-e5-8f-96-e7-84-a6-e7-82-b9/">Android View如何获取焦点</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p> Android新启动Activity，dialog或者其他窗体中中包含EditText， 新启动的activity的焦点默认在EditText上，这是android系统会弹出软键盘，挤压activity本来的界面，影响美观。</p>
+<pre><code>因此最好在新窗体创建时，最好在<span class="function"><span class="title">onCreate</span><span class="params">()</span></span>方法中将焦点放在另一个view上.  view使用<span class="function"><span class="title">requestFocus</span><span class="params">()</span></span>焦点，但是如果让button或者textView之类控件直接使用<span class="function"><span class="title">requestFocus</span><span class="params">()</span></span>方法，则无法获取焦点，焦点会依然在editText上。
+
+只能在使用View的<span class="function"><span class="title">requestFocus</span><span class="params">()</span></span>方法之前调用下面<span class="number">2</span>个方法，view才可获取焦点:
+</code></pre><p> [code lang=”java”]<br> 　　　　view.setFocusable(true);</p>
+<p> 　　　　view.setFocusableInTouchMode(true);<br> [/code]<br> 　　然后调用 requestFocus()即可获取焦点。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-02T17:25:18.000Z"><a href="/2012/11/03/android/android-e7-bc-96-e7-a8-8b-e4-b8-ad-e8-ae-be-e7-bd-ae-e6-96-87-e6-9c-ac-e7-9a-84-e4-b8-ad-e6-96-87-e5-ad-97-e4-bd-93/">2012-11-03</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/03/android/android-e7-bc-96-e7-a8-8b-e4-b8-ad-e8-ae-be-e7-bd-ae-e6-96-87-e6-9c-ac-e7-9a-84-e4-b8-ad-e6-96-87-e5-ad-97-e4-bd-93/">android编程中设置文本的中文字体</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>请将ttf字体文件放入sdcard的文件夹中（放到程序里面也可以，这是只是演示）</p>
+<p>[code lang=”java”]text1.setTypeface(Typeface.createFromFile(&quot;/mnt/sdcard/font/SIMLI.ttf&quot;)); [/code]<br> 效果如下图<br><img src="http://dl.iteye.com/upload/attachment/613721/3aac6f8f-2cd3-315c-b222-f22729c655f3.jpg" alt=""></p>
+<pre></pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-01T22:17:42.000Z"><a href="/2012/11/02/android/android-e6-ad-8c-e8-af-8d-e7-a7-80-e8-ae-be-e8-ae-a1-e6-80-9d-e8-b7-af-ef-bc-881-ef-bc-89safetytimer/">2012-11-02</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/02/android/android-e6-ad-8c-e8-af-8d-e7-a7-80-e8-ae-be-e8-ae-a1-e6-80-9d-e8-b7-af-ef-bc-881-ef-bc-89safetytimer/">Android歌词秀设计思路（1）SafetyTimer</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>原创作品，允许转载，转载时请务必以超链接形式标明文章 <a href="http://craftsman1970.blog.51cto.com/3522772/659906" target="_blank" rel="external">原始出处</a> 、作者信息和本声明。否则将追究法律责任。<a href="http://craftsman1970.blog.51cto.com/3522772/659906" target="_blank" rel="external">http://craftsman1970.blog.51cto.com/3522772/659906</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-10-30T00:05:53.000Z"><a href="/2012/10/30/ios-e5-bc-80-e5-8f-91-e8-80-85-e8-ae-ba-e5-9d-9b-iphone-e5-bc-80-e5-8f-91-ef-bc-8cipad-e5-bc-80-e5-8f-91-ef-bc-8cios-e5-bc-80-e5-8f-91-e4-ba-a4-e6-b5-81-ef-bc-8cios-e4-bb-a3-e7-a0-81-e5-ae-9e-e4-be-8b/">2012-10-30</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/30/ios-e5-bc-80-e5-8f-91-e8-80-85-e8-ae-ba-e5-9d-9b-iphone-e5-bc-80-e5-8f-91-ef-bc-8cipad-e5-bc-80-e5-8f-91-ef-bc-8cios-e5-bc-80-e5-8f-91-e4-ba-a4-e6-b5-81-ef-bc-8cios-e4-bb-a3-e7-a0-81-e5-ae-9e-e4-be-8b/">iOS开发者论坛-iPhone开发，iPad开发，iOS开发交流，iOS代码实例，应用分享，业界新闻！</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>iOS开发者社区致力于打造iPhone开发 / iPad开发社区，希望更多的开发者能找到交流的地方，在这里能找到很多代码实例，项目案例，开发书籍，教程以及视频教程等内容，保证让开发者能找到想要的东西！</p>
+<p>www.codeios.com</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-10-30T00:04:04.000Z"><a href="/2012/10/30/xcode-4-x-e5-85-8d-e8-af-81-e4-b9-a6-e7-9c-9f-e6-9c-ba-e5-8f-91-e5-b8-83-e5-8f-8a-e8-b0-83-e8-af-95/">2012-10-30</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/30/xcode-4-x-e5-85-8d-e8-af-81-e4-b9-a6-e7-9c-9f-e6-9c-ba-e5-8f-91-e5-b8-83-e5-8f-8a-e8-b0-83-e8-af-95/">xCode 4.X 免证书真机发布及调试</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>由于没有购买苹果的开发者证书，所以目前大多数开发环境都是使用以下的方式实现开发与真机测试（本文部分摘自网络）</p>
+<p>【2012年3月15日更新】：目前我使用的是Xcode4.3.1 mac os 10.7.3</p>
+<p>最简单的办法就是让xcode不检查签名，直接编译发布。</p>
+<p>1、 修改SDKSettings.plist文件：<br>进入SDK目录：xcode4.3版本以前是：/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3（可能是5.0/4.2等）.sdk/<br>xcode4.3及以上版本的目录是：/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk</p>
+<p>打开该目录下的SDKSettings.plist文件，把其中所有的包含REQUIRED的项的值改成NO（在实际就是有2项值需要修改：CODE_SIGNING_REQUIRED和ENTITLEMENTS_REQUIRED）。</p>
+<p>2、工程的配置修改：<br>对每个工程进行修改，把所有的Code Signing Identity 全部改为 Don’t Code Sign</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>旧的方法可以参考：</p>
+<p>&nbsp;</p>
+<p>使用环境：越狱过的iPhone 机器 Mac OS 10.6.8 xCode 4.0.1 及Xcode4.0.2</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>操作步骤过程：</p>
+<p>（一）制作证书</p>
+<p>1、 打开   Finder－&gt;应用程序－&gt;实用工具 -&gt;  钥匙串访问</p>
+<p>2、单击：”钥匙串访问”选择  “证书” 再选择”创建证书”过程如下图：</p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354057979.png" alt=""></a></p>
+<p>3、证书名称必须填写为：”iPhone Developer” ，（不能随便填写）然后点击”创建”。(如图）</p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354068012.png" alt=""></a></p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354069997.png" alt=""></a></p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354068394.png" alt=""></a></p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354071525.png" alt=""></a></p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354073194.png" alt=""></a></p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354089083.png" alt=""></a></p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354082180.png" alt=""></a></p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354086117.png" alt=""></a></p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354095278.png" alt=""></a></p>
+<p>(二)修改xcode配置文件</p>
+<p>注意：由于这些配置文件是系统文件，修改系统文件需要管理员权限才可以进行操作，所以保存的时候不能直接保存，会遇到系统提示”你没有修改此文件得权限”，但可以保存一个副本。可以先修改这个副本，然后再复制到原先的目录，系统会提示你是否修改替换，选择”替换”，这时候是需要管理员密码才可以覆盖原来的文件，输入密码后，修改完成。</p>
+<p>1.修改SDKsettings.plist文件。</p>
+<p>找到 “  /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk “下得  SDKSettings.plist  文件，修改”Default Properties “项下面得 “CODE_SIGNING_REQUIRED “得值为：NO。</p>
+<p>2.修改”/Developer/Platforms/iPhoneOS.platform/Info.plist”文件（用文本编辑器或者Xcode打开）：</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354098343.png" alt=""></p>
+<p>增加两项：</p>
+<p>PROVISIONING_PROFILE_ALLOWED = NO</p>
+<p>PROVISIONING_PROFILE_REQUIRED = NO</p>
+<p>效果如下图所示：</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354092279.png" alt=""></p>
+<p>然后将所有”XCiPhoneOSCodeSignContext”替换为”XCCodeSignContext”。</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354096772.png" alt=""></p>
+<p>3.修改好配置文件后重启xcode，修改项目的属性</p>
+<p>1）点击  项目图标，找到”Build Settings”  找到  “Code Sign Identity”</p>
+<p>按照下面得方式设置一下就可以 了。</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354108442.png" alt=""></p>
+<p>2） 设置工程属性：</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354105476.png" alt=""></p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354119413.png" alt=""></p>
+<p>3）然后点击  “Run” 我们会看到工程正在编译，然后弹出如图提示（两次）：我们选择 “总是允许”</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354111398.png" alt=""></p>
+<p>4）在项目中添加一个Entitlement.plist文件，设置允许调试。</p>
+<p>注：若不操作该步可能连接真机调试的时候还会出现一个错误：Error launching remote program: failed to get the task for process xxx</p>
+<p>操作步骤：在Xcode4.X  中这样做：</p>
+<p>a.在工程中按照这个执行创建一个名为：Entitlement.plist 文件In the File Menu, select New File -&gt; iPhone OS -&gt; Code Signing -&gt; Entitlements. Name the file “Entitlements.plist” and click ‘Finish’.</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354113067.png" alt=""></p>
+<p>b.打开  这个  “Entitlement.plist”文件，将 “Can be debugged”属性值改为 “YES”。</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354122544.png" alt=""></p>
+<p>c.将Code Signing Entitlements 那项得值改为刚刚新建得”Entitlements.plist”.</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354126513.png" alt=""></p>
+<p>4。提示选择完后：可以看到</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354122086.png" alt=""></p>
+<p>我们就可以看到 程序可以出现在 你得iphone上了。</p>
+<p>当你运行程序时，可以通过 organizer 看到你得iphone 运行时打印出来得Log。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-10-29T22:44:57.000Z"><a href="/2012/10/30/e8-87-aa-e7-94-b1-e6-a2-a6/">2012-10-30</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/30/e8-87-aa-e7-94-b1-e6-a2-a6/">自由梦</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>夜的微光里有着无限的迷茫</p>
+<p> 萤火虫在黑暗里漫无目的的舞动着</p>
+<p> 即使恶魔也无法掩饰</p>
+<p> 那来自自己眼中的两束绿光</p>
+<p> 绝望的人们感到了暗夜里滋生着希望</p>
+<p> 封存的太久了</p>
+<p> 光明将厚厚的壁障膨胀</p>
+<p> 纵然是铁壁铜墙</p>
+<p> 那供魔鬼进出的门也会在开合时</p>
+<p> 仍然有光亮的泄出</p>
+<p> 整个世界颠倒了</p>
+<p> 在恐惧颤栗中</p>
+<p> 人们忍受着寒冷、寂寞、惊悚</p>
+<p> 时刻让神经紧张着</p>
+<p> 肉体上的痛苦是不安情绪的释放</p>
+<p> 精神上的折磨如同在炼狱中生活</p>
+<p> 内心的阴冷让更多的人</p>
+<p> 化作了为虎作伥的厉鬼</p>
+<p> 他们比魔鬼更让人刻骨铭心的恐惧</p>
+<p> 魔鬼锁起了光明</p>
+<p> 光明带走了自由</p>
+<p> 恶魔们活动在阳光下</p>
+<p> 体面的装扮让他们看上去更象人类</p>
+<p> 道貌岸然里过着人一样的生活</p>
+<p> 它们时刻担心着光明的泄露</p>
+<p> 睡觉时都睁着一只圆眼</p>
+<p> 他们害怕所有的人</p>
+<p> 更让他们害怕的是来自同类中的枭雄</p>
+<p> 只有魔鬼才可以轻意的制服魔鬼</p>
+<p> 活着的钟馗让鬼们害怕</p>
+<p> 死去的钟馗才是鬼们真正的克星</p>
+<p> 觉醒的过程需要经历一段漫长的艰辛</p>
+<p> 摸索着前进会有更多的鲜血</p>
+<p> 将这牢狱般的生活浸泡</p>
+<p> 房顶不破   墙壁不坏</p>
+<p> 鲜血也会让这牢狱的地面下沉</p>
+<p> 最后将这黑暗之屋葬送</p>
+<p> 殉难者中挺起的是</p>
+<p> 一个个追寻着光明脖颈</p>
+<p> 那些来自魔鬼阵营中的魔鬼们的鲜血</p>
+<p> 与抗争者们是一样的殷红</p>
+<p> 也是同样汇成浸塌这屋子的一份力量</p>
+<p> 没有不倒塌的房子</p>
+<p> 只有倒塌了再重建起来</p>
+<p> 灾难中的人们在麻木中缓慢地觉醒着</p>
+<p> 当光明降临时的喜悦还没有平静</p>
+<p> 新的房子又在人们的诧异中重新建了起来</p>
+<p> 不要相信别人会给你带来什么</p>
+<p> 号召你起来推翻魔鬼的</p>
+<p> 更多的时候也是魔鬼</p>
+<p> 魔鬼和基督的区别就是</p>
+<p> 基督把自己送上了祭坛</p>
+<p> 而魔鬼是鼓惑别人为他上祭坛</p>
+<p> 善良的人们啊</p>
+<p> 总是被利用</p>
+<p> 光明迟迟地难以等到</p>
+<p> 总是在一出现就被遮盖</p>
+<p> 人们生活在被欺骗中</p>
+<p> 沉默中不再相信任何的许诺</p>
+<p> 冷眼注视着一出出闹剧的表演</p>
+<p> 华丽中无法掩饰丑陋与拙劣</p>
+<p> 等待着技穷之后将骷髅现出</p>
+<p> 无声的抗议将深藏着的愤怒堆积</p>
+<p> 暴发时化作震动天地的怒吼</p>
+<p> 在这声音里</p>
+<p> 无论这黑屋是如何的坚固</p>
+<p> 爆碎声中还世界一个朗朗乾坤</p>
+<p> 光明会将自由带来</p>
+<p> 世界因魔鬼再无法变回魔鬼</p>
+<p> 迎来期盼已久的梦想</p>
+<p> 长久的等待   长久的等待</p>
+<p> 等来的是真实的自由</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+<nav id="pagination">
+  
+    <a href="/page/5/" class="alignleft prev">上一页</a>
+  
+  
+    <a href="/page/7/" class="alignright next">下一页</a>
+  
+  <div class="clearfix"></div>
+</nav></div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>1</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>2</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>11</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>1</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

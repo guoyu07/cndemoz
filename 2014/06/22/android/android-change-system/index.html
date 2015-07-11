@@ -1,0 +1,239 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android中如何修改系统时间（应用程序获得系统权限） | 全科-梦想起航的地方</title>
+  <meta name="author" content="全科">
+  
+  <meta name="description" content="在 android 的API中有提供 SystemClock.setCurrentTimeMillis()函数来修改系统时间，可惜无论你怎么调用这个函数都是没用的，无论模拟器还是真机，在logcat中总会得到”Unable to open alarm driver: Permission denie">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Android中如何修改系统时间（应用程序获得系统权限）"/>
+  <meta property="og:site_name" content="全科-梦想起航的地方"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-梦想起航的地方" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-梦想起航的地方</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-06-21T18:10:43.000Z"><a href="/2014/06/22/android/android-change-system/">2014-06-22</a></time>
+      
+      
+  
+    <h1 class="title">Android中如何修改系统时间（应用程序获得系统权限）</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>在 android 的API中有提供 SystemClock.setCurrentTimeMillis()函数来修改系统时间，可惜无论你怎么调用这个函数都是没用的，无论模拟器还是真机，在logcat中总会得到”Unable to open alarm driver: Permission denied “.这个函数需要root权限或者运行与系统进程中才可以用。</p>
+<pre><code>本来以为就没有办法在应用程序这一层改系统时间了，后来在网上搜了好久，知道这个目的还是可以达到的。
+
+第一个方法简单点，不过需要在<span class="constant">Android</span>系统源码的环境下用make来编译：
+
+<span class="number">1</span>\. 在应用程序的<span class="constant">Android</span>Manifest.xml中的<span class="literal">manifest</span>节点中加入android:sharedUserId=<span class="string">"android.uid.system"</span>这个属性。
+
+<span class="number">2</span>\. 修改<span class="constant">Android</span>.mk文件，加入<span class="constant">L</span>OCAL_CERTIFICATE := <span class="literal">platform</span>这一行
+
+<span class="number">3</span>\. 使用mm命令来编译，生成的apk就有修改系统时间的权限了。
+
+第二个方法麻烦点，不过不用开虚拟机跑到源码环境下用make来编译：
+
+<span class="number">1</span>\. 同上，加入android:sharedUserId=<span class="string">"android.uid.system"</span>这个属性。
+
+<span class="number">2</span>\. 使用eclipse编译出apk文件，但是这个apk文件是不能用的。
+
+<span class="number">3</span>\. 用压缩软件打开apk文件，删掉<span class="constant">M</span>ETA-<span class="constant">I</span>NF目录下的<span class="constant">C</span>ERT.<span class="constant">S</span>F和<span class="constant">C</span>ERT.<span class="constant">R</span>SA两个文件。
+
+<span class="number">4</span>\. 使用目标系统的<span class="literal">platform</span>密钥来重新给apk文件签名。这步比较麻烦，首先找到密钥文件，在我的<span class="constant">Android</span>源码目录中的位置是<span class="string">"build/target/product/security"</span>，下面的<span class="literal">platform</span>.pk8和<span class="literal">platform</span>.x509.pem两个文件。然后用<span class="constant">Android</span>提供的<span class="constant">Signapk</span>工具来签名，signapk的源代码是在<span class="string">"build/tools/signapk"</span>下，用法为<span class="string">"signapk platform.x509.pem platform.pk8 input.apk output.apk"</span>，文件名最好使用绝对路径防止找不到，也可以修改源代码直接使用。
+
+这样最后得到的apk和第一个方法是一样的。
+
+最后解释一下原理，首先加入android:sharedUserId=<span class="string">"android.uid.system"</span>这个属性。通过<span class="constant">Shared</span> <span class="constant">User</span> <span class="built_in">id</span>,拥有同一个<span class="constant">User</span> <span class="built_in">id</span>的多个<span class="constant">A</span>PK可以配置成运行在同一个进程中。那么把程序的<span class="constant">U</span>ID配成android.<span class="literal">uid</span>.<span class="literal">system</span>，也就是要让程序运行在系统进程中，这样就有权限来修改系统时间了。
+
+只是加入<span class="constant">U</span>ID还不够，如果这时候安装<span class="constant">A</span>PK的话发现无法安装，提示签名不符，原因是程序想要运行在系统进程中还要有目标系统的<span class="literal">platform</span> key，就是上面第二个方法提到的<span class="literal">platform</span>.pk8和<span class="literal">platform</span>.x509.pem两个文件。用这两个key签名后apk才真正可以放入系统进程中。第一个方法中加入<span class="constant">L</span>OCAL_CERTIFICATE := <span class="literal">platform</span>其实就是用这两个key来签名。
+
+这也有一个问题，就是这样生成的程序只有在原始的<span class="constant">Android</span>系统或者是自己编译的系统中才可以用，因为这样的系统才可以拿到<span class="literal">platform</span>.pk8和<span class="literal">platform</span>.x509.pem两个文件。要是别家公司做的<span class="constant">Android</span>上连安装都安装不了。试试原始的<span class="constant">Android</span>中的key来签名，程序在模拟器上运行<span class="constant">O</span>K，不过放到<span class="constant">G</span>3上安装直接提示<span class="string">"Package ... has no signatures that match those in shared user android.uid.system"</span>，这样也是保护了系统的安全。
+
+最最后还说下，这个android:sharedUserId属性不只可以把apk放到系统进程中，也可以配置多个<span class="constant">A</span>PK运行在一个进程中，这样可以共享数据，应该会很有用的。
+</code></pre>
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/android开发/">android开发</a>
+  </div>
+
+        
+        
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+<!-- 多说评论框 start -->
+  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"quanke"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>1</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>2</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>11</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>1</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

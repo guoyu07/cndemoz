@@ -1,0 +1,306 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>RelativeLayout的基本属性用法以及代码实现 | 全科-梦想起航的地方</title>
+  <meta name="author" content="全科">
+  
+  <meta name="description" content="RelativeLayout，顾名思义，就是以“相对”位置/对齐 为基础的布局方式。android.widget.RelativeLayout 有个 继承自android.view.ViewGroup.LayoutParams 的内嵌类 LayoutParams，使用这个类的实例调用 Relativ">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="RelativeLayout的基本属性用法以及代码实现"/>
+  <meta property="og:site_name" content="全科-梦想起航的地方"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-梦想起航的地方" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-梦想起航的地方</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-04T19:13:31.000Z"><a href="/2012/11/05/relativelayout/">2012-11-05</a></time>
+      
+      
+  
+    <h1 class="title">RelativeLayout的基本属性用法以及代码实现</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>RelativeLayout，顾名思义，就是以“相对”位置/对齐 为基础的布局方式。android.widget.RelativeLayout 有个 继承自android.view.ViewGroup.LayoutParams 的内嵌类 LayoutParams，使用这个类的实例调用 RelativeLayout.addView 就可以实现“相对布局”。他比LinearLyout更灵活的为控件布置位置.</p>
+<p><span style="color: #ff0000;">在新版本中属性的设置可能有变化，具体请看官方api</span></p>
+<p>RelativeLayout 的属性：<br>// 相对于给定ID控件</p>
+<p>android:layout_above 将该控件的底部置于给定ID的控件之上;</p>
+<p>android:layout_below 将该控件的底部置于给定ID的控件之下;</p>
+<p>android:layout_toLeftOf 将该控件的右边缘与给定ID的控件左边缘对齐;</p>
+<p>android:layout_toRightOf 将该控件的左边缘与给定ID的控件右边缘对齐;</p>
+<p>android:layout_alignBaseline 将该控件的baseline与给定ID的baseline对齐;</p>
+<p>android:layout_alignTop 将该控件的顶部边缘与给定ID的顶部边缘对齐;</p>
+<p>android:layout_alignBottom 将该控件的底部边缘与给定ID的底部边缘对齐;</p>
+<p>android:layout_alignLeft 将该控件的左边缘与给定ID的左边缘对齐;</p>
+<p>android:layout_alignRight 将该控件的右边缘与给定ID的右边缘对齐;</p>
+<p>// 相对于父组件</p>
+<p>android:layout_alignParentTop 如果为true,将该控件的顶部与其父控件的顶部对齐;</p>
+<p>android:layout_alignParentBottom 如果为true,将该控件的底部与其父控件的底部对齐;</p>
+<p>android:layout_alignParentLeft 如果为true,将该控件的左部与其父控件的左部对齐;</p>
+<p>android:layout_alignParentRight 如果为true,将该控件的右部与其父控件的右部对齐;</p>
+<p>// 居中</p>
+<p>android:layout_centerHorizontal 如果为true,将该控件的置于水平居中;</p>
+<p>android:layout_centerVertical 如果为true,将该控件的置于垂直居中;</p>
+<p>android:layout_centerInParent 如果为true,将该控件的置于父控件的中央;</p>
+<p>// 指定移动像素</p>
+<p>android:layout_marginTop 上偏移的值;</p>
+<p>android:layout_marginBottom 下偏移的值;</p>
+<p>android:layout_marginLeft 　　左偏移的值;</p>
+<p>android:layout_marginRight 　 右偏移的值;</p>
+<p>example:</p>
+<p>android:layout_below = “@id/<em>*</em>“</p>
+<p>android:layout_alignBaseline = “@id/<em>*</em>“</p>
+<p>android:layout_alignParentTop = true</p>
+<p>android:layout_marginLeft = “10px”</p>
+<p>以下是代码中的用法：</p>
+<p>[code lang=”java”]<br>import android.app.Activity;<br>import android.os.Bundle;<br>import android.widget.<em>;<br>import android.view.</em>;</p>
+<p>public class RLTest extends Activity {</p>
+<pre><code><span class="label">private</span> RelativeLayout rl<span class="comment">;</span>
+
+<span class="label">private</span> <span class="keyword">Button </span><span class="keyword">btn1;
+</span><span class="label">private</span> <span class="keyword">Button </span><span class="keyword">btn2;
+</span><span class="label">private</span> <span class="keyword">Button </span><span class="keyword">btn3;
+</span><span class="label">private</span> <span class="keyword">Button </span><span class="keyword">btn4;
+</span>
+<span class="label">private</span> static final int ID_BTN1 = <span class="number">1</span><span class="comment">;</span>
+<span class="label">private</span> static final int ID_BTN2 = <span class="number">2</span><span class="comment">;</span>
+<span class="label">private</span> static final int ID_BTN3 = <span class="number">3</span><span class="comment">;</span>
+<span class="label">private</span> static final int ID_BTN4 = <span class="number">4</span><span class="comment">;</span>
+
+<span class="comment">/** Called when the activity is first created. */</span>
+<span class="comment">@Override</span>
+<span class="label">public</span> void onCreate(<span class="keyword">Bundle </span>icicle) {
+    super.onCreate(icicle)<span class="comment">;</span>
+
+    rl = new RelativeLayout(this)<span class="comment">;</span>
+
+    <span class="keyword">btn1 </span>= new <span class="keyword">Button(this);
+</span>    <span class="keyword">btn1.setText(&amp;quot;----------------------&amp;quot;);
+</span>    <span class="keyword">btn1.setId(ID_BTN1);
+</span>
+    RelativeLayout.LayoutParams lp1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)<span class="comment">;</span>
+    lp1.<span class="keyword">addRule(RelativeLayout.ALIGN_WITH_PARENT_TOP);
+</span>    lp1.<span class="keyword">addRule(RelativeLayout.CENTER_HORIZONTAL, </span>RelativeLayout.TRUE)<span class="comment">;</span>
+    // <span class="keyword">btn1 </span>位于父 View 的顶部，在父 View 中水平居中
+    rl.<span class="keyword">addView(btn1, </span>lp1 )<span class="comment">;</span>
+
+    <span class="keyword">btn2 </span>= new <span class="keyword">Button(this);
+</span>    <span class="keyword">btn2.setText(&amp;quot;|\n|\n|\n|\n|\n|&amp;quot;);
+</span>    <span class="keyword">btn2.setId(ID_BTN2);
+</span>
+    RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)<span class="comment">;</span>
+    lp2.<span class="keyword">addRule(RelativeLayout.POSITION_BELOW, </span>ID_BTN1)<span class="comment">;</span>
+    lp2.<span class="keyword">addRule(RelativeLayout.ALIGN_LEFT, </span>ID_BTN1)<span class="comment">;</span>
+    // <span class="keyword">btn2 </span>位于 <span class="keyword">btn1 </span>的下方、其左边和 <span class="keyword">btn1 </span>的左边对齐
+    rl.<span class="keyword">addView(btn2, </span>lp2)<span class="comment">;</span>
+
+    <span class="keyword">btn3 </span>= new <span class="keyword">Button(this);
+</span>    <span class="keyword">btn3.setText(&amp;quot;|\n|\n|\n|\n|\n|&amp;quot;);
+</span>    <span class="keyword">btn3.setId(ID_BTN3);
+</span>
+    RelativeLayout.LayoutParams lp3 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)<span class="comment">;</span>
+   lp3.<span class="keyword">addRule(RelativeLayout.POSITION_BELOW, </span>ID_BTN1)<span class="comment">;</span>
+    lp3.<span class="keyword">addRule(RelativeLayout.POSITION_TO_RIGHT, </span>ID_BTN2)<span class="comment">;</span>
+    lp3.<span class="keyword">addRule(RelativeLayout.ALIGN_RIGHT, </span>ID_BTN1)<span class="comment">;</span>
+    // <span class="keyword">btn3 </span>位于 <span class="keyword">btn1 </span>的下方、<span class="keyword">btn2 </span>的右方且其右边和 <span class="keyword">btn1 </span>的右边对齐（要扩充）
+    rl.<span class="keyword">addView(btn3,lp3);
+</span>
+    <span class="keyword">btn4 </span>= new <span class="keyword">Button(this);
+</span>    <span class="keyword">btn4.setText(&amp;quot;--------------------------------------------&amp;quot;);
+</span>    <span class="keyword">btn4.setId(ID_BTN4);
+</span>
+    RelativeLayout.LayoutParams lp4 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)<span class="comment">;</span>
+    lp4.<span class="keyword">addRule(RelativeLayout.POSITION_BELOW, </span>ID_BTN2)<span class="comment">;</span>
+    lp4.<span class="keyword">addRule(RelativeLayout.CENTER_HORIZONTAL, </span>RelativeLayout.TRUE)<span class="comment">;</span>
+    // <span class="keyword">btn4 </span>位于 <span class="keyword">btn2 </span>的下方，在父 Veiw 中水平居中
+    rl.<span class="keyword">addView(btn4,lp4);
+</span>
+    setContentView(rl)<span class="comment">;</span>
+}
+</code></pre><p>}<br>[/code] </p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/android开发/">android开发</a>
+  </div>
+
+        
+        
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+<!-- 多说评论框 start -->
+  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"quanke"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>1</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>2</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>11</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>1</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

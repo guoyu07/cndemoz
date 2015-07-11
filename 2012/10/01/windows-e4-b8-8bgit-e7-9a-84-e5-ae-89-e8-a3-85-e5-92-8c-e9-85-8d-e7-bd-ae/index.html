@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Windows下Git的安装和配置 | 全科-梦想起航的地方</title>
+  <meta name="author" content="全科">
+  
+  <meta name="description" content="Git是Linux的创始人Linus Torvalds在2006年开发的，Linus自嘲说是一个“傻瓜内容跟踪器”。在Windows下使用Git，可以使用 Cygwin + Git，也可以使用 Msys + Git。 Cygwin太庞大了，我更倾向于使用小巧的Msys。 使用Msys + Git的话">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Windows下Git的安装和配置"/>
+  <meta property="og:site_name" content="全科-梦想起航的地方"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-梦想起航的地方" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-梦想起航的地方</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-09-30T19:08:38.000Z"><a href="/2012/10/01/windows-e4-b8-8bgit-e7-9a-84-e5-ae-89-e8-a3-85-e5-92-8c-e9-85-8d-e7-bd-ae/">2012-10-01</a></time>
+      
+      
+  
+    <h1 class="title">Windows下Git的安装和配置</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h1 id="Git是Linux的创始人Linus_Torvalds在2006年开发的，Linus自嘲说是一个“傻瓜内容跟踪器”。">Git是Linux的创始人Linus Torvalds在2006年开发的，Linus自嘲说是一个“傻瓜内容跟踪器”。</h1><p>在Windows下使用Git，可以使用 Cygwin + Git，也可以使用 Msys + Git。 Cygwin太庞大了，我更倾向于使用小巧的Msys。 使用Msys + Git的话，也有两个选择：msys-cn + git，或者 msysgit。</p>
+<div id="msys-cn-git"><br><br># 安装msys-cn + git<br><br>Msys-cn是Msys的中文化项目，托管在Google Code上，里面提供了一个软件包管理器mpkg，同时提供了一系列实用工具，其中就包括git。 msys-cn的主页：<a href="http://code.google.com/p/msys-cn" target="_blank" rel="external">http://code.google.com/p/msys-cn</a> 下载msys-cn： <a href="http://msys-cn.googlecode.com/files/MSYS-Update.7z" target="_blank" rel="external">http://msys-cn.googlecode.com/files/MSYS-Update.7z</a> 下载完毕解压缩，运行msys.bat进入命令行界面。运行下面的命令来在线安装git：<br><pre>$ mpkg —install git</pre><br>如果网速太慢，可以下载git.mpkg文件后再安装。下载地址：<a href="http://msys-cn.googlecode.com/files/git.mpkg" target="_blank" rel="external">http://msys-cn.googlecode.com/files/git.mpkg</a><br><pre>$ mpkg —add git</pre><br>如果一切顺利，现在就可以运行git命令了。<br><br></div><br><div id="msysgit"><br><br># 安装msysgit<br><br>msysgit是直接将git整合到msys里的一个项目，也是托管在Google Code上： <a href="http://code.google.com/p/msysgit" target="_blank" rel="external">http://code.google.com/p/msysgit</a> 下载最新版本的安装程序，安装即可。注意安装时最好选择默认的设置，这样保证不和系统的cmd命令冲突。 安装完毕在开始菜单里会有Git菜单，里面有Git Bash和Git GUI。点击Git Bash进入msysgit命令行环境。 msysgit中文输入输出可能会出现以下几方面的问题：<br><br><em>   ls输出乱码在用户主目录下新建一个bash配置文件.bashrc来保存配置信息：<br><pre>$ echo “alias ls=’ls –show-control-chars –color=auto’” &gt;&gt; ~/.bashrc</pre>
+
+</em>   命令行中不能输入中文：修改 /etc/inputrc：<br><pre>set output-meta on<br>set convert-meta off</pre><br><br><em>   git st输出中文显示为UNICODE编码：<br><pre>$ git config —system core.quotepath false</pre>
+
+</em>   git log 输出显示为乱码：在~/.bashrc中增加less命令的编码设置：<br><pre>$ echo export LESSCHARSET=utf-8 &gt;&gt; ~/.bashrc</pre><br>以上的根目录指msysgit的安装目录，默认安装目录是C:Program FilesGit。默认用户主目录是我的文档。 msysgit默认集成open ssh客户端。要访问github上的项目，需要使用ssh-keygen来生成本地公私钥对，添加公钥到github上，就可以在本地提交了。 msysgit还带一个简单的图形界面，可以用来方便地浏览项目的历史，但用它来做日常的提交就不太合适了。你可能想到了TortoiseSVN，类似这样的图形界面才好用。幸好Tortoise也有Git版本：TortoiseGit。<br><br></div><br><div id="tortoisegit"><br><br># 安装TortoiseGit<br><br>TortoiseGit 也是托管在Google Code上的开源项目：<a href="http://code.google.com/p/tortoisegit" target="_blank" rel="external">http://code.google.com/p/tortoisegit</a> TortoiseGit只是Git的前端，要使用它，首先要安装msysgit。这个前面已提到了。 下载最新版的TortoiseGit安装： <a href="http://tortoisegit.googlecode.com/files/TortoiseGit-1.6.2.0-32bit.msi" target="_blank" rel="external">http://tortoisegit.googlecode.com/files/TortoiseGit-1.6.2.0-32bit.msi</a> 安装完毕以后需要设置TortoiseGit和MsysGit关联。在开始菜单里找到TortoiseGit-&gt;Settings，General选项里输入Git的路径即可。 和msysgit不同，TortoiseGit使用内置的puttygen来生成公私钥对，私钥的扩展名为ppk。要想用TortoiseGit管理GitHub上的项目，则需要将puttygen生成的公钥添加到github上去。 tortoisegit密钥配置参见 <a href="http://rongjih.blog.163.com/blog/static/335744612010619111042465/" target="_blank" rel="external">http://rongjih.blog.163.com/blog/static/335744612010619111042465/</a><br><div id="_mcePaste">不过可以修改使用msysgit的ssh，在设置-&gt;Network里，修改SSH Client 为msysgit的ssh.exe路径： c:\ Program Files\Git\bin\ssh.exe即可。</div><br></div>
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/git/">git</a>
+  </div>
+
+        
+        
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+<!-- 多说评论框 start -->
+  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"quanke"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>1</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>2</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>11</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>1</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

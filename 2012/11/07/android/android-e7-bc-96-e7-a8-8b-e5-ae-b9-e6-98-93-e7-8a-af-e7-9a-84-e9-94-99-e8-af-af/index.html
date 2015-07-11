@@ -1,0 +1,241 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android编程容易犯的错误 | 全科-梦想起航的地方</title>
+  <meta name="author" content="全科">
+  
+  <meta name="description" content="1.设置TextView的文本颜色[code lang=”java”]TextView tv;…tv.setTextColor(R.color.white);[/code]其实这样设置的颜色是 R.color.white的资源ID值所代表的颜色值，而不是资源color下的white颜色值：正确的做法">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Android编程容易犯的错误"/>
+  <meta property="og:site_name" content="全科-梦想起航的地方"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-梦想起航的地方" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-梦想起航的地方</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-06T18:12:24.000Z"><a href="/2012/11/07/android/android-e7-bc-96-e7-a8-8b-e5-ae-b9-e6-98-93-e7-8a-af-e7-9a-84-e9-94-99-e8-af-af/">2012-11-07</a></time>
+      
+      
+  
+    <h1 class="title">Android编程容易犯的错误</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>1.设置TextView的文本颜色<br>[code lang=”java”]<br>TextView tv;<br>…<br>tv.setTextColor(R.color.white);<br>[/code]<br>其实这样设置的颜色是 R.color.white的资源ID值所代表的颜色值，而不是资源color下的white颜色值：正确的做法如下：</p>
+<p>[code lang=”java”]<br>tv.setTextColor(getResources().getColor(R.color.white));<br>[/code]<br>这个出错的概率满高的，就是因为二者都是int类，导致编译器不报错。</p>
+<p>2.读取Cursor中的值</p>
+<p>[code lang=”java”]<br>Uri uri;<br>Cursor cursor = contentResolver.query(uri, null,null,null,null);<br>if(cursor !=null){<br>    String name = cursor.getString(1);//<br>    curosr.close();<br>    cursor =null;<br>}<br>[/code]</p>
+<p>上面语句中的，执行到cursor.getString(1)部分就会报异常，异常是: Caused by: android.database.CursorIndexOutOfBoundsException: Index -1 requested, with a size of 4</p>
+<p>编译没有问题，只有在运行的时候才会发现。</p>
+<p>正确的做法是：</p>
+<p>[code lang=”java”]<br>Uri uri;<br>Cursor cursor = contentResolver.query(uri, null,null,null,null);<br>if(cursor !=null){<br>    if(cursor.moveToFirst()){<br>        String name = cursor.getString(1);//<br>    }<br>    curosr.close();<br>    cursor =null;<br>}<br>[/code]<br>或者:</p>
+<p>[code lang=”java”]<br>Uri uri;<br>Cursor cursor = contentResolver.query(uri, null,null,null,null);<br>if(cursor !=null){<br>    while(cursor.moveToNext()){<br>        String name = cursor.getString(1);//<br>    }<br>    curosr.close();<br>    cursor =null;<br>}<br>[/code]<br>3.不要使用标有Deprecated的函数或者类,比如不要使用android.telephony.gsm.SmsMessage，而应该用android.telephony.SmsMessage,这样避免采用不同的3G协议时不会出现问题。</p>
+<p>4.SQLite中的查询条件，比如一个叫name的字段，其字段类型为TEXT,如果我们要判断其name不等某个值(如zhangsan),写出如下的语句:</p>
+<p>[code lang=”java”]<br>name &lt;&gt; ‘zhangsan’<br>[/code]<br>但是，这样写的语句，如果碰到name值为空的时候，就有问题，即name为空时 以上的布尔值为false，而不是true.</p>
+<p>原因很可能，SQLite中的判断函数采用类似写法:</p>
+<p>[code lang=”java”]<br>boolean judge(String self, String conditions){<br>    if(null == self) return false;<br>    return self.equalsIgnoreCase(conditions);<br>}<br>[/code]<br>其中 self为数据库中name的值，而conditions为上面示例中的 zhangsan。</p>
+<p>所以，以上查询条件的正确写法是:</p>
+<p>[code lang=”java”]<br>name &lt;&gt; ‘zhangsan’ or name is null<br>[/code]<br>除非你也想过滤掉name 为空的记录。</p>
+<p>5.如下所示，想要在按钮显示”删 除”（没错删除中间有个空格）,以下的字符串资源是错误的：</p>
+<p>[code lang=”java”]<br>&lt;string name=&quot;button_delete_text&quot;&gt;删 除&lt;/string&gt;<br>[/code]<br>这样的出来，最终看不到中间的空格，应该是Android SDK编译的时候，会自动过滤掉String中的空格部分，所以应该采用以下的方式:</p>
+<p>[code lang=”java”]<br>&lt;string name=&quot;button_delete_text&quot;&gt;删\u0020除&lt;/string&gt;<br>[/code]<br>类似地，其他的特殊符号都可以用\u00XX来转义，如 ‘ —— \u0027,  &lt; ——- \u003C, &gt; —— \u003E 。</p>
+<p>6. context的问题:</p>
+<p>如果在一个非Activity的context里面调用startActivity，那么其intent必须设置：</p>
+<p>[code lang=”java”]<br>intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);<br>[/code]<br> 否则，会报如下类似的错误：</p>
+<p>[code lang=”java”]<br>Calling startActivity() from outside of an Activity  context requires the FLAG_ACTIVITY_NEW_TASK flag.<br>[/code]<br> 而我们还要提防系统控件中的隐性调用startActivity:</p>
+<p>[code lang=”java”]<br>TextView tv = new TextView(mContext);<br>tv.setAutoLinkMask(Linkify.ALL);<br>tv.setText(content);<br>[/code]<br>当content内容中有电话号码/邮件/URL时，并且mContext不是非Acitvity的context，而是app的context时<br>[code lang=”java”]<br>(XXXActivity.this.getApplicationContext()),<br>[/code]<br>就会出现如下的错误：<br>[code lang=”java”]<br>android.util.AndroidRuntimeException: Calling startActivity() from outside of an Activity<br>context requires the FLAG_ACTIVITY_NEW_TASK flag. Is this really what you want?<br>E/AndroidRuntime(10382):     at android.app.ContextImpl.startActivity(ContextImpl.java:622)<br>E/AndroidRuntime(10382):     at android.content.ContextWrapper.startActivity(ContextWrapper.java:258)<br>E/AndroidRuntime(10382):     at android.text.style.URLSpan.onClick(URLSpan.java:62)<br>[/code]<br>由于URLSpan.onClick中调用startActivity是由系统控制的，所以我们必须传入activity的contex,才不会出现如上的异常，导致程序退出。</p>
+<p>7. 另外一个context的问题：如果你在一个单实例的对象中，有个注册监听器的行为的话，那么传给这个单实例</p>
+<p>对象的context，就必须是ApplicationContext了，否则会出现:receiver leak的错误。</p>
+<p>8. 控件有时不能充满整个屏幕:</p>
+<p>[code lang=”java”]<br>LinearLayout panel = new LinearLayout(this);<br>LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(<br>        LinearLayout.LayoutParams.FILL_PARENT,<br>        LinearLayout.LayoutParams.FILL_PARENT);<br>panel.setLayoutParams(llp);<br>root.addView(panel);<br>[/code]<br> 而应该是：</p>
+<p>[code lang=”java”]<br>LinearLayout panel = new LinearLayout(this);<br>LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(<br>        LinearLayout.LayoutParams.FILL_PARENT,<br>        LinearLayout.LayoutParams.FILL_PARENT);<br>root.addView(panel. llp);<br>[/code]<br>9.按照以下的方式启动service，但是service没有起来<br>[code lang=”java”]<br>     Intent service = new Intent(this, FuncService.class);<br>     startService(service);<br>[/code]<br>很有可能是忘了在AndroidManifest.xml中注册FuncService<br>[code lang=”xml”]<br>&lt;service android:name=&quot;com.android.example.FuncService&quot;/&gt;<br>[/code]<br> 10.TextView中为什么会在有些行尾出现”…”字符,当然不是所有手机都是有问题，本来笔者刚开始也以为可能是</p>
+<p>手机的ROM问题,认真review了代码，发现如下的代码：<br>[code lang=”java”]<br>        mIntroView = (TextView) findViewById(R.id.description);<br>        mIntroView.setEllipsize(TruncateAt.END);<br>[/code]<br>问题是上面的第2行，之前是因为要限定文本的行数，后来去掉限制，没有去掉以上的代码。</p>
+<p>该行代码会导致很多的ROM上：只要一个文本行的文字在一个手机屏幕行显示不下的话，就自动在</p>
+<p>行尾截断并在行尾添加”…”,而之前没有问题是因为：全部显示的时候，我调用了如下方法：<br>[code lang=”java”]<br>mIntro.setMaxLines(Integer.MAX_VALUE);<br>[/code]<br> 11.不要太相信工具，比如Eclipse里面的断点遇到多线程什么，经常不起作用/走不到，这时候别太早下结论断点地方出错了，</p>
+<p>所以每个工程都应该有日志的开关，通过查看日志来确认，某个路径是否走到或者某个变量的值，。。。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/android开发/">android开发</a>
+  </div>
+
+        
+        
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+<!-- 多说评论框 start -->
+  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"quanke"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>1</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>2</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>11</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>1</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

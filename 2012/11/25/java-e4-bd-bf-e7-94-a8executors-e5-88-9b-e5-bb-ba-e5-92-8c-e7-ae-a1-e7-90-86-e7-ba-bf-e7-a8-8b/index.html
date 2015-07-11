@@ -1,0 +1,237 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Java:使用Executors创建和管理线程 | 全科-梦想起航的地方</title>
+  <meta name="author" content="全科">
+  
+  <meta name="description" content="1. 类 Executors此类中提供的一些方法有：1.1 public static ExecutorService newCachedThreadPool()创建一个可根据需要创建新线程的线程池，但是在以前构造的线程可用时将重用它们。对于执行很多短期异步任务的程序而言，这些线程池通常可提高程序性">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Java:使用Executors创建和管理线程"/>
+  <meta property="og:site_name" content="全科-梦想起航的地方"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-梦想起航的地方" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-梦想起航的地方</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-25T05:33:57.000Z"><a href="/2012/11/25/java-e4-bd-bf-e7-94-a8executors-e5-88-9b-e5-bb-ba-e5-92-8c-e7-ae-a1-e7-90-86-e7-ba-bf-e7-a8-8b/">2012-11-25</a></time>
+      
+      
+  
+    <h1 class="title">Java:使用Executors创建和管理线程</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>1. 类 Executors<br>此类中提供的一些方法有：<br>1.1 public static ExecutorService newCachedThreadPool()<br>创建一个可根据需要创建新线程的线程池，但是在以前构造的线程可用时将重用它们。对于执行很多短期异步任务的程序而言，这些线程池通常可提高程序性能。</p>
+<p>1.2 public static ExecutorService newFixedThreadPool(int nThreads)<br>创建一个可重用固定线程数的线程池，以共享的无界队列方式来运行这些线程。</p>
+<p>1.3 public static ExecutorService newSingleThreadExecutor()<br>创建一个使用单个 worker 线程的 Executor，以无界队列方式来运行该线程。</p>
+<p>这三个方法都可以配合接口ThreadFactory的实例一起使用。并且返回一个ExecutorService接口的实例。<br>2. 接口 ThreadFactory<br>根据需要创建新线程的对象。使用线程工厂就无需再手工编写对 new Thread 的调用了，从而允许应用程序使用特殊的线程子类、属性等等。<br>此接口最简单的实现就是：<br>[code lang=”java”]<br>class SimpleThreadFactory implements ThreadFactory {<br>   public Thread newThread(Runnable r) {<br>     return new Thread(r);<br>   }<br> }<br>[/code]<br>3. 接口ExecutorService<br>该接口提供了管理终止的方法。<br>4.创建标准线程池启动线程<br>4.1 提供一个简单的实现Runnable接口的线程<br>[code lang=”java”]<br>MyThread.java<br>package com.zj.concurrency.executors;</p>
+<p>public class MyThread implements Runnable {<br>    private int count = 1, number;</p>
+<pre><code><span class="keyword">public</span> MyThread(<span class="built_in">int</span> num) {
+   <span class="keyword">number</span> = num;
+   System.<span class="type">out</span>.println(&amp;quot;Create Thread-&amp;quot; + <span class="keyword">number</span>);
+}
+
+<span class="keyword">public</span> void run() {
+   <span class="keyword">while</span> (true) {
+       System.<span class="type">out</span>.println(&amp;quot;Thread-&amp;quot; + <span class="keyword">number</span> + &amp;quot; run &amp;quot; + <span class="built_in">count</span>+&amp;quot; time(s)&amp;quot;);
+       <span class="keyword">if</span> (++<span class="built_in">count</span> == <span class="number">3</span>)
+          <span class="keyword">return</span>;
+   }
+}
+</code></pre><p>}<br>[/code]<br>这个线程会打印出相应的创建和执行信息。</p>
+<p>4.2使用CachedThreadPool启动线程<br>[code lang=”java”]<br>CachedThreadPool.java<br>package com.zj.concurrency.executors;<br>import java.util.concurrent.ExecutorService;<br>import java.util.concurrent.Executors;</p>
+<p>public class CachedThreadPool {<br>    public static void main(String[] args) {<br>       ExecutorService exec = Executors.newCachedThreadPool();<br>       for (int i = 0; i &lt; 5; i++)<br>           exec.execute(new MyThread(i));<br>       exec.shutdown();<br>    }<br>}<br>[/code]<br>结果：<br>Create Thread-0<br>Create Thread-1<br>Create Thread-2<br>Create Thread-3<br>Thread-0 run 1 time(s)<br>Thread-0 run 2 time(s)<br>Thread-1 run 1 time(s)<br>Thread-1 run 2 time(s)<br>Thread-2 run 1 time(s)<br>Thread-2 run 2 time(s)<br>Create Thread-4<br>Thread-4 run 1 time(s)<br>Thread-4 run 2 time(s)<br>Thread-3 run 1 time(s)<br>Thread-3 run 2 time(s)</p>
+<p>4.3 使用FixedThreadPool启动线程<br>[code lang=”java”]<br>FixedThreadPool.java<br>package com.zj.concurrency.executors;<br>import java.util.concurrent.ExecutorService;<br>import java.util.concurrent.Executors;</p>
+<p>public class FixedThreadPool {<br>    public static void main(String[] args) {<br>       ExecutorService exec = Executors.newFixedThreadPool(2);<br>       for (int i = 0; i &lt; 5; i++)<br>           exec.execute(new MyThread(i));<br>       exec.shutdown();<br>    }<br>}<br>[/code]<br>结果：<br>Create Thread-0<br>Create Thread-1<br>Create Thread-2<br>Create Thread-3<br>Create Thread-4<br>Thread-0 run 1 time(s)<br>Thread-0 run 2 time(s)<br>Thread-2 run 1 time(s)<br>Thread-2 run 2 time(s)<br>Thread-3 run 1 time(s)<br>Thread-3 run 2 time(s)<br>Thread-4 run 1 time(s)<br>Thread-4 run 2 time(s)<br>Thread-1 run 1 time(s)<br>Thread-1 run 2 time(s)</p>
+<p>4.4 使用SingleThreadExecutor启动线程<br>[code lang=”java”]<br>SingleThreadExecutor.java<br>package com.zj.concurrency.executors;<br>import java.util.concurrent.ExecutorService;<br>import java.util.concurrent.Executors;</p>
+<p>public class SingleThreadExecutor {<br>    public static void main(String[] args) {<br>       ExecutorService exec = Executors.newSingleThreadExecutor();<br>       for (int i = 0; i &lt; 5; i++)<br>           exec.execute(new MyThread(i));<br>       exec.shutdown();<br>    }<br>}<br>[/code]<br>结果：<br>Create Thread-0<br>Create Thread-1<br>Create Thread-2<br>Create Thread-3<br>Create Thread-4<br>Thread-0 run 1 time(s)<br>Thread-0 run 2 time(s)<br>Thread-1 run 1 time(s)<br>Thread-1 run 2 time(s)<br>Thread-2 run 1 time(s)<br>Thread-2 run 2 time(s)<br>Thread-3 run 1 time(s)<br>Thread-3 run 2 time(s)<br>Thread-4 run 1 time(s)<br>Thread-4 run 2 time(s)<br>5.配合ThreadFactory接口的使用<br>我们试图给线程加入daemon和priority的属性设置。<br>5.1设置后台线程属性<br>[code lang=”java”]<br>DaemonThreadFactory.java<br>package com.zj.concurrency.executors.factory;<br>import java.util.concurrent.ThreadFactory;</p>
+<p>public class DaemonThreadFactory implements ThreadFactory {<br>    public Thread newThread(Runnable r) {<br>       Thread t = new Thread(r);<br>       t.setDaemon(true);<br>       return t;<br>    }<br>}<br> [/code]<br>5.2 设置优先级属性<br>最高优先级MaxPriorityThreadFactory.java<br>[code lang=”java”]<br>package com.zj.concurrency.executors.factory;<br>import java.util.concurrent.ThreadFactory;</p>
+<p>public class MaxPriorityThreadFactory implements ThreadFactory {<br>    public Thread newThread(Runnable r) {<br>       Thread t = new Thread(r);<br>       t.setPriority(Thread.MAX_PRIORITY);<br>       return t;<br>    }<br>}<br>[/code]<br>最低优先级MinPriorityThreadFactory.java<br>[code lang=”java”]<br>package com.zj.concurrency.executors.factory;<br>import java.util.concurrent.ThreadFactory;</p>
+<p>public class MinPriorityThreadFactory implements ThreadFactory {<br>    public Thread newThread(Runnable r) {<br>       Thread t = new Thread(r);<br>       t.setPriority(Thread.MIN_PRIORITY);<br>       return t;<br>    }<br>}<br>[/code]<br>5.3启动带有属性设置的线程<br>[code lang=”java”]<br>ExecFromFactory.java<br>package com.zj.concurrency.executors;<br>import java.util.concurrent.ExecutorService;<br>import java.util.concurrent.Executors;<br>import com.zj.concurrency.executors.factory.DaemonThreadFactory;<br>import com.zj.concurrency.executors.factory.MaxPriorityThreadFactory;<br>import com.zj.concurrency.executors.factory.MinPriorityThreadFactory;</p>
+<p>public class ExecFromFactory {<br>    public static void main(String[] args) throws Exception {<br>       ExecutorService defaultExec = Executors.newCachedThreadPool();<br>       ExecutorService daemonExec = Executors<br>              .newCachedThreadPool(new DaemonThreadFactory());<br>       ExecutorService maxPriorityExec = Executors<br>              .newCachedThreadPool(new MaxPriorityThreadFactory());<br>       ExecutorService minPriorityExec = Executors<br>              .newCachedThreadPool(new MinPriorityThreadFactory());<br>       for (int i = 0; i &lt; 10; i++)<br>           daemonExec.execute(new MyThread(i));<br>       for (int i = 10; i &lt; 20; i++)<br>           if (i == 10)<br>              maxPriorityExec.execute(new MyThread(i));<br>           else if (i == 11)<br>              minPriorityExec.execute(new MyThread(i));<br>           else<br>              defaultExec.execute(new MyThread(i));<br>    }<br>}<br>[/code]<br>结果：<br>Create Thread-0<br>Create Thread-1<br>Create Thread-2<br>Create Thread-3<br>Thread-0 run 1 time(s)<br>Thread-0 run 2 time(s)<br>Thread-1 run 1 time(s)<br>Thread-1 run 2 time(s)<br>Thread-2 run 1 time(s)<br>Thread-2 run 2 time(s)<br>Create Thread-4<br>Thread-4 run 1 time(s)<br>Thread-4 run 2 time(s)<br>Create Thread-5<br>Thread-5 run 1 time(s)<br>Thread-5 run 2 time(s)<br>Create Thread-6<br>Create Thread-7<br>Thread-7 run 1 time(s)<br>Thread-7 run 2 time(s)<br>Create Thread-8<br>Thread-8 run 1 time(s)<br>Thread-8 run 2 time(s)<br>Create Thread-9<br>Create Thread-10<br>Thread-10 run 1 time(s)<br>Thread-10 run 2 time(s)<br>Create Thread-11<br>Thread-9 run 1 time(s)<br>Thread-9 run 2 time(s)<br>Thread-6 run 1 time(s)<br>Thread-6 run 2 time(s)<br>Thread-3 run 1 time(s)<br>Thread-3 run 2 time(s)<br>Create Thread-12<br>Create Thread-13<br>Create Thread-14<br>Thread-12 run 1 time(s)<br>Thread-12 run 2 time(s)<br>Thread-13 run 1 time(s)<br>Thread-13 run 2 time(s)<br>Create Thread-15<br>Thread-15 run 1 time(s)<br>Thread-15 run 2 time(s)<br>Create Thread-16<br>Thread-16 run 1 time(s)<br>Thread-16 run 2 time(s)<br>Create Thread-17<br>Create Thread-18<br>Create Thread-19<br>Thread-14 run 1 time(s)<br>Thread-14 run 2 time(s)<br>Thread-17 run 1 time(s)<br>Thread-17 run 2 time(s)<br>Thread-18 run 1 time(s)<br>Thread-18 run 2 time(s)<br>Thread-19 run 1 time(s)<br>Thread-19 run 2 time(s)<br>Thread-11 run 1 time(s)<br>Thread-11 run 2 time(s)</p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/服务端开发/">服务端开发</a>
+  </div>
+
+        
+        
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+<!-- 多说评论框 start -->
+  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"quanke"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>1</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>2</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>11</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>1</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

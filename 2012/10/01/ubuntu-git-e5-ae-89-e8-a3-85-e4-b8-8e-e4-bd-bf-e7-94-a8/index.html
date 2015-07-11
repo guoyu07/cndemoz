@@ -1,0 +1,283 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ubuntu GIT 安装与使用 | 全科-梦想起航的地方</title>
+  <meta name="author" content="全科">
+  
+  <meta name="description" content="1.安装程序
+
+sudo apt-get install git
+sudo apt-get install git-core2.那通过命令更新版本库git clone git://git.kernel.org/pub/scm/git/git.git3.创建一个新版本库mkdir gittutorch">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="ubuntu GIT 安装与使用"/>
+  <meta property="og:site_name" content="全科-梦想起航的地方"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-梦想起航的地方" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-梦想起航的地方</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-09-30T19:56:12.000Z"><a href="/2012/10/01/ubuntu-git-e5-ae-89-e8-a3-85-e4-b8-8e-e4-bd-bf-e7-94-a8/">2012-10-01</a></time>
+      
+      
+  
+    <h1 class="title">ubuntu GIT 安装与使用</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>1.安装程序</p>
+<blockquote>
+<p>sudo apt-get install git</p>
+<p>sudo apt-get install git-core<br>2.那通过命令更新版本库<br>git clone git://git.kernel.org/pub/scm/git/git.git<br>3.创建一个新版本库<br>mkdir gittutorch</p>
+<p>cd gitturtorch</p>
+<p>git-init-db<br>这样，一个空的版本库就创建好了，并在当前目录中创建一个叫 .git 的子目录。你可以用 ls -a 查看一下，并请注意其中的三项内容：</p>
+</blockquote>
+<p>一个叫 HEAD 的文件，我们现在来查看一下它的内容：</p>
+<ul>
+<li><p>$ cat .git/HEAD<br>现在 HEAD 的内容应该是这样：</p>
+</li>
+<li><p>ref: refs/heads/master<br>我们可以看到，HEAD 文件中的内容其实只是包含了一个索引信息，并且，这个索引将总是指向你的项目中的当前开发分支。<br>一个叫 objects 的子目录，它包含了你的项目中的所有对象，我们不必直接地了解到这些对象内容，我们应该关心是存放在这些对象中的项目的数据。<br>一个叫 refs 的子目录，它用来保存指向对象的索引。<br>具体地说，子目录 refs 包含着两个子目录叫 heads 和 tags，就像他们的名字所表达的意味一样：他们存放了不同的开发分支的头的索引, 或者是你用来标定版本的标签的索引。<br>请注意：master 是默认的分支，这也是为什么 .git/HEAD 创建的时候就指向 master 的原因，尽管目前它其实并不存在。 git 将假设你会在 master 上开始并展开你以后的工作，除非你自己创建你自己的分支。<br>另外，这只是一个约定俗成的习惯而已，实际上你可以将你的工作分支叫任何名字，而不必在版本库中一定要有一个叫 master 的分支，尽管很多 git 工具都认为 master 分支是存在的。<br>现在已经创建好了一个 git 版本库，但是它是空的，还不能做任何事情，下一步就是怎么向版本库植入数据了。<br>第四步：植入内容跟踪信息：git-add：<br>为了简明起见，我们创建两个文件作为练习：</p>
+</li>
+<li><p>$ echo “Hello world” &gt; hello</p>
+</li>
+<li><p>$ echo “Silly example” &gt; example<br>我们再用 git-add 命令将这两个文件加入到版本库文件索引当中：</p>
+</li>
+<li><p>$ git-add hello example<br>git-add 实际上是个脚本命令，它是对 git 内核命令 git-update-index 的调用。因此上面的命令和下面的命令其实是等价的：</p>
+</li>
+<li><p>$ git-update-index —add hello example<br>如果你要将某个文件从 git 的目录跟踪系统中清除出去，同样可以用 git-update-index 命令。例如：</p>
+</li>
+<li><p>$ git-update-index —force-remove foo.c<br>git-add 可以将某个目录下的所有内容全都纳入内容跟踪之下，例如： git-add ./path/to/your/wanted 。但是在这样做之前，应该注意先将一些我们不希望跟踪的文件清理掉，例如，gcc 编译出来的 <em>.o 文件，vim 的交换文件 .</em>.swp 之类。<br>应该建立一个清晰的概念就是，git-add 和 git-update-index 只是刷新了 git 的跟踪信息，hello 和 example 这两个文件中的内容并没有提交到 git 的内容跟踪范畴之内。<br>第五步：提交内容到版本库：git-commit<br>既然我们刷新了 Git 的跟踪信息，现在我们看看版本库的状态：</p>
+</li>
+<li><p>$ git-status<br>我们能看到 git 的状态提示：<br>#</p>
+<h1 id="Initial_commit">Initial commit</h1><p>#<br>#</p>
+<h1 id="Updated_but_not_checked_in:">Updated but not checked in:</h1><h1 id="(will_commit)">(will commit)</h1><p>#</p>
+<h1 id="new_file:_example">new file: example</h1><h1 id="new_file:_hello">new file: hello</h1><p>#<br>提示信息告诉我们版本库中加入了两个新的文件，并且 git 提示我们提交这些文件，我们可以通过 git-commit 命令来提交：</p>
+</li>
+<li><p>$ git-commit -m “Initial commit of gittutor reposistory”<br>第六步：查看当前的工作：git-diff<br>git-diff 命令将比较当前的工作目录和版本库数据库中的差异。现在我们编辑一些文件来体验一下 git 的跟踪功能。</p>
+</li>
+<li><p>$ echo “It’s a new day for git” &gt;&gt; hello<br>我们再来比较一下，当前的工作目录和版本库中的数据的差别。</p>
+</li>
+<li><p>$ git-diff<br>差异将以典型的 patch 方式表示出来：<br>diff —git a/hello b/hello<br>index 802992c..8fdaa4e 100644<br>—- a/hello<br>+++ b/hello<br>@@ -1 +1,2 @@<br>Hello world<br>+It’s a new day for git<br>此时，我们可以再次使用组合命令 git-update-index 和 git-commit 将我们的工作提交到版本库中。</p>
+</li>
+<li><p>$ git-update-index hello</p>
+</li>
+<li><p>$ git-commit -m “new day for git”<br>实际上，如果要提交的文件都是已经纳入 git 版本库的文件，那么不必为这些文件都应用 git-update-index 命令之后再进行提交，下面的命令更简捷并且和上面的命令是等价的。</p>
+</li>
+<li><p>$ git-commit -a -m “new day for git”<br>一些命令：<br>初始化git数据库</p>
+</li>
+<li><p>$ git-init-db<br>添加文件</p>
+</li>
+<li><p>$ git-add hello.c<br>查看修改、提交记录</p>
+</li>
+<li><p>$ git-log<br>创建分支</p>
+</li>
+<li><p>$ git-branch roredu<br>查看分支</p>
+</li>
+<li><p>$ git-branch</p>
+</li>
+<li><p>master<br>roredu<br>切换工作分支</p>
+</li>
+<li><p>$ git-checkout roredu<br>Switched to branch “roredu”</p>
+</li>
+<li><p>$ git-branch<br>master</p>
+</li>
+<li><p>roredu<br>提交到当前工作分支并书写标记。</p>
+</li>
+<li><p>$ git-commit -a<br>创建xux分支对于master的补丁文件。</p>
+</li>
+<li><p>$ git-format-patch master roredu<br>配置开发者自己的签名和email。</p>
+</li>
+<li><p>$ git-config —global user.name “roredu”</p>
+</li>
+<li><p>$ git-config —global user.email “roredu@gmail.com”<br>修改文件名</p>
+</li>
+<li><p>$ git-mv roredu.c helight.c<br>删除文件</p>
+</li>
+<li><p>$ git-rm roredu.c<br>协同工作，下载项目：<br>git-clone ssh@wtb:192.168.0.21/home/wtb/NetBeansProjects/project1<br>这里wtb是用户名， 192.168.0.21是项目所在机器的IP 后面跟着的是项目目录和名称</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/git/">git</a>
+  </div>
+
+        
+        
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+<!-- 多说评论框 start -->
+  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"quanke"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>1</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>2</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>11</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>1</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

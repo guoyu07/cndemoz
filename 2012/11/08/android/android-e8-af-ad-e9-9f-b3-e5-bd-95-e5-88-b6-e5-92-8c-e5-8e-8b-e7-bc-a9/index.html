@@ -1,0 +1,375 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>android语音录制和压缩 | 全科-梦想起航的地方</title>
+  <meta name="author" content="全科">
+  
+  <meta name="description" content="因为上一篇博客代码有点太多，就单开了，这两天主要在看android语音录制和压缩转码相关知识，前段时间看见腾讯官方微博宣布，已经开放出即使聊天软件正在等待审批，但这个直接影响电话运营商，能通过的可能性应该不大，但我对这方面的技术很有兴趣，所以就试试看。其中涉及到很多声音方面的处理问题，在androi">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="android语音录制和压缩"/>
+  <meta property="og:site_name" content="全科-梦想起航的地方"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-梦想起航的地方" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-梦想起航的地方</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-07T20:16:09.000Z"><a href="/2012/11/08/android/android-e8-af-ad-e9-9f-b3-e5-bd-95-e5-88-b6-e5-92-8c-e5-8e-8b-e7-bc-a9/">2012-11-08</a></time>
+      
+      
+  
+    <h1 class="title">android语音录制和压缩</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>因为上一篇博客代码有点太多，就单开了，这两天主要在看android语音录制和压缩转码相关知识，前段时间看见腾讯官方微博宣布，已经开放出即使聊天软件正在等待审批，但这个直接影响电话运营商，能通过的可能性应该不大，但我对这方面的技术很有兴趣，所以就试试看。其中涉及到很多声音方面的处理问题，在android中有两个类可以录制语音：AudioRecord和MediaRecorder，MediaRecorder主要是录制音频并写入文件，而AudioRecord主要是录制音频流，录制的音频流为pcm格式，关于pcm格式可以自行搜索一下，在传输过程中可以转换为amr格式，但没有相关可以类库有点麻烦，另外iphone不支持播放amr格式音频，如果需要跨两个平台可以使用AAC，压缩比也不错，音质也很好，我还没有测试过，网上评议而已。编码方面大家都推荐speex，我看了一下，需要是用System.loadLibrary加载进speex提供的类库。下面记录一下写的一个边录制边播放的一段代码吧</p>
+<p>[code lang=”java”]</p>
+<p>import java.io.IOException;</p>
+<p>import android.app.Activity;<br>import android.os.Bundle;<br>import android.os.Looper;<br>import android.os.Process;<br>import android.util.Log;<br>import android.view.MotionEvent;<br>import android.view.View;<br>import android.widget.Button;<br>import android.widget.Toast;</p>
+<p>import android.media.AudioFormat;<br>import android.media.AudioManager;<br>import android.media.AudioRecord;<br>import android.media.AudioTrack;<br>import android.media.MediaRecorder;</p>
+<p>public class VoiceHcentActivity extends Activity {</p>
+<pre><code><span class="keyword">static</span> {
+    System.loadLibrary(&amp;quot;media_jni&amp;quot;);
+}
+
+<span class="keyword">public</span> <span class="keyword">int</span> frequency = <span class="number">8000</span>;
+<span class="keyword">private</span> <span class="keyword">int</span> rBufferSize, pBufferSize;
+<span class="keyword">private</span> Button startSpeech;
+<span class="keyword">private</span> AudioRecord recorder;
+<span class="keyword">private</span> VoiceSpeech vspeech;
+<span class="keyword">private</span> AudioTrack player;
+<span class="keyword">private</span> <span class="keyword">boolean</span> stopSpeech = <span class="keyword">false</span>;
+
+<span class="comment">/** Called when the activity is first created. */</span>
+<span class="annotation">@Override</span>
+<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>{
+    <span class="keyword">super</span>.onCreate(savedInstanceState);
+    setContentView(R.layout.main);
+
+    init();
+
+    test();
+}
+
+<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>{
+    <span class="keyword">try</span>{
+        startSpeech = (Button)findViewById(R.id.StartSpeech);
+
+        <span class="comment">//设置播放器缓冲区大小</span>
+        pBufferSize = AudioTrack.getMinBufferSize(frequency, AudioFormat.CHANNEL_CONFIGURATION_MONO,
+                AudioFormat.ENCODING_PCM_16BIT);
+
+        <span class="comment">//获取播放器对象</span>
+        player = <span class="keyword">new</span> AudioTrack(AudioManager.STREAM_MUSIC, frequency,
+                AudioFormat.CHANNEL_CONFIGURATION_MONO, AudioFormat.ENCODING_PCM_16BIT,
+                pBufferSize, AudioTrack.MODE_STREAM);
+
+        <span class="comment">//设置录音缓冲区大小</span>
+        rBufferSize = AudioRecord.getMinBufferSize(frequency,
+                AudioFormat.CHANNEL_CONFIGURATION_MONO, AudioFormat.ENCODING_PCM_16BIT);
+
+        <span class="comment">//获取录音机对象</span>
+        recorder = <span class="keyword">new</span> AudioRecord(MediaRecorder.AudioSource.MIC,
+                frequency, AudioFormat.CHANNEL_CONFIGURATION_MONO,
+                AudioFormat.ENCODING_PCM_16BIT, rBufferSize);
+
+    }<span class="keyword">catch</span> (Exception e) {
+        String msg = &amp;quot;ERROR init: &amp;quot;+e.getStackTrace();
+        VoiceHcentActivity.<span class="keyword">this</span>.toastMsg(msg);
+    }
+}
+
+<span class="comment">/**
+ * 开始录音
+ */</span>
+<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startRecord</span><span class="params">()</span></span>{
+    stopSpeech = <span class="keyword">false</span>;
+    vspeech = <span class="keyword">new</span> VoiceSpeech();
+    vspeech.start();
+}
+
+<span class="comment">/**
+ * 结束录音
+ */</span>
+<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stopRecord</span><span class="params">()</span> </span>{
+    stopSpeech = <span class="keyword">true</span>;
+}
+
+<span class="comment">/**
+ * 开始播放录音
+ */</span>
+<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startPlay</span><span class="params">()</span></span>{
+
+    <span class="comment">//设置播放器音量</span>
+    player.setStereoVolume(<span class="number">0.7f</span>, <span class="number">0.7f</span>);
+
+    player.play();
+}
+
+<span class="comment">/**
+ * 结束播放录音
+ */</span>
+<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stopPlay</span><span class="params">()</span></span>{
+    player.stop();
+}
+
+<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>{
+
+    startSpeech.setOnTouchListener(<span class="keyword">new</span> View.OnTouchListener() {
+
+        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouch</span><span class="params">(View arg0, MotionEvent arg1)</span> </span>{
+
+            <span class="keyword">switch</span> (arg1.getAction()) {
+
+                <span class="keyword">case</span> MotionEvent.ACTION_DOWN: <span class="comment">//开始说话</span>
+                    startPlay();
+                    startRecord();
+
+                    toastMsg(&amp;quot;starting record!&amp;quot;);
+                    <span class="keyword">break</span>;
+
+                <span class="keyword">case</span> MotionEvent.ACTION_UP: <span class="comment">//停止说话</span>
+                    Log.i(&amp;quot;hcent&amp;quot;, &amp;quot;<span class="number">111</span>&amp;quot;);
+                    stopPlay();
+                    Log.i(&amp;quot;hcent&amp;quot;, &amp;quot;<span class="number">222</span>&amp;quot;);
+                    stopRecord();
+                    toastMsg(&amp;quot;stoped record!&amp;quot;);
+                    <span class="keyword">break</span>;
+
+                <span class="keyword">default</span>:
+                    <span class="keyword">break</span>;
+            }
+
+            <span class="keyword">return</span> <span class="keyword">false</span>;
+        }
+    });
+
+}
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VoiceSpeech</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>{
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>{
+        <span class="keyword">super</span>.run();
+        <span class="keyword">try</span> {
+            <span class="keyword">byte</span>[] tempBuffer, readBuffer = <span class="keyword">new</span> <span class="keyword">byte</span>[rBufferSize];
+            <span class="keyword">int</span> bufResult = <span class="number">0</span>;
+            recorder.startRecording();
+            <span class="keyword">while</span>(!stopSpeech){
+                bufResult = recorder.read(readBuffer, <span class="number">0</span>, rBufferSize);
+                <span class="keyword">if</span>(bufResult&amp;gt;<span class="number">0</span> &amp;amp;&amp;amp; bufResult%<span class="number">2</span>==<span class="number">0</span>){
+                    tempBuffer = <span class="keyword">new</span> <span class="keyword">byte</span>[bufResult];
+                    System.arraycopy(readBuffer, <span class="number">0</span>, tempBuffer, <span class="number">0</span>, rBufferSize);
+                    player.write(tempBuffer, <span class="number">0</span>, tempBuffer.length);
+                }
+                Log.d(&amp;quot;hcent&amp;quot;, &amp;quot;get read:&amp;quot;+bufResult+&amp;quot;___&amp;quot;+readBuffer.length);
+            }
+            recorder.stop();
+            Looper.prepare();
+            VoiceHcentActivity.<span class="keyword">this</span>.toastMsg(&amp;quot;AudioSpeech have ended!&amp;quot;);
+            Looper.loop();
+        } <span class="keyword">catch</span> (Exception e) {
+            String msg = &amp;quot;ERROR AudioRecord: &amp;quot;+e.getStackTrace();
+            Looper.prepare();
+            VoiceHcentActivity.<span class="keyword">this</span>.toastMsg(msg);
+            Looper.loop();
+        }
+    }
+}
+<span class="annotation">@Override</span>
+<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span></span>{
+    player.release();
+    recorder.release();
+    <span class="keyword">super</span>.onDestroy();
+    Process.killProcess(Process.myPid());
+}
+<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">toastMsg</span><span class="params">(String msg)</span></span>{
+    Toast.makeText(<span class="keyword">this</span>, msg, Toast.LENGTH_SHORT).show();
+    Log.e(&amp;quot;hcent&amp;quot;, msg);
+}
+</code></pre><p>}<br>[/code] </p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/android开发/">android开发</a>
+  </div>
+
+        
+        
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+<!-- 多说评论框 start -->
+  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"quanke"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>1</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>2</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>11</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>1</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

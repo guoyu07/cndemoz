@@ -1,0 +1,220 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>android入门：zxing学习笔记（一） | 全科-梦想起航的地方</title>
+  <meta name="author" content="全科">
+  
+  <meta name="description" content="对于刚开始学习android开发的童鞋们来说，若有一个简单而又全面的android工程能来剖析，那就是再好不过了，zxing就是不错得例子。
+zxing的源码可以到google code上下载，整个源码check out 下来，里面有各个平台的源码，ios的，android的。当然我们需要的就是an">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="android入门：zxing学习笔记（一）"/>
+  <meta property="og:site_name" content="全科-梦想起航的地方"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-梦想起航的地方" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-梦想起航的地方</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-15T02:11:11.000Z"><a href="/2012/11/15/android/android-e5-85-a5-e9-97-a8-ef-bc-9azxing-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-80-ef-bc-89/">2012-11-15</a></time>
+      
+      
+  
+    <h1 class="title">android入门：zxing学习笔记（一）</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>对于刚开始学习android开发的童鞋们来说，若有一个简单而又全面的android工程能来剖析，那就是再好不过了，zxing就是不错得例子。</p>
+<pre><code>zxing的源码可以到google code上下载，整个源码check <span class="keyword">out</span> 下来，里面有各个平台的源码，ios的，android的。当然我们需要的就是android代码。
+将android的工程导入到eclipse中，导入完成后，eclipse会显示各种错误，这是缺少core文件夹里面的核心库文件所致，在project中创建文件夹core，再将zxing源码中得core文件夹下得代码导入进来，这样就可以了。
+如果遇到unable resolved target-X，则是你的avd版本问题，可以在project.propertities修改target值。clean下就ok。
+如上的都是zxing android代码分析的准备，下面的则是正式开始。
+
+如上图：为整个android工程的代码，android入门就重这些代码着手。其中主要关注的是android，camera，encode，<span class="literal">result</span>文件夹。
+</code></pre><p>   程序启动的流程：加载main activity，在此类中创建CaptureActivityHandler对象，该对象启动相机，实现自动聚焦，创建DecodeThread线程，DecodeThread创建Decodehandler，这个对象就获取从相机得到的原始byte数据，开始解码的第一步工作，从获取的byte中解析qr图来，并解析出qr图中的字符，将这块没有分析的字符抛送到CaptureActivityHandler中handle，该类调用main activity的decode函数完成对字符的分析，最后显示在界面上（刷新UI，最好在UI线程里完成）。这样一个解析qr图的过程并完成。<br>   下面具体分析整个过程。重点之处有main activity,camera.<br>   程序启动的第一个activity便是：CaptureActivity,有点类似于c中的main函数，在此是main activity。这个acitvity做的主要的事便是：加载扫描各种条形码，二维码的一个界面，启动一个处理获取一维码二维码信息的线程，完成对于获取的图像信息进行解码，最后再将解码的信息显示在界面上。</p>
+<p>   完成界面的加载主要在于onCreate，和onResume函数中，这涉及到了一个activity的生命周期，以后再具体分析。首先调用onCreate，再调用onResume，在onResume中会判断这个activity是由什么启动的，可能是其他的app触发了，也可能是用户直接启动的。这样就初始化了三个变量，一是source，便是启动activity的源，一是decodeFormats，指出解码的方式，是qr，还是其他的等等，最后一个是：charactreset，即是对于这些生成qr图的字符的编码方式。若没有对core中得代码修改，用该程序解析GB2312编码的字符则会乱码。乱码的解决后面将提到。<br>   界面的加载中有两个很关键的类。surfaceview 和 ViewFinderView，前面的是用来加载从底层硬件获取的相机取景的图像，后面的是自定义的view，实现了扫描时的界面，不停的刷新，并将识别的一些数据，如定位的点回调显示在界面上。</p>
+<p>来自：<a href="http://www.cnblogs.com/liuan/archive/2012/01/05/2312714.html" target="_blank" rel="external">http://www.cnblogs.com/liuan/archive/2012/01/05/2312714.html</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/android开发/">android开发</a>
+  </div>
+
+        
+        
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+<!-- 多说评论框 start -->
+  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"quanke"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>1</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>2</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>11</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>1</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
