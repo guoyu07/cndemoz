@@ -3,22 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>MBaaS-LiveOak系列一:LiveOak简介 | 全科-梦想起航的地方</title>
+  <title>MBaaS-LiveOak系列二：LiveOak的安装和运行 | 全科-梦想起航的地方</title>
   <meta name="author" content="全科">
   
   <meta name="description" content="欢迎关注http://quanke.name/
 交流群：231419585
 转载请注明出处，谢谢
 
-LiveOak 是一个来自红帽的全开源的 MBaaS 解决方案。MBaaS 通过提供关键的后端服务来加速移动应用的开发。
-官网原话
-
-The Open Source Mobile Services P">
+LiveOak是Java开发，所以前提是需要有Java运行环境，Java运行环境自己百度安装，不会装Java环境的看这个还是困难的，LiveOak要求的Java环境是Java 8 
+下面命令是查看你的">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="MBaaS-LiveOak系列一:LiveOak简介"/>
+  <meta property="og:title" content="MBaaS-LiveOak系列二：LiveOak的安装和运行"/>
   <meta property="og:site_name" content="全科-梦想起航的地方"/>
 
   
@@ -74,11 +72,11 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
-        <time datetime="2015-07-10T15:35:21.000Z"><a href="/2015/07/10/MBaaS-LiveOak系列一-LiveOak简介/">2015-07-10</a></time>
+        <time datetime="2015-07-11T08:41:49.000Z"><a href="/2015/07/11/liveoak/MBaaS-LiveOak系列二：LiveOak的安装和运行/">2015-07-11</a></time>
       
       
   
-    <h1 class="title">MBaaS-LiveOak系列一:LiveOak简介</h1>
+    <h1 class="title">MBaaS-LiveOak系列二：LiveOak的安装和运行</h1>
   
 
     </header>
@@ -86,25 +84,33 @@ var _hmt = _hmt || [];
       
         <ul>
 <li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
-<li>交流群：231419585</li>
+<li>交流群：<code>231419585</code></li>
 <li>转载请注明出处，谢谢</li>
 </ul>
-<p><code>LiveOak</code> 是一个来自红帽的全开源的 MBaaS 解决方案。MBaaS 通过提供关键的后端服务来加速移动应用的开发。</p>
-<p>官网原话</p>
-<blockquote>
-<p>The Open Source Mobile Services Platform</p>
-<p>开源移动服务平台</p>
-</blockquote>
-<p>现在国内的<code>MBaaS</code>服务商有不少，比如APPCan、Bmob、 Uncode（国内开源）、苹果的CloudKit和现在大红大紫的重新定义移动应用开发的APICloud，都属于MBaaS。</p>
-<p>那什么是<a href="http://mobile.51cto.com/news-464546.htm" target="_blank" rel="external">MBaaS</a>呢？</p>
-<p><a href="http://mobile.51cto.com/news-464546.htm" target="_blank" rel="external">http://mobile.51cto.com/news-464546.htm</a></p>
-<p><code>LiveOak</code>提供什么功能？</p>
-<p>提供数据存储、账户管理、安全授权（SSO）、推送（但是这个推送是使用Google的，国内用户要哭，我计划写一个支持国内推送的插件，欢迎关注quanke.name）、客户端管理（比较弱）、业务逻辑使用js写，可以在线编辑业务逻辑、统计等功能，提供Android、iOS、js的SDK，很容易集成到自己的程序里，现在还是1.0版本，功能比较弱。</p>
-<p>LiveOak是jboss系列的，支持jboss插件化开发，扩展非常简单，之后的文章里会一一讲到</p>
-<p>LiveOak的官网</p>
-<p><a href="http://liveoak.io" target="_blank" rel="external">http://liveoak.io</a></p>
-<p>LiveOak源码地址</p>
-<p><a href="https://github.com/liveoak-io/liveoak/" target="_blank" rel="external">https://github.com/liveoak-io/liveoak/</a></p>
+<p>LiveOak是<code>Java</code>开发，所以前提是需要有Java运行环境，<code>Java</code>运行环境自己百度安装，不会装Java环境的看这个还是困难的，LiveOak要求的Java环境是<code>Java 8</code> </p>
+<p>下面命令是查看你的<code>Java</code>版本</p>
+<p><code>java -version</code></p>
+<p>下载地址： <a href="http://liveoak.io/downloads" target="_blank" rel="external">http://liveoak.io/downloads</a>.</p>
+<p>首先下载解压后执行下面的命令（$LIVEOAK_HOME是LiveOak的目录）：</p>
+<p><code>$LIVEOAK_HOME/bin/standalone.sh -b 0.0.0.0</code></p>
+<p>之后会自动下载<code>MongoDB</code></p>
+<p>最后访问 <a href="http://localhost:8080/admin" target="_blank" rel="external">http://localhost:8080/admin</a> ，用户名和密码是<code>admin</code></p>
+<p>LiveOak支持安装在<code>OpenShift</code>上</p>
+<p>LiveOak 在OpenShift 市场上的地址<a href="https://marketplace.openshift.com/apps/10363" target="_blank" rel="external">https://marketplace.openshift.com/apps/10363</a></p>
+<p>用户名和密码都是<code>admin</code></p>
+<p>安装LiveOak 的<code>Docker</code>容器</p>
+<p>首先从<code>Docker</code>容器 <code>pull</code>下来，安装</p>
+<p><code>docker pull jboss/liveoak-server</code></p>
+<p>启动</p>
+<p><code>docker run -it -p 8080:8080 -p 9090:9090 jboss/liveoak-server</code></p>
+<p>想要在<code>docker</code>上用好，建议系统学习<code>docker</code></p>
+<p>如果用的是Mac系统，<code>kitematic</code>（<a href="https://docs.docker.com/kitematic/）可以非常简单的使用docker，在kitematic里搜索LiveOak" target="_blank" rel="external">https://docs.docker.com/kitematic/）可以非常简单的使用docker，在kitematic里搜索LiveOak</a> ，安装就可以使用了，非常简单</p>
+<p>运行效果</p>
+<p><img src="/images/liveoak/img_liveoak02/docker_run_liveoak.png" alt="image"></p>
+<p><img src="/images/liveoak/img_liveoak02/liveoak_login_page.png" alt="image"></p>
+<p><img src="/images/liveoak/img_liveoak02/liveoak_admin_page.png" alt="image"></p>
+<p><img src="/images/liveoak/img_liveoak02/liveoak_formatscript_page.png" alt="image"></p>
+<p><strong>有问题请多多指教</strong></p>
 
       
     </div>
@@ -172,7 +178,7 @@ var duoshuoQuery = {short_name:"quanke"};
   
     <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
   
-    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>1</small></li>
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>2</small></li>
   
     <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
   
@@ -197,9 +203,9 @@ var duoshuoQuery = {short_name:"quanke"};
   <h3 class="title">标签</h3>
   <ul class="entry">
   
-    <li><a href="/tags/LiveOak/">LiveOak</a><small>1</small></li>
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>2</small></li>
   
-    <li><a href="/tags/MBaaS/">MBaaS</a><small>1</small></li>
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>2</small></li>
   
     <li><a href="/tags/ios/">ios</a><small>1</small></li>
   

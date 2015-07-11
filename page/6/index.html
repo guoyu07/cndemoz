@@ -66,6 +66,135 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2012-11-04T19:13:31.000Z"><a href="/2012/11/05/relativelayout/">2012-11-05</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/05/relativelayout/">RelativeLayout的基本属性用法以及代码实现</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>RelativeLayout，顾名思义，就是以“相对”位置/对齐 为基础的布局方式。android.widget.RelativeLayout 有个 继承自android.view.ViewGroup.LayoutParams 的内嵌类 LayoutParams，使用这个类的实例调用 RelativeLayout.addView 就可以实现“相对布局”。他比LinearLyout更灵活的为控件布置位置.</p>
+<p><span style="color: #ff0000;">在新版本中属性的设置可能有变化，具体请看官方api</span></p>
+<p>RelativeLayout 的属性：<br>// 相对于给定ID控件</p>
+<p>android:layout_above 将该控件的底部置于给定ID的控件之上;</p>
+<p>android:layout_below 将该控件的底部置于给定ID的控件之下;</p>
+<p>android:layout_toLeftOf 将该控件的右边缘与给定ID的控件左边缘对齐;</p>
+<p>android:layout_toRightOf 将该控件的左边缘与给定ID的控件右边缘对齐;</p>
+<p>android:layout_alignBaseline 将该控件的baseline与给定ID的baseline对齐;</p>
+<p>android:layout_alignTop 将该控件的顶部边缘与给定ID的顶部边缘对齐;</p>
+<p>android:layout_alignBottom 将该控件的底部边缘与给定ID的底部边缘对齐;</p>
+<p>android:layout_alignLeft 将该控件的左边缘与给定ID的左边缘对齐;</p>
+<p>android:layout_alignRight 将该控件的右边缘与给定ID的右边缘对齐;</p>
+<p>// 相对于父组件</p>
+<p>android:layout_alignParentTop 如果为true,将该控件的顶部与其父控件的顶部对齐;</p>
+<p>android:layout_alignParentBottom 如果为true,将该控件的底部与其父控件的底部对齐;</p>
+<p>android:layout_alignParentLeft 如果为true,将该控件的左部与其父控件的左部对齐;</p>
+<p>android:layout_alignParentRight 如果为true,将该控件的右部与其父控件的右部对齐;</p>
+<p>// 居中</p>
+<p>android:layout_centerHorizontal 如果为true,将该控件的置于水平居中;</p>
+<p>android:layout_centerVertical 如果为true,将该控件的置于垂直居中;</p>
+<p>android:layout_centerInParent 如果为true,将该控件的置于父控件的中央;</p>
+<p>// 指定移动像素</p>
+<p>android:layout_marginTop 上偏移的值;</p>
+<p>android:layout_marginBottom 下偏移的值;</p>
+<p>android:layout_marginLeft 　　左偏移的值;</p>
+<p>android:layout_marginRight 　 右偏移的值;</p>
+<p>example:</p>
+<p>android:layout_below = “@id/<em>*</em>“</p>
+<p>android:layout_alignBaseline = “@id/<em>*</em>“</p>
+<p>android:layout_alignParentTop = true</p>
+<p>android:layout_marginLeft = “10px”</p>
+<p>以下是代码中的用法：</p>
+<p>[code lang=”java”]<br>import android.app.Activity;<br>import android.os.Bundle;<br>import android.widget.<em>;<br>import android.view.</em>;</p>
+<p>public class RLTest extends Activity {</p>
+<pre><code><span class="label">private</span> RelativeLayout rl<span class="comment">;</span>
+
+<span class="label">private</span> <span class="keyword">Button </span><span class="keyword">btn1;
+</span><span class="label">private</span> <span class="keyword">Button </span><span class="keyword">btn2;
+</span><span class="label">private</span> <span class="keyword">Button </span><span class="keyword">btn3;
+</span><span class="label">private</span> <span class="keyword">Button </span><span class="keyword">btn4;
+</span>
+<span class="label">private</span> static final int ID_BTN1 = <span class="number">1</span><span class="comment">;</span>
+<span class="label">private</span> static final int ID_BTN2 = <span class="number">2</span><span class="comment">;</span>
+<span class="label">private</span> static final int ID_BTN3 = <span class="number">3</span><span class="comment">;</span>
+<span class="label">private</span> static final int ID_BTN4 = <span class="number">4</span><span class="comment">;</span>
+
+<span class="comment">/** Called when the activity is first created. */</span>
+<span class="comment">@Override</span>
+<span class="label">public</span> void onCreate(<span class="keyword">Bundle </span>icicle) {
+    super.onCreate(icicle)<span class="comment">;</span>
+
+    rl = new RelativeLayout(this)<span class="comment">;</span>
+
+    <span class="keyword">btn1 </span>= new <span class="keyword">Button(this);
+</span>    <span class="keyword">btn1.setText(&amp;quot;----------------------&amp;quot;);
+</span>    <span class="keyword">btn1.setId(ID_BTN1);
+</span>
+    RelativeLayout.LayoutParams lp1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)<span class="comment">;</span>
+    lp1.<span class="keyword">addRule(RelativeLayout.ALIGN_WITH_PARENT_TOP);
+</span>    lp1.<span class="keyword">addRule(RelativeLayout.CENTER_HORIZONTAL, </span>RelativeLayout.TRUE)<span class="comment">;</span>
+    // <span class="keyword">btn1 </span>位于父 View 的顶部，在父 View 中水平居中
+    rl.<span class="keyword">addView(btn1, </span>lp1 )<span class="comment">;</span>
+
+    <span class="keyword">btn2 </span>= new <span class="keyword">Button(this);
+</span>    <span class="keyword">btn2.setText(&amp;quot;|\n|\n|\n|\n|\n|&amp;quot;);
+</span>    <span class="keyword">btn2.setId(ID_BTN2);
+</span>
+    RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)<span class="comment">;</span>
+    lp2.<span class="keyword">addRule(RelativeLayout.POSITION_BELOW, </span>ID_BTN1)<span class="comment">;</span>
+    lp2.<span class="keyword">addRule(RelativeLayout.ALIGN_LEFT, </span>ID_BTN1)<span class="comment">;</span>
+    // <span class="keyword">btn2 </span>位于 <span class="keyword">btn1 </span>的下方、其左边和 <span class="keyword">btn1 </span>的左边对齐
+    rl.<span class="keyword">addView(btn2, </span>lp2)<span class="comment">;</span>
+
+    <span class="keyword">btn3 </span>= new <span class="keyword">Button(this);
+</span>    <span class="keyword">btn3.setText(&amp;quot;|\n|\n|\n|\n|\n|&amp;quot;);
+</span>    <span class="keyword">btn3.setId(ID_BTN3);
+</span>
+    RelativeLayout.LayoutParams lp3 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)<span class="comment">;</span>
+   lp3.<span class="keyword">addRule(RelativeLayout.POSITION_BELOW, </span>ID_BTN1)<span class="comment">;</span>
+    lp3.<span class="keyword">addRule(RelativeLayout.POSITION_TO_RIGHT, </span>ID_BTN2)<span class="comment">;</span>
+    lp3.<span class="keyword">addRule(RelativeLayout.ALIGN_RIGHT, </span>ID_BTN1)<span class="comment">;</span>
+    // <span class="keyword">btn3 </span>位于 <span class="keyword">btn1 </span>的下方、<span class="keyword">btn2 </span>的右方且其右边和 <span class="keyword">btn1 </span>的右边对齐（要扩充）
+    rl.<span class="keyword">addView(btn3,lp3);
+</span>
+    <span class="keyword">btn4 </span>= new <span class="keyword">Button(this);
+</span>    <span class="keyword">btn4.setText(&amp;quot;--------------------------------------------&amp;quot;);
+</span>    <span class="keyword">btn4.setId(ID_BTN4);
+</span>
+    RelativeLayout.LayoutParams lp4 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)<span class="comment">;</span>
+    lp4.<span class="keyword">addRule(RelativeLayout.POSITION_BELOW, </span>ID_BTN2)<span class="comment">;</span>
+    lp4.<span class="keyword">addRule(RelativeLayout.CENTER_HORIZONTAL, </span>RelativeLayout.TRUE)<span class="comment">;</span>
+    // <span class="keyword">btn4 </span>位于 <span class="keyword">btn2 </span>的下方，在父 Veiw 中水平居中
+    rl.<span class="keyword">addView(btn4,lp4);
+</span>
+    setContentView(rl)<span class="comment">;</span>
+}
+</code></pre><p>}<br>[/code] </p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-11-04T19:01:07.000Z"><a href="/2012/11/05/android/android-xml-graphics/">2012-11-05</a></time>
       
       
@@ -474,110 +603,6 @@ var _hmt = _hmt || [];
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-10-29T22:44:57.000Z"><a href="/2012/10/30/e8-87-aa-e7-94-b1-e6-a2-a6/">2012-10-30</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/10/30/e8-87-aa-e7-94-b1-e6-a2-a6/">自由梦</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>夜的微光里有着无限的迷茫</p>
-<p> 萤火虫在黑暗里漫无目的的舞动着</p>
-<p> 即使恶魔也无法掩饰</p>
-<p> 那来自自己眼中的两束绿光</p>
-<p> 绝望的人们感到了暗夜里滋生着希望</p>
-<p> 封存的太久了</p>
-<p> 光明将厚厚的壁障膨胀</p>
-<p> 纵然是铁壁铜墙</p>
-<p> 那供魔鬼进出的门也会在开合时</p>
-<p> 仍然有光亮的泄出</p>
-<p> 整个世界颠倒了</p>
-<p> 在恐惧颤栗中</p>
-<p> 人们忍受着寒冷、寂寞、惊悚</p>
-<p> 时刻让神经紧张着</p>
-<p> 肉体上的痛苦是不安情绪的释放</p>
-<p> 精神上的折磨如同在炼狱中生活</p>
-<p> 内心的阴冷让更多的人</p>
-<p> 化作了为虎作伥的厉鬼</p>
-<p> 他们比魔鬼更让人刻骨铭心的恐惧</p>
-<p> 魔鬼锁起了光明</p>
-<p> 光明带走了自由</p>
-<p> 恶魔们活动在阳光下</p>
-<p> 体面的装扮让他们看上去更象人类</p>
-<p> 道貌岸然里过着人一样的生活</p>
-<p> 它们时刻担心着光明的泄露</p>
-<p> 睡觉时都睁着一只圆眼</p>
-<p> 他们害怕所有的人</p>
-<p> 更让他们害怕的是来自同类中的枭雄</p>
-<p> 只有魔鬼才可以轻意的制服魔鬼</p>
-<p> 活着的钟馗让鬼们害怕</p>
-<p> 死去的钟馗才是鬼们真正的克星</p>
-<p> 觉醒的过程需要经历一段漫长的艰辛</p>
-<p> 摸索着前进会有更多的鲜血</p>
-<p> 将这牢狱般的生活浸泡</p>
-<p> 房顶不破   墙壁不坏</p>
-<p> 鲜血也会让这牢狱的地面下沉</p>
-<p> 最后将这黑暗之屋葬送</p>
-<p> 殉难者中挺起的是</p>
-<p> 一个个追寻着光明脖颈</p>
-<p> 那些来自魔鬼阵营中的魔鬼们的鲜血</p>
-<p> 与抗争者们是一样的殷红</p>
-<p> 也是同样汇成浸塌这屋子的一份力量</p>
-<p> 没有不倒塌的房子</p>
-<p> 只有倒塌了再重建起来</p>
-<p> 灾难中的人们在麻木中缓慢地觉醒着</p>
-<p> 当光明降临时的喜悦还没有平静</p>
-<p> 新的房子又在人们的诧异中重新建了起来</p>
-<p> 不要相信别人会给你带来什么</p>
-<p> 号召你起来推翻魔鬼的</p>
-<p> 更多的时候也是魔鬼</p>
-<p> 魔鬼和基督的区别就是</p>
-<p> 基督把自己送上了祭坛</p>
-<p> 而魔鬼是鼓惑别人为他上祭坛</p>
-<p> 善良的人们啊</p>
-<p> 总是被利用</p>
-<p> 光明迟迟地难以等到</p>
-<p> 总是在一出现就被遮盖</p>
-<p> 人们生活在被欺骗中</p>
-<p> 沉默中不再相信任何的许诺</p>
-<p> 冷眼注视着一出出闹剧的表演</p>
-<p> 华丽中无法掩饰丑陋与拙劣</p>
-<p> 等待着技穷之后将骷髅现出</p>
-<p> 无声的抗议将深藏着的愤怒堆积</p>
-<p> 暴发时化作震动天地的怒吼</p>
-<p> 在这声音里</p>
-<p> 无论这黑屋是如何的坚固</p>
-<p> 爆碎声中还世界一个朗朗乾坤</p>
-<p> 光明会将自由带来</p>
-<p> 世界因魔鬼再无法变回魔鬼</p>
-<p> 迎来期盼已久的梦想</p>
-<p> 长久的等待   长久的等待</p>
-<p> 等来的是真实的自由</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -603,7 +628,7 @@ var _hmt = _hmt || [];
   
     <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
   
-    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>1</small></li>
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>2</small></li>
   
     <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
   
@@ -628,9 +653,9 @@ var _hmt = _hmt || [];
   <h3 class="title">标签</h3>
   <ul class="entry">
   
-    <li><a href="/tags/LiveOak/">LiveOak</a><small>1</small></li>
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>2</small></li>
   
-    <li><a href="/tags/MBaaS/">MBaaS</a><small>1</small></li>
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>2</small></li>
   
     <li><a href="/tags/ios/">ios</a><small>1</small></li>
   
