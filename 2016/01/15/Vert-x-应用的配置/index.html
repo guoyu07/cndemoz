@@ -88,7 +88,7 @@ var _hmt = _hmt || [];
 <li>转载请注明出处，谢谢</li>
 </ul>
 <p>在上篇文章中，开发了一个简单的Vert.x应用，介绍了怎么测试，打包和执行，这仅仅是一个开始，在这篇文章中，我们通过配置来提高应用。</p>
-<p>还记得，在上一个应用中有HTTP server，监听<code>8080</code>端口，应答一个“Hello”的消息，上篇文章的代码在<a href="https://github.com/quanke/vertx3_study_demo/tree/master/my-vertx-first-app" target="_blank" rel="external">这里</a>，本篇文章的代码在<a href="http://" target="_blank" rel="external">github</a>，因为</p>
+<p>还记得，在上一个应用中有HTTP server，监听<code>8080</code>端口，应答一个“Hello”的消息，上篇文章的代码在<a href="https://github.com/quanke/vertx3_study_demo/tree/master/my-vertx-first-app" target="_blank" rel="external">这里</a>，本篇文章的代码在<a href="https://github.com/quanke/vertx3_study_demo/tree/master/my-vertx-first-app-config" target="_blank" rel="external">github</a></p>
 <h3 id="为什么需要配置？">为什么需要配置？</h3><p>这个问题非常好。这个应用是正常工作的，但是如果当你部署在8080端口已经被占领了的机器上，如果要部署在这个机器上，我们就需要到代码里修改应用程序和测试里的端口了，这不能忍受，很幸运的是Vert.x配置一下就可以了。</p>
 <p>Vert.x使用的是JSON格式配置的，所以很简单，可以使用API传给verticle或者命令行，我们来看一看。</p>
 <h3 id="不使用_‘8080’_端口">不使用 ‘8080’ 端口</h3><p>第一步是修改<code>name/quanke/study/vertx/first/MyFirstVerticle.java</code>类，从配置里读取端口，而不<code>8080</code>绑定，默认是<code>8080</code>端口：</p>
