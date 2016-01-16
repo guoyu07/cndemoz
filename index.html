@@ -66,6 +66,171 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2016-01-16T01:26:09.000Z"><a href="/2016/01/16/LiveOak-系列不再更新/">2016-01-16</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/01/16/LiveOak-系列不再更新/">LiveOak 系列不再更新</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <ul>
+<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
+<li>交流群：<code>231419585</code></li>
+<li>转载请注明出处，谢谢</li>
+</ul>
+<p>因为官方放弃此项目，LiveOak系列也不再更新。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-01-15T13:19:45.000Z"><a href="/2016/01/15/Vert-x-实现REST/">2016-01-15</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/01/15/Vert-x-实现REST/">Vert.x 实现REST</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <ul>
+<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
+<li>交流群：<code>231419585</code></li>
+<li>转载请注明出处，谢谢</li>
+</ul>
+<h3 id="回顾">回顾</h3><p>在第一篇文章中开发了一个非常简单的Vert.x 3应用程序，还包括怎么测试、打包和执行。在第二篇文章中对端口进行了可变配置。</p>
+<p>这篇文章中，开发一个CRUD（增删改查）应用，发布一个HTML页面，通过REST API与后台进行交互。RESTfull形式的API不简单，这篇文章中就不涉及了。</p>
+<p>接下来，能看到：</p>
+<ul>
+<li>Vert.x Web - 使用Vert.x创建Web应用的框架</li>
+<li>怎么发布静态资源</li>
+<li>怎么开发REST API</li>
+</ul>
+<p>这篇文章开发的代码放在<a href="https://github.com/quanke/vertx3_study_demo/tree/master/my-vertx-first-app-rest" target="_blank" rel="external">GitHub</a>上，是从第二篇文章的代码基础上进行的。</p>
+<h3 id="开始Vert-x_Web">开始Vert.x Web</h3><p>如果你看了<a href="http://quanke.name/2016/01/15/Vert-x-%E5%BA%94%E7%94%A8%E7%9A%84%E9%85%8D%E7%BD%AE/">前面的文章</a>，使用Vert.x Core来处理复杂的HTTP应用还是很麻烦的，所以就有了<a href="http://vertx.io/docs/vertx-web/java/" target="_blank" rel="external">Vert.x Web</a>，它可以使Vert.x开发一个web应用更加简单，而且不会改变Vert.x的思想。</p>
+<p>更新pom.xml文件，添加下面的依赖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;dependency&#62;&#10;  &#60;groupId&#62;io.vertx&#60;/groupId&#62;&#10;  &#60;artifactId&#62;vertx-web&#60;/artifactId&#62;&#10;  &#60;version&#62;3.0.0&#60;/version&#62;&#10;&#60;/dependency&#62;</span><br></pre></td></tr></table></figure>
+<p>这就是使用Vert.x Web的唯一前提。</p>
+<p>还记得在上一篇文章中，当请求<a href="http://localhost:8080时，返回一个*Hello" target="_blank" rel="external">http://localhost:8080时，返回一个*Hello</a> World*消息，使用Vert.x Web完成同样的事情，打开<code>name.quanke.study.vertx.first.MyFirstVerticle.java</code> 类，修改<code>start</code>方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Override&#10;public void start(Future&#60;Void&#62; fut) &#123;&#10; // Create a router object.&#10; Router router = Router.router(vertx);&#10;&#10; // Bind &#34;/&#34; to our hello message - so we are still compatible.&#10; router.route(&#34;/&#34;).handler(routingContext -&#62; &#123;&#10;   HttpServerResponse response = routingContext.response();&#10;   response&#10;       .putHeader(&#34;content-type&#34;, &#34;text/html&#34;)&#10;       .end(&#34;&#60;h1&#62;Hello from my first Vert.x 3 application&#60;/h1&#62;&#34;);&#10; &#125;);&#10;&#10; // Create the HTTP server and pass the &#34;accept&#34; method to the request handler.&#10; vertx&#10;     .createHttpServer()&#10;     .requestHandler(router::accept)&#10;     .listen(&#10;         // Retrieve the port from the configuration,&#10;         // default to 8080.&#10;         config().getInteger(&#34;http.port&#34;, 8080),&#10;         result -&#62; &#123;&#10;           if (result.succeeded()) &#123;&#10;             fut.complete();&#10;           &#125; else &#123;&#10;             fut.fail(result.cause());&#10;           &#125;&#10;         &#125;&#10;     );&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>在开始start方法里创建了一个<code>Router</code>对象。router是Vert.x Web的基础，负责分发HTTP请求到handler（处理器），在Vert.x Web中还有两个很重要的概念。</p>
+<ul>
+<li>Routes-定义请求的分发 </li>
+<li>Handlers-这是实际处理请求并且返回结果的地方。Handlers可以被链接起来使用。</li>
+</ul>
+<p>如果明白了这3个概念（Router、Routes、Handlers），就明白了Vert.x Web的所有了。</p>
+<p>仔细看看下面这段代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">router.route(&#34;/&#34;).handler(routingContext -&#62; &#123;&#10;  HttpServerResponse response = routingContext.response();&#10;  response&#10;      .putHeader(&#34;content-type&#34;, &#34;text/html&#34;)&#10;      .end(&#34;&#60;h1&#62;Hello from my first Vert.x 3 application&#60;/h1&#62;&#34;);&#10;&#125;);</span><br></pre></td></tr></table></figure>
+<p>将访问”/“（<a href="http://localhost:8080/）的请求“路由”到指定的handler。Handlers接收RoutingContext对象。这个handler的方法和我们之前的代码很像，他们操作的是同一个HttpServerResponse类型的对象。" target="_blank" rel="external">http://localhost:8080/）的请求“路由”到指定的handler。Handlers接收RoutingContext对象。这个handler的方法和我们之前的代码很像，他们操作的是同一个HttpServerResponse类型的对象。</a></p>
+<p>让我们来看看剩下的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vertx&#10;    .createHttpServer()&#10;    .requestHandler(router::accept)&#10;    .listen(&#10;        // Retrieve the port from the configuration,&#10;        // default to 8080.&#10;        config().getInteger(&#34;http.port&#34;, 8080),&#10;        result -&#62; &#123;&#10;          if (result.succeeded()) &#123;&#10;            fut.complete();&#10;          &#125; else &#123;&#10;            fut.fail(result.cause());&#10;          &#125;&#10;        &#125;&#10;    );&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>除了改变了request handler，基本和之前的代码一样。传<code>router::accept</code>给handler。你可能对这个符号不太熟悉。它表示引用一个方法（这里是引用<code>router</code>的<code>accept</code>方法）。换句话说，当接收到一个请求的时候，告诉vert.x从<code>router</code>里调用<code>accept</code>方法。</p>
+<p>让我们来看下它是怎么工作的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package&#10;java -jar target/my-first-app-1.0-SNAPSHOT-fat.jar</span><br></pre></td></tr></table></figure>
+<p>浏览器打开<code>http://localhost:8080</code>，你会看到Hello的消息。</p>
+<h3 id="发布静态资源">发布静态资源</h3><p>现在有了第一个使用Vert.x Web开发的应用。先在写增加一个index.html页面（静态资源）。</p>
+<p>这个HTML页面将会是我们应用的入口。在src/main/resources/assets目录下，index.html文件在<a href="https://github.com/cescoffier/my-vertx-first-app/blob/post-3/src/main/resources/assets/index.html" target="_blank" rel="external">github</a>上。此文不涉及这个文件的细节。</p>
+<p>基本上，就是一个简单的<code>CRUD</code>的UI界面，<code>actions</code>是由通过<code>AJAX</code>调用的<code>REST API</code>执行的。</p>
+<p>创建完了页面后，编辑name.quanke.study.vertx.first.MyFirstVerticle类，并修改start方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Override&#10;public void start(Future&#60;Void&#62; fut) &#123;&#10; Router router = Router.router(vertx);&#10; router.route(&#34;/&#34;).handler(routingContext -&#62; &#123;&#10;   HttpServerResponse response = routingContext.response();&#10;   response&#10;       .putHeader(&#34;content-type&#34;, &#34;text/html&#34;)&#10;       .end(&#34;&#60;h1&#62;Hello from my first Vert.x 3 application&#60;/h1&#62;&#34;);&#10; &#125;);&#10;&#10; // Serve static resources from the /assets directory&#10; // &#23558;&#35775;&#38382;&#8220;/assets/*&#8221;&#30340;&#35831;&#27714;route&#21040;&#8220;assets&#8221;&#30446;&#24405;&#19979;&#30340;&#36164;&#28304;&#10; &#10; router.route(&#34;/assets/*&#34;).handler(StaticHandler.create(&#34;assets&#34;));&#10;&#10; vertx&#10;     .createHttpServer()&#10;     .requestHandler(router::accept)&#10;     .listen(&#10;         // Retrieve the port from the configuration,&#10;         // default to 8080.&#10;         config().getInteger(&#34;http.port&#34;, 8080),&#10;         result -&#62; &#123;&#10;           if (result.succeeded()) &#123;&#10;             fut.complete();&#10;           &#125; else &#123;&#10;             fut.fail(result.cause());&#10;           &#125;&#10;         &#125;&#10;     );&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>就这段代码和前面的不同：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">router.route(&#34;/assets/*&#34;).handler(StaticHandler.create(&#34;assets&#34;));</span><br></pre></td></tr></table></figure>
+<p>这一行是什么意思？挺简单的。将访问“/assets/*”的请求route到“assets”目录下的资源。现在可以通过<a href="http://localhost:8080/assets/index.html来访问index.html了。" target="_blank" rel="external">http://localhost:8080/assets/index.html来访问index.html了。</a></p>
+<p>测试之前，我们花一些时间来看一下handler的创建。所有的处理请求动作在Vert.x Web里都实现成handler。而创建一个handler需要调用<code>create</code>方法。</p>
+<p>编译、运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package&#10;java -jar target/my-first-app-1.0-SNAPSHOT-fat.jar</span><br></pre></td></tr></table></figure>
+<p>浏览器，输入<a href="http://localhost:8080/assets/index.html。" target="_blank" rel="external">http://localhost:8080/assets/index.html。</a></p>
+<p>现在这个table是空的。那是因为我们还没有实现REST的API。现在让我们来开始吧。</p>
+<h3 id="使用Vert-x_Web实现REST_API">使用Vert.x Web实现REST API</h3><p>Vert.x Web实现REST API很简单。看下面：</p>
+<ul>
+<li>GET /api/whiskies =&gt; 获取所有的威士忌（getAll）</li>
+<li>GET /api/whiskies/:id =&gt; 获取指定id的威士忌（getOne）</li>
+<li>POST /api/whiskies =&gt;添加一瓶威士忌（addOne）</li>
+<li>PUT /api/whiskies =&gt; 编辑一瓶威士忌(updateOne)</li>
+<li>DELETE /api/whiskies =&gt; 删除一瓶威士忌(deleteOne)</li>
+</ul>
+<h5 id="我们需要一些数据。。。">我们需要一些数据。。。</h5><p>在实现REST API之前，需要创建Whisky的数据模型。使用下面的内容创建<code>src/main/java/quanke/name/study/vertx/first/Whisky.java</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package name.quanke.study.vertx.first;&#10;&#10;import java.util.concurrent.atomic.AtomicInteger;&#10;&#10;public class Whisky &#123;&#10;&#10;  private static final AtomicInteger COUNTER = new AtomicInteger();&#10;&#10;  private final int id;&#10;&#10;  private String name;&#10;&#10;  private String origin;&#10;&#10;  public Whisky(String name, String origin) &#123;&#10;    this.id = COUNTER.getAndIncrement();&#10;    this.name = name;&#10;    this.origin = origin;&#10;  &#125;&#10;&#10;  public Whisky() &#123;&#10;    this.id = COUNTER.getAndIncrement();&#10;  &#125;&#10;&#10;  public String getName() &#123;&#10;    return name;&#10;  &#125;&#10;&#10;  public String getOrigin() &#123;&#10;    return origin;&#10;  &#125;&#10;&#10;  public int getId() &#123;&#10;    return id;&#10;  &#125;&#10;&#10;  public void setName(String name) &#123;&#10;    this.name = name;&#10;  &#125;&#10;&#10;  public void setOrigin(String origin) &#123;&#10;    this.origin = origin;&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>这是一个很简单的bean类。因为Vert.x依赖Jackson来处理JSON格式,Jackson能够自动序列化和反序列化bean类，让代码变得更简单，所以选择这样的格式。</p>
+<p>现在，创建几瓶威士忌。在MyFirstVerticle类中，添加下面的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// Store our product&#10;// &#23384;&#20648;&#20135;&#21697;&#10;private Map&#60;Integer, Whisky&#62; products = new LinkedHashMap&#60;&#62;();&#10;// Create some product&#10;// &#21019;&#24314;&#19968;&#20123;&#20135;&#21697;&#10;private void createSomeData() &#123;&#10;  Whisky bowmore = new Whisky(&#34;Bowmore 15 Years Laimrig&#34;, &#34;Scotland, Islay&#34;);&#10;  products.put(bowmore.getId(), bowmore);&#10;  Whisky talisker = new Whisky(&#34;Talisker 57&#176; North&#34;, &#34;Scotland, Island&#34;);&#10;  products.put(talisker.getId(), talisker);&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>然后，在<code>start</code>方法里，调用<code>createSomeData</code>方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Override&#10;public void start(Future&#60;Void&#62; fut) &#123;&#10;&#10;  createSomeData();&#10;&#10;  // Create a router object.&#10;  Router router = Router.router(vertx);&#10;&#10;  // Rest of the method&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>在这里并没有一个后台数据库。仅使用一个map，将数据存储在内存中。添加后端数据库的介绍我准备放在另一篇文章中讲。</p>
+<h3 id="获得产品（威士忌）">获得产品（威士忌）</h3><p><code>GET /api/whiskies</code>，JSON数组中返回产品列表。</p>
+<p>在<code>start</code>方法里，添加下面这行（static handler）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">router.get(&#34;/api/whiskies&#34;).handler(this::getAll);</span><br></pre></td></tr></table></figure>
+<p>告诉<code>router</code>调用<code>getAll</code>方法来处理<code>&quot;/api/whiskies&quot;</code>的GET请求。代码可以写在<code>handler</code>里，但是为了让代码更加清晰，另外创建一个方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private void getAll(RoutingContext routingContext) &#123;&#10;  routingContext.response()&#10;      .putHeader(&#34;content-type&#34;, &#34;application/json; charset=utf-8&#34;)&#10;      .end(Json.encodePrettily(products.values()));&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>每一个handler（比如：请看上面的代码）都会接受一个<code>RoutingContext</code>参数。通过设置<code>content-type</code>和一些内容来填充<code>response</code>。因为内容可能会碰到特殊的字符，所以强制使用UTF-8的格式。创建内容的时候，并不需要自己去处理JSON格式的字符串。Vert.x有处理Json的API。使用Json.encodePrettily(products.values())处理JSON字符串。本应使用Json.encodePrettily(products)，但是为了让JavaScript代码更简单，我们仅返回威士忌（产品）的数据集合，并没有返回包含<code>Id=&gt;Bottle</code>的键值对。</p>
+<p>打包运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package&#10;java -jar target/my-first-app-1.0-SNAPSHOT-fat.jar</span><br></pre></td></tr></table></figure>
+<p>浏览器访问<a href="http://localhost:8080/assets/index.html，然后你将会看到下面这个页面。" target="_blank" rel="external">http://localhost:8080/assets/index.html，然后你将会看到下面这个页面。</a></p>
+<p><img src="http://vertx.io/assets/blog/intro-series/post-3-My_Whisky_Collection.png" alt="image"></p>
+<p>很好奇，想看一下REST API到底返回了什么。打开浏览器，访问<a href="http://localhost:8080/api/whiskies。你会看到下面这样的信息：" target="_blank" rel="external">http://localhost:8080/api/whiskies。你会看到下面这样的信息：</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ &#123;&#10;  &#34;id&#34; : 0,&#10;  &#34;name&#34; : &#34;Bowmore 15 Years Laimrig&#34;,&#10;  &#34;origin&#34; : &#34;Scotland, Islay&#34;&#10;&#125;, &#123;&#10;  &#34;id&#34; : 1,&#10;  &#34;name&#34; : &#34;Talisker 57&#176; North&#34;,&#10;  &#34;origin&#34; : &#34;Scotland, Island&#34;&#10;&#125; ]</span><br></pre></td></tr></table></figure>
+<h3 id="创建一个产品">创建一个产品</h3><p>能获取到威士忌（产品）了，现在需要创建一个产品。不像之前的REST API，这一次，需要读取<code>request</code>的<code>body</code>。因为性能的原因，它应该被显式地启用。不要怕，这也仅仅是一个<code>handler</code>而已。</p>
+<p>在<code>start</code>方法中，添加下面的内容到<code>getAll</code>的后面：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">router.route(&#34;/api/whiskies*&#34;).handler(BodyHandler.create());&#10;router.post(&#34;/api/whiskies&#34;).handler(this::addOne);</span><br></pre></td></tr></table></figure>
+<p>第一行允许<code>&quot;/api/whiskies&quot;</code>下的所有<code>route</code>读取请求的<code>body</code>。通过使用<code>router.route().handler(BodyHandler.create())</code>，能让它在全局生效。</p>
+<p>第二行将对<code>/api/whiskies</code>的POST请求映射到<code>addOne</code>方法。让我们来创建这个方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private void addOne(RoutingContext routingContext) &#123;&#10;  final Whisky whisky = Json.decodeValue(routingContext.getBodyAsString(),&#10;      Whisky.class);&#10;  products.put(whisky.getId(), whisky);&#10;  routingContext.response()&#10;      .setStatusCode(201)&#10;      .putHeader(&#34;content-type&#34;, &#34;application/json; charset=utf-8&#34;)&#10;      .end(Json.encodePrettily(whisky));&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>开始从请求的<code>body</code>中取出<code>Whisky</code>对象。只是将body读成一个字符串并将它传入到Json.decodeValue方法里。Whisky这个对象一旦创建好，将被添加到后台的map中，并以JSON的格式返回。</p>
+<p>重新编译并且运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package&#10;java -jar target/my-first-app-1.0-SNAPSHOT-fat.jar</span><br></pre></td></tr></table></figure>
+<p>刷新HTML页面，点击<code>Add a new bottle</code>按钮。输入数据，如：<code>“quanke”</code> 作为名字， “quanke.name” 作为产地 ，就OK了。</p>
+<p><em>状态码 201 ？<br><code>CREATED</code>和在REST API中创建一个entity时，response的状态码为201。。默认的vert.x web设置一个200的状态码代表OK。</em></p>
+<h3 id="删除一个产品">删除一个产品</h3><p>在<code>start</code>方法里，添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">router.delete(&#34;/api/whiskies/:id&#34;).handler(this::deleteOne);</span><br></pre></td></tr></table></figure>
+<p>在<code>URL</code>里，参数为：<code>:id</code>。在处理一个相匹配的请求的时候，Vert.x提取路径中与这个参数对应的一段，能够在handler中获得。例如，<code>/api/whiskies/0</code>将<code>id</code>映射为<code>0</code>。</p>
+<p>看一下在<code>handler</code>方法中这个参数是怎样被使用的。创建一个<code>deleteOne</code>方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private void deleteOne(RoutingContext routingContext) &#123;&#10;  String id = routingContext.request().getParam(&#34;id&#34;);&#10;  if (id == null) &#123;&#10;    routingContext.response().setStatusCode(400).end();&#10;  &#125; else &#123;&#10;    Integer idAsInteger = Integer.valueOf(id);&#10;    products.remove(idAsInteger);&#10;  &#125;&#10;  routingContext.response().setStatusCode(204).end();&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p><em>状态码 204 ？<br>状态码为204 - NO CONTENT。HTTP delete动作通常都是无返回内容的。</em></p>
+<h3 id="其他方法">其他方法</h3><p>实现getOne和updateOne很简单，和上面的差不多，此文不再详细介绍。源码在<a href="https://github.com/quanke/vertx3_study_demo/tree/master/my-vertx-first-app-rest" target="_blank" rel="external">github</a>上</p>
+<h3 id="总结">总结</h3><p>此文介绍了如何用Vert.x web轻松的实现一个REST API，如何访问静态资源。比以前的文章复杂些，但仍然还是很简单。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2016-01-14T23:40:12.000Z"><a href="/2016/01/15/Vert-x-应用的配置/">2016-01-15</a></time>
       
       
@@ -173,7 +338,7 @@ var _hmt = _hmt || [];
 </blockquote>
 <h3 id="编码！">编码！</h3><p>OK，我们已经创建了一个<code>pom.xml</code> 文件，接下来正式开始编码，创建 <code>src/main/java/name/quanke/study/vertx/first/MyFirstVerticle.java</code>文件，内容如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package name.quanke.study.vertx.first;&#10;&#10;import io.vertx.core.AbstractVerticle;&#10;import io.vertx.core.Future;&#10;&#10;public class MyFirstVerticle extends AbstractVerticle &#123;&#10;&#10;  @Override&#10;  public void start(Future&#60;Void&#62; fut) &#123;&#10;    vertx&#10;        .createHttpServer()&#10;        .requestHandler(r -&#62; &#123;&#10;          r.response().end(&#34;&#60;h1&#62;Hello from my first &#34; +&#10;              &#34;Vert.x 3 application&#60;/h1&#62;&#34;);&#10;        &#125;)&#10;        .listen(8080, result -&#62; &#123;&#10;          if (result.succeeded()) &#123;&#10;            fut.complete();&#10;          &#125; else &#123;&#10;            fut.fail(result.cause());&#10;          &#125;&#10;        &#125;);&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<p>这个实际上不是最优秀的应用，这个类继承<code>AbstractVerticle</code>，在<code>Vert.x</code>的世界里<code>verticle</code>就是组件，通过继承<code>AbstractVerticle</code>类，获得<code>vertx</code>的入口。</p>
+<p>这个实际上不是最优秀的应用，这个类继承<code>AbstractVerticle</code>，在<code>Vert.x</code>的世界里<code>verticle</code>就是组件（是Vert.x的之行单元），通过继承<code>AbstractVerticle</code>类，获得<code>vertx</code>的入口。</p>
 <p>当<code>verticle</code>部署后会调用<code>start</code>方法，我们也能实现 <code>stop</code> 方法，在这个方法里回收资源，<code>start</code>方法接收<code>Future</code>对象的参数，可以告诉用户是执行完成还是报出错误，<code>Vert.x</code>是异步执行的，运行的时候不会等到<code>start</code>方法执行完成，所以 <code>Future</code> 参数是非常重要的，可以通知是否已经执行完成。</p>
 <p>在<code>start</code>方法里创建了一个HTTP 服务和一个请求处理器（handler），这个请求处理器使用lambda表达式，通过<code>requestHandler</code>方法，每次服务器收到请求，都会返回“Hello。。。”（也没有什么其他可以告诉你的东西了。。。），最后服务器绑定了一个8080端口，这里可能会失败（因为8080端口可能被使用了），通过lambda表达式检查是否连接成功，就想上面说的，调用fut.complete表示成功，调用 fut.fail 报告失败。</p>
 <p>使用下面的命令尝试着编译应用（首先你要安装好了maven，此命令在pom.xml目录下执行，知道使用maven的都懂得）：</p>
@@ -614,198 +779,6 @@ var _hmt = _hmt || [];
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-04-08T14:44:19.000Z"><a href="/2015/04/08/ios/ios-development-self-study-program/">2015-04-08</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/04/08/ios/ios-development-self-study-program/">iOS 开发工程师自学计划</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>预备</p>
-<p>1、文件管理器 Finder<br>2、iWork 使用 Numbers,Keynote,Pages<br>3、Safari 浏览器 Mac Os 的使用，iWork 的使用</p>
-<p>iOS 开发基础</p>
-<p>1、Xcode、SVN、Git<br>2、C 语言是 iOS 开发的入门基础 语言，本部分主要介绍 C语言 的基本语法，程序结构，以 及指针的各种操作。为接下 来 Objective-C 语言的学习打下基础。</p>
-<p>1、iOS 开发的系统环境介绍、 Xcode 集成开发环境详解、常用软件的介绍<br>2、数据类型、常量和变量、运算符、赋值语句和表达式；分支、循环<br>3、函数，数组（一维数组、二维数组、多维数组） ，结构体<br>4、指针数组、数组指针，结构体指针<br>5、指向指针的指针，宏定义、枚举，const，static</p>
-<p>Objective-C 是 iOS 与 Mac OS 开发的主要语言， 它是对 C 语言的扩展，并融入了面向对 象的特点。包含封装、继 承、多态三大特性， 本部分 主要介绍 OC 的基本语法， 新 的特性，内存管理等内容</p>
-<p>1、面向对象 （OOP） 和面向过程、 类 （Class）和对象（Object） 、类的定义<br>2、创建对象、self 和 super 关键字、属性以及点语法 （nonatomic， assign、 retain 、 copy，readonly、readwrite）<br>3、便利构造器、单例（Singleton）<br>4、堆栈、内存管理（ alloc、copy、retain ，release、autorelease， strong、weak）<br>5、键值编码 （KVC） 、 键值监听 （KVO） 、 通知中 心 （ NSNotificationCenter ）、 通 知（NSNotification）<br>6、类目（Category） 、延展（Extention） 、协议（protocol）</p>
-<p>iOS 的基础框架，包含了 iOS 开发的基本数据类型，在 iOSSDK 中几乎全部 NS 开头的类都 属于这个框架，我们将详细介绍开发中常用的类。</p>
-<p>1、字符串（ NSString NSMutableString) 、数值对象(NSNumber NSValue)<br>2 、数组（ NSArray,NSMutableArray ） 、字典(NSDictionary,NSMutableDictionary) 、 集 合(NSSet,NSMutableSet) 、快速 枚举 (for…in)NSIndexPath<br>3 、日 期 与 时 间 (NSDate) 、 日 期 格 式(NSDataFormatter)、日历 (NSCalendar)、定时器(NSTimer)<br>4 、文 件 管 理 (NSFileManager) 、 程 序 包(NSBundle)、缓冲区(NSData)<br>5 、网络连接 (NSURLConnection) 、网络地址(NSURL)、网络请求 (NSURLRequest)、请求回应(NSResponse)、错误信息处理(NSError)<br>6 、MVC 编程,简单控件一:标签(UILabel)、文本输入(UITextField)、 按钮 (UIButton)、 提示框(UIAlertView、UIActionSheet)、<br>7、使用面向对象 OOP 方法, 实施计算机 APP应用. 要求学员应用前期学习中的大部 分知识点.<br>8、沙箱</p>
-<p>iOS 开发高级</p>
-<p>UIKit 处于 Cocoa 四层结构的 最上层 CocoaTouch 层， 是 iOS开发中的控件框架， 定义了 几乎全部可视化控件， 在 iOS 开发中占据绝对地位，我们 不仅会学习各个控件的用 法，而且会讲述各个控件在 不同版本系统里的样式，教 大家如何自定义控件样式。 学完他们我们就可以做自己 个性化的界面了。<br>1、窗口(UIWindow)、视图(UIView)、应用程序(UIApplication)<br>2 、绘图（ drawRect ） 、 QuartzCoreDemo 、CGContextRef<br>3 、触摸 (UITouch) 、事件 (UIEvent) 、手势(UIGestureRecognizer)、 UIResponder、 消息传递、响应者链<br>4、 UIView 以及 CALayer 动画 （CAAnimation、CABasicAnimation、 CAKeyFrameAnimation）<br>5、活动提示(UIActivityIndicatorView)、图像(UIImageView)<br>6、 控件二:滚动视图(UIScrollView)、 页控制器(UIPageControl) 、 开关 (UISwitch) 、 单选(UISegmentControl)、滑块(UISlider)<br>7、控件三:多行文本(UITextView)、网页视图(UIWebView)、滚轮 (UIPickerView)、日期滚轮 (UIDatePickerView) 、 表 格 视 图(UITableView)、 表格项(UITableViewCell)<br>8、视图控制器(UIViewController)、导航控制器 (UINavigationController) 、 标 签 控制 器(UITabBarController) 、 表 格 控 制 器(UITableViewController) 、 相 册 控 制 器(UIImagePickerController)</p>
-<p>iphone Safari 浏览器原型 App。<br>1、结合前期所学知识，应用 UIKit 框架详解中所学的高级 UI 控件及知识点，模拟 实现Safari 浏览器</p>
-<p>iOS 应用特性框架是对上述两 个框架之外其他框架的统 称。主要内容为：音 频、视频的播放、照相机的 使用、加速计的应用，地图 框架的使用、短信、邮件的 应用等等，而且也会介绍当 前应用开发中使用非常广泛 的开源框架，同时还将讲解 开发者帐号的注册、真机调 试、以及程序上传。<br>1 、音 频 播放 (AVAudioPlayer) 、 视 频 播放(MPMoviePlayerViewController) 以 及 播 放ipod 音乐<br>2、 照相机(UIImagePickerController)以及相册的使用<br>3 、短 信(MFMessageComposeViewController) 、 邮件(MFMailComposeViewController)的使用<br>4、加速计(UIAccelerometer)的使用、帐号注册、真机调试、上传程序<br>5 、地图(MKMapView) 的使用以及定位 (CoreLocation)<br>6、数据持久化（文件读写、sqlite 数据库、 归档、NSCoding 协议） 、云存储 （iCloud）<br>7、多线程开发（NSThread、NSLock）,操作队列(NSOperationQueue)<br>8、网络请求（GET、POST） 、xml 解析、json解析、Socket 编程</p>
-<p>iOS 游戏开发</p>
-<p>2D 游戏引擎的使用, 全部课程 内容以”植物大战僵尸”为例,<br>贯穿其中</p>
-<p>1 、 Cocos2D HelloWorld,CCDirector( 导 演类),CCScene(场景类),CCLayer<br>2、CCSprite(精灵类),CCAction(动作)<br>3、CCMemu(菜单),CCLabelTTF(标签)<br>4、CCPointParticleSystem(点粒子系统)<br>5、练习:植物大战僵尸游戏开发</p>
-<p>C++是目前最流行的开发语言 之一,C++基本语法,C++面象对像的特性.在 XCode 下如何 使用 C++语言编程.</p>
-<p>1、在 Xcode 下编译 C++ 程序,C++ 类 Class,成员变量,成员函数,对象的创建<br>2、构造函数与析构函数,new delete 关键字,内存管理<br>3、继承,函数重载,操作符重载,拷贝构造<br>4、模版 template 与泛型<br>5、Objective-C 与 C++混合编程</p>
-<p>iOS 游戏开发中使用最多的物 理引擎,以愤怒的小鸟为例学习 Box2D 开发.</p>
-<p>1、物理世界(b2World),刚体(b2Body),精灵与刚体连接<br>2、碰撞测试(b2ContactListener)<br>3、刚体的连接关节(b2Joint)<br>4、练习:愤怒的小鸟开发<br>5、OpenGL ES 开发基础</p>
-<p>项目实训</p>
-<p>做一个真 实项目，可以整理成教程发到博客，然后开源 从需求分析开始，然后技术调研，工期评 估、编码、测试、优化代 码、上传程序等 项目内容会包括几点: 1.网络数据解析 2.音视频播放3.微薄分享 4.LBS 定位应用 5.SQLite 数据库</p>
-<p>项目会用到网络、数据库、各种常用控件、 以及各种 Foundation 类。 目前有 很多项目可以选择使用，比如：互动百科（新闻类应用） 、<br>乐视 （电影类应 用） 、 创业邦 （杂志类应用） 、尚品网 （购物类应用） 、 雅座空间 （团购类 应用） 、 找地（定位类应用） 、 我是学家（教育类应用） 、 YY 客户端 （语 音类应用） 、麦咨达（条码扫描类应用） 、 中国建行 （银行类应用） 、CuteMath（游戏类应用） 、车震摇摇乐（娱乐类应用） 、新浪微博（微博类 应用）等等</p>
-<p>支持聊天功能的相册应用 - 微相册</p>
-<p>实现功能</p>
-<p>主要是照片的展示，播放照片时播放音乐，音乐照片来自互联网<br>分享照片到各大社交平台<br>支持开放平台登录<br>支持滑动出菜单<br>TableView动画<br>下拉刷新<br>反馈建议<br>关于</p>
-<p>扩展功能</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2014-11-29T19:53:51.000Z"><a href="/2014/11/30/sublime-text-2-shortcut key/">2014-11-30</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2014/11/30/sublime-text-2-shortcut key/">sublime text 2快捷键大全</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p><table width="500" border="1" cellspacing="0" cellpadding="3" align="center"></table></p>
-<p><tbody></tbody></p>
-<p><tr></tr></p>
-<p><td><strong>Ctrl+L </strong></td></p>
-<p><td><strong>选择整行（按住-继续选择下行） </strong></td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+KK</td></p>
-<p><td>从光标处删除至行尾</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+Shift+K</td></p>
-<p><td>删除整行</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+Shift+D</td></p>
-<p><td>复制光标所在整行，插入在该行之前</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+J</td></p>
-<p><td>合并行（已选择需要合并的多行时）</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+KU</td></p>
-<p><td>改为大写</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+KL</td></p>
-<p><td>改为小写</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+D</td></p>
-<p><td>选词 （按住-继续选择下个相同的字符串）</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+M</td></p>
-<p><td>光标移动至括号内开始或结束的位置</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+Shift+M</td></p>
-<p><td>选择括号内的内容（按住-继续选择父括号）</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+/</td></p>
-<p><td>注释整行（如已选择内容，同“Ctrl+Shift+/”效果）</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+Shift+/</td></p>
-<p><td>注释已选择内容</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+Space</td></p>
-<p><td>自动完成（win与系统快捷键冲突，需修改）</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+Z</td></p>
-<p><td>撤销</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+Y</td></p>
-<p><td>恢复撤销</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+Shift+V</td></p>
-<p><td>粘贴并自动缩进（其它兄弟写的，实测win系统自动缩进无效）</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+M</td></p>
-<p><td>光标跳至对应的括号</td><br></p>
-<p><tr></tr></p>
-<p><td>Alt+.</td></p>
-<p><td>闭合当前标签</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+Shift+A</td></p>
-<p><td>选择光标位置父标签对儿</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+Shift+[</td></p>
-<p><td>折叠代码</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+Shift+]</td></p>
-<p><td>展开代码</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+KT</td></p>
-<p><td>折叠属性</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+K0</td></p>
-<p><td>展开所有</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+U</td></p>
-<p><td>软撤销</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+T</td></p>
-<p><td>词互换</td><br></p>
-<p><tr></tr></p>
-<p><td>Tab</td></p>
-<p><td>缩进</td><br></p>
-<p><tr></tr></p>
-<p><td>Shift+Tab</td></p>
-<p><td>去除缩进</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+Shift+UP</td></p>
-<p><td>与上行互换</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+Shift+DOWN</td></p>
-<p><td>与下行互换</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+K Backspace</td></p>
-<p><td>从光标处删除至行首</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+Enter</td></p>
-<p><td>插入行后</td><br></p>
-<p><tr></tr></p>
-<p><td>Ctrl+Shift Enter</td></p>
-<p><td>插入行前</td><br></p>
-<p><tr></tr></p>
-<p><td>F9</td></p>
-<p><td>行排序（按a-z）</td><br><br><br><br></p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -829,9 +802,9 @@ var _hmt = _hmt || [];
   
     <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
   
-    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>3</small></li>
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
   
-    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>2</small></li>
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>3</small></li>
   
     <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
   
@@ -858,11 +831,11 @@ var _hmt = _hmt || [];
   
     <li><a href="/tags/LiveOak/">LiveOak</a><small>3</small></li>
   
-    <li><a href="/tags/MBaaS/">MBaaS</a><small>3</small></li>
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>4</small></li>
   
-    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>2</small></li>
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>3</small></li>
   
-    <li><a href="/tags/Vertx/">Vertx</a><small>2</small></li>
+    <li><a href="/tags/Vertx/">Vertx</a><small>3</small></li>
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   

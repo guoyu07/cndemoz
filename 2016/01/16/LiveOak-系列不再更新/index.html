@@ -3,15 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>android中textview字数过长解决方法 | 全科-不安分的码农</title>
+  <title>LiveOak 系列不再更新 | 全科-不安分的码农</title>
   <meta name="author" content="全科">
   
-  <meta name="description" content="为了解决textview中内容过长的话自动换行，但是调用measureText函数时发现返回值很不准确，单位也不确定，是pixel还是dip，都不准。后来想起textview中有个内容过长加省略号的属性，即ellipsize，可以解决这个问题，用法如下：在xml中[code lang=”xml”]a">
+  <meta name="description" content="欢迎关注http://quanke.name/
+交流群：231419585
+转载请注明出处，谢谢
+
+因为官方放弃此项目，LiveOak系列也不再更新。">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="android中textview字数过长解决方法"/>
+  <meta property="og:title" content="LiveOak 系列不再更新"/>
   <meta property="og:site_name" content="全科-不安分的码农"/>
 
   
@@ -67,18 +71,22 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
-        <time datetime="2014-11-02T17:28:56.000Z"><a href="/2014/11/03/android/android-textview-word-too-long/">2014-11-03</a></time>
+        <time datetime="2016-01-16T01:26:09.000Z"><a href="/2016/01/16/LiveOak-系列不再更新/">2016-01-16</a></time>
       
       
   
-    <h1 class="title">android中textview字数过长解决方法</h1>
+    <h1 class="title">LiveOak 系列不再更新</h1>
   
 
     </header>
     <div class="entry">
       
-        <p>为了解决textview中内容过长的话自动换行，但是调用measureText函数时发现返回值很不准确，单位也不确定，是pixel还是dip，都不准。后来想起textview中有个内容过长加省略号的属性，即ellipsize，可以解决这个问题，用法如下：<br>在xml中<br>[code lang=”xml”]<br>android:ellipsize = &quot;end&quot;　　  省略号在结尾<br>android:ellipsize = &quot;start&quot; 　　省略号在开头<br>android:ellipsize = &quot;middle&quot;     省略号在中间<br>android:ellipsize = &quot;marquee&quot;  跑马灯<br>[/code]<br>最好加一个约束android:singleline = “true”</p>
-<p>当然也可以用代码语句<br>[code lang=”java”]<br>tv.setEllipsize(TextUtils.TruncateAt.valueOf(&quot;END&quot;));<br>tv.setEllipsize(TextUtils.TruncateAt.valueOf(&quot;START&quot;));<br>tv.setEllipsize(TextUtils.TruncateAt.valueOf(&quot;MIDDLE&quot;));<br>tv.setEllipsize(TextUtils.TruncateAt.valueOf(&quot;MARQUEE&quot;));<br>[/code]<br>最好再加一个约束tv.setSingleLine(true);<br>不仅对于textview有此属性，对于editext也有，不过它不支持marquee</p>
+        <ul>
+<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
+<li>交流群：<code>231419585</code></li>
+<li>转载请注明出处，谢谢</li>
+</ul>
+<p>因为官方放弃此项目，LiveOak系列也不再更新。</p>
 
       
     </div>
@@ -87,10 +95,15 @@ var _hmt = _hmt || [];
         
   
   <div class="categories">
-    <a href="/categories/android开发/">android开发</a>
+    <a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a>
   </div>
 
         
+  
+  <div class="tags">
+    <a href="/tags/MBaaS/">MBaaS</a>
+  </div>
+
         
 <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
 <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
