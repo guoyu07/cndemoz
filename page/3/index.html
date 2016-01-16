@@ -66,6 +66,53 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2013-01-25T22:54:41.000Z"><a href="/2013/01/26/protobufjsonxmlbinarythrift-e6-95-b0-e6-8d-ae-e4-ba-a4-e6-8d-a2/">2013-01-26</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/01/26/protobufjsonxmlbinarythrift-e6-95-b0-e6-8d-ae-e4-ba-a4-e6-8d-a2/">protobuf/json/xml/binary/Thrift数据交换 </a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>一条消息数据，用<strong>protobuf</strong>序列化后的大小是<strong>json</strong>的10分之一，<strong>xml</strong>格式的20分之一，是<strong>二进制</strong>序列化的10分之一，总体看来ProtoBuf的优势还是很明显的</p>
+<p>protobuf是google提供的一个开源序列化框架，类似于XML，JSON这样的数据表示语言，详情访问<a href="http://code.google.com/apis/protocolbuffers/docs/overview.html" target="_blank" rel="external">protobuf的google官方网站</a></p>
+<p>protobuf在google中是一个比较核心的基础库，作为分布式运算涉及到大量的不同业务消息的传递，如何高效简洁的表示、操作这些业务消息在google这样的大规模应用中是至关重要的。而protobuf这样的库正好是在效率、数据大小、易用性之间取得了很好的平衡。</p>
+<p>protobuf简单总结如下几点：</p>
+<ol>
+<li>灵活（方便接口更新）、高效（效率经过google的优化，传输效率比普通的XML等高很多）；</li>
+<li>易于使用；开发人员通过按照一定的语法定义结构化的消息格式，然后送给命令行工具，工具将自动生成相关的类，可以支持java、c++、python等语言环境。通过将这些类包含在项目中，可以很轻松的调用相关方法来完成业务消息的序列化与反序列化工作。</li>
+<li><p>多语言支持；原生支持c++,java,python<br><strong>个人总结的适用protobuf的场合</strong>：</p>
+</li>
+<li><p>需要和其它系统做消息交换的，对消息大小很敏感的。那么protobuf适合了，它语言无关，消息空间相对xml和json等节省很多。</p>
+</li>
+<li>小数据的场合。如果你是大数据，用它并不适合。</li>
+<li>项目语言是c++,java,python的，因为它们可以使用google的源生类库，序列化和反序列化的效率非常高。其它的语言需要第三方或者自己写，序列化和反序列化的效率不保证。</li>
+<li>总体而言，protobuf还是非常好用的，被很多开源系统用于数据通信的工具，在google也是核心的基础库。<br>此外，还有更牛叉的<a href="http://incubator.apache.org/thrift/" target="_blank" rel="external">facebook的thrift</a>，2007年由Facebook开发，之后在2008年加到Apache计划中。是一个跨语言的轻量级RPC消息和数据交换框架，Thrift能生成的语言有: C++, Java, Python, PHP, Ruby, Erlang, Perl, Haskell, C#, Cocoa, Smalltalk, and OCaml，这是它的一大优点。</li>
+</ol>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-12-22T06:15:17.000Z"><a href="/2012/12/22/sublime-text-2-for-linux-e7-9a-84-e5-ae-89-e8-a3-85-e3-80-81-e6-95-99-e7-a8-8b-e5-8f-8a-e9-97-ae-e9-a2-98-e6-b1-87-e6-80-bb/">2012-12-22</a></time>
       
       
@@ -481,48 +528,6 @@ ViewfinderView 自定义的View，就是我们看见的拍摄时中间的框框�
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-11-21T18:09:26.000Z"><a href="/2012/11/22/e7-a8-8b-e5-ba-8f-e4-b8-ad-e5-a6-82-e4-bd-95-e8-8e-b7-e5-8f-96android-e7-9a-84root-e6-9d-83-e9-99-90/">2012-11-22</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/11/22/e7-a8-8b-e5-ba-8f-e4-b8-ad-e5-a6-82-e4-bd-95-e8-8e-b7-e5-8f-96android-e7-9a-84root-e6-9d-83-e9-99-90/">程序中如何获取Android的Root权限</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>我们知道Android手机操作系统采用的是Linux内核，Linux中最高的系统权限就是Root，这就类似与Windows中的Administrator系统管理员权限，也就是操作系统的最高权限。<br>由于Root的权限过高，因此手机产商一般都不允许用户直接拥用Root权限，以防止用户修改系统内置的业务跟程序。但是对于用户来说，当然希望能拥有Root权限以将手机修改成自己的一种特色，因为有Root权限则可以任意修改手机的所有文件跟程序，让手机更加个性化。<br>那么我们在Android开发中如何获取Android的Root权限呢？下面是主要的简单代码。<br>[code lang=”java”]<br>Process process = null; </p>
-<p>try{ </p>
-<p>process = Runtime.getRuntime().exec(&quot;su&quot;); </p>
-<p>//这里是主要程序代码ATAAW.COM </p>
-<p>process.waitFor(); </p>
-<p>}catch(Exception e){ </p>
-<p>   e.printStackTrace(); </p>
-<p>}finally { </p>
-<p>   process.destroy(); </p>
-<p>}<br>[/code] </p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -550,7 +555,7 @@ ViewfinderView 自定义的View，就是我们看见的拍摄时中间的框框�
   
     <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
   
-    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>3</small></li>
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>4</small></li>
   
     <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
   
@@ -579,9 +584,9 @@ ViewfinderView 自定义的View，就是我们看见的拍摄时中间的框框�
   
     <li><a href="/tags/MBaaS/">MBaaS</a><small>4</small></li>
   
-    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>3</small></li>
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>4</small></li>
   
-    <li><a href="/tags/Vertx/">Vertx</a><small>3</small></li>
+    <li><a href="/tags/Vertx/">Vertx</a><small>4</small></li>
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   
