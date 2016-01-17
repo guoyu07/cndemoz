@@ -81,7 +81,7 @@ var _hmt = _hmt || [];
 <li>交流群：<code>231419585</code></li>
 <li>转载请注明出处，谢谢</li>
 </ul>
-<p>在这篇文章中，我们将会看到怎样在vert.x应用中使用<a href="http://hsqldb.org/" target="_blank" rel="external">HSQL</a>，当然也可以使用任意JDBC，以及使用vertx-jdbc-client提供的异步的API，这篇文章的代码在github上。</p>
+<p>在这篇文章中，我们将会看到怎样在vert.x应用中使用<a href="http://hsqldb.org/" target="_blank" rel="external">HSQL</a>，当然也可以使用任意JDBC，以及使用vertx-jdbc-client提供的异步的API，这篇文章的代码在<a href="https://github.com/quanke/vertx3_study_demo/tree/master/my-vertx-first-app-jdbc" target="_blank" rel="external">github</a>上。</p>
 <h3 id="异步？">异步？</h3><p>vert.x一个很重要的特点就是它的异步性。使用异步的API，不需要等结果返回，当有结果返回时，vert.x会主动通知。为了说明这个，我们来看一个简单的例子。</p>
 <p>我们假设有个<code>add</code>方法。一般来说，会像<code>int r = add(1, 1)</code>这样来使用它。这是一个同步的API，所以你必须等到返回结果。异步的API会是这样：<code>add(1, 1, r -&gt; { /*do something with the result*/})</code>。在这个版本中，你传入了一个Handler，当结果计算出来时才被调用。这个方法不返回任何东西，实现如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void add(int a, int b, Handler&#60;Integer&#62; resultHandler) &#123;&#10;    int r = a + b;&#10;    resultHandler.handle(r);&#10;&#125;</span><br></pre></td></tr></table></figure>
