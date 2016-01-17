@@ -66,6 +66,62 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2012-11-12T02:17:22.000Z"><a href="/2012/11/12/android/android-e4-b9-8bexpandablelistview-e5-87-a0-e4-b8-aa-e7-89-b9-e6-ae-8a-e7-9a-84-e5-b1-9e-e6-80-a7/">2012-11-12</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/12/android/android-e4-b9-8bexpandablelistview-e5-87-a0-e4-b8-aa-e7-89-b9-e6-ae-8a-e7-9a-84-e5-b1-9e-e6-80-a7/">Android 之ExpandableListView几个特殊的属性</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>1. 设置ExpandableListView 默认是展开的:<br>先实例化 exListView<br>然后<br>   exListView.setAdapter(exlvAdapter);<br>   //遍历所有group,将所有项设置成默认展开<br>   int groupCount = exListView.getCount();<br>   for (int i=0; i&lt;groupCount; i++) {<br>       exListView.expandGroup(i);<br>       };</p>
+<p>2. 去掉ExpandableListView 默认的箭头<br>  用到ExpandableListView时有个箭头图标系统自带的在你自定义布局也不能去掉只要设置一个属性即可，如下：<br>  settingLists.setGroupIndicator(null);  <del>~</del><del>~</del><del>~</del>~~此处就是设置自定义的箭头图标的。置空则没有了。</p>
+<p>也可以自定义（但是位置还是在那个地方不推荐）如下：<br>首先，自定义一个expandablelistviewselector.xml文件，具体内容如下：<br>Java代码<br>&lt;?xml version=”1.0” encoding=”utf-8”?&gt;   </p>
+<p><selector xmlns:android="http://schemas.android.com/apk/res/android"><br>    <item android:state_expanded="true" android:drawable="@drawable/expandablelistviewindicatordown"><br>    <item android:drawable="@drawable/expandablelistviewindicator"><br></item></item></selector><br>加一句代码如下：<br>settingLists.setGroupIndicator(this.getResources().getDrawable(R.layout.expandablelistviewselector));<br>大功告成<br>3. 将默认的箭头修改到右边显示:</p>
+<p>1首先 ExpandableListView elistview;<br>         elistview.setGroupIndicator(null);//将控件默认的左边箭头去掉，<br>2在 自定义的继承自BaseExpandableListAdapter的adapter中有一个方法<br>/**</p>
+<ul>
+<li><p>父类view<br>*/<br> @Override<br> public View getGroupView(int groupPosition, boolean isExpanded,</p>
+<pre><code>    View convertView, ViewGroup parent) {
+Log.i<span class="params">(<span class="string">"zhaoxiong"</span>,<span class="string">"parent view"</span>)</span>;
+    LinearLayout parentLayout=<span class="params">(LinearLayout)</span> View.inflate<span class="params">(context, R.layout.wowocoupons_parent_item, null)</span>;
+    TextView parentTextView=<span class="params">(TextView)</span> parentLayout.findViewById<span class="params">(R.id.parentitem)</span>;
+    parentTextView.setText<span class="params">(parentlist.get<span class="params">(groupPosition)</span>)</span>;
+    ImageView parentImageViw=<span class="params">(ImageView)</span> parentLayout.findViewById<span class="params">(R.id.arrow)</span>;
+</code></pre><p>//判断isExpanded就可以控制是按下还是关闭，同时更换图片</p>
+<pre><code>    <span class="keyword">if</span><span class="params">(isExpanded)</span>{
+        parentImageViw.setBackgroundResource<span class="params">(R.drawable.arrow_down)</span>;
+    }<span class="keyword">else</span>{
+        parentImageViw.setBackgroundResource<span class="params">(R.drawable.arrow_up)</span>;
+    }
+
+return parentLayout;
+</code></pre><p> }</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-11-12T02:00:34.000Z"><a href="/2012/11/12/android/android-edittext-e5-be-97-e5-88-b0-e5-92-8c-e5-a4-b1-e5-8e-bb-e7-84-a6-e7-82-b9-e6-97-b6-ef-bc-8c-e8-87-aa-e5-ae-9a-e4-b9-89-e5-a4-84-e7-90-86-e5-86-85-e5-ae-b9/">2012-11-12</a></time>
       
       
@@ -776,55 +832,6 @@ Speex() {
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-11-07T18:58:23.000Z"><a href="/2012/11/08/android/android-e5-bc-80-e5-8f-91-e4-b8-ad-e7-bd-91-e7-bb-9c-e8-af-b7-e6-b1-82-e7-9a-84-e5-8e-8b-e7-bc-a9-e2-94-80-e2-94-80-gzip-e7-9a-84-e4-bd-bf-e7-94-a8/">2012-11-08</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/11/08/android/android-e5-bc-80-e5-8f-91-e4-b8-ad-e7-bd-91-e7-bb-9c-e8-af-b7-e6-b1-82-e7-9a-84-e5-8e-8b-e7-bc-a9-e2-94-80-e2-94-80-gzip-e7-9a-84-e4-bd-bf-e7-94-a8/">Android开发中网络请求的压缩 ── GZip的使用</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>gzip是GNUzip的缩写，它是一个GNU自由软件的文件压缩程序。</p>
-<p>HTTP协议上的GZIP编码是一种用来改进WEB应用程序性能的技术。一般服务器中都安装有这个功能模块的，服务器端不需做改动。</p>
-<p>当浏览器支持gzip 格式的时候， 服务器端会传输gzip格式的数据。</p>
-<p>从Http 技术细节上讲，就是 http request 头中 有 “Accept-Encoding”, “gzip” ，response 中就有返回头Content-Encoding=gzip 。</p>
-<p>我们现在从浏览器上访问玩啥网站都是gzip格式传输的。</p>
-<p>但是我们现在Android 客户端，没有用gzip 格式访问。</p>
-<p>同样的的道理，我们可以在android 客户端 request 头中加入 “Accept-Encoding”, “gzip” ，来让服务器传送gzip 数据。</p>
-<p>具体代码如下。<br>[code lang=”java”]<br>   private String getJsonStringFromGZIP(HttpResponse response) {<br>        String jsonString = null;<br>        try {<br>            InputStream is = response.getEntity().getContent();<br>            BufferedInputStream bis = new BufferedInputStream(is);<br>            bis.mark(2);<br>            // 取前两个字节<br>            byte[] header = new byte[2];<br>            int result = bis.read(header);<br>            // reset输入流到开始位置<br>            bis.reset();<br>            // 判断是否是GZIP格式<br>            int headerData = getShort(header);<br>            // Gzip 流 的前两个字节是 0x1f8b<br>            if (result != -1 &amp;&amp; headerData == 0x1f8b) { LogUtil.d(&quot;HttpTask&quot;, &quot; use GZIPInputStream  &quot;);<br>                is = new GZIPInputStream(bis);<br>            } else {<br>                LogUtil.d(&quot;HttpTask&quot;, &quot; not use GZIPInputStream&quot;);<br>                is = bis;<br>            }<br>            InputStreamReader reader = new InputStreamReader(is, &quot;utf-8&quot;);<br>            char[] data = new char[100];<br>            int readSize;<br>            StringBuffer sb = new StringBuffer();<br>            while ((readSize = reader.read(data)) &gt; 0) {<br>                sb.append(data, 0, readSize);<br>            }<br>            jsonString = sb.toString();<br>            bis.close();<br>            reader.close();<br>        } catch (Exception e) {<br>            LogUtil.e(&quot;HttpTask&quot;, e.toString(),e);<br>        }</p>
-<pre><code>    LogUtil.d(&amp;quot;HttpTask&amp;quot;, &amp;quot;getJsonStringFromGZIP net output : &amp;quot; + jsonString );
-    <span class="keyword">return</span> jsonString;
-}
-
-<span class="keyword">private</span> <span class="built_in">int</span> getShort(byte[] <span class="type">data</span>) {
-    <span class="keyword">return</span> (<span class="built_in">int</span>)((<span class="type">data</span>[<span class="number">0</span>]&amp;lt;&amp;lt;<span class="number">8</span>) | <span class="type">data</span>[<span class="number">1</span>]&amp;amp;xFF);
-}
-</code></pre><p>[/code]<br>参考 ，注意实际使用中，我发现gzip 流前两个字节是0x1e8b ，不是0x1f8b .后来检查一下code ，代码处理错误，加上第二个字节的时候需 &amp;0xFF</p>
-<p>0x1f8b 可参考标准 <a href="http://www.gzip.org/zlib/rfc-gzip.html#file-format" target="_blank" rel="external">http://www.gzip.org/zlib/rfc-gzip.html#file-format</a></p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -852,7 +859,7 @@ Speex() {
   
     <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
   
-    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>4</small></li>
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>5</small></li>
   
     <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
   
@@ -881,9 +888,9 @@ Speex() {
   
     <li><a href="/tags/MBaaS/">MBaaS</a><small>4</small></li>
   
-    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>4</small></li>
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>5</small></li>
   
-    <li><a href="/tags/Vertx/">Vertx</a><small>4</small></li>
+    <li><a href="/tags/Vertx/">Vertx</a><small>5</small></li>
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   

@@ -135,8 +135,8 @@ var _hmt = _hmt || [];
 <li>GET /api/whiskies =&gt; 获取所有的威士忌（getAll）</li>
 <li>GET /api/whiskies/:id =&gt; 获取指定id的威士忌（getOne）</li>
 <li>POST /api/whiskies =&gt;添加一瓶威士忌（addOne）</li>
-<li>PUT /api/whiskies =&gt; 编辑一瓶威士忌(updateOne)</li>
-<li>DELETE /api/whiskies =&gt; 删除一瓶威士忌(deleteOne)</li>
+<li>PUT /api/whiskies/:id =&gt; 编辑一瓶威士忌(updateOne)</li>
+<li>DELETE /api/whiskies/id =&gt; 删除一瓶威士忌(deleteOne)</li>
 </ul>
 <h5 id="我们需要一些数据。。。">我们需要一些数据。。。</h5><p>在实现REST API之前，需要创建Whisky的数据模型。使用下面的内容创建<code>src/main/java/quanke/name/study/vertx/first/Whisky.java</code>：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package name.quanke.study.vertx.first;&#10;&#10;import java.util.concurrent.atomic.AtomicInteger;&#10;&#10;public class Whisky &#123;&#10;&#10;  private static final AtomicInteger COUNTER = new AtomicInteger();&#10;&#10;  private final int id;&#10;&#10;  private String name;&#10;&#10;  private String origin;&#10;&#10;  public Whisky(String name, String origin) &#123;&#10;    this.id = COUNTER.getAndIncrement();&#10;    this.name = name;&#10;    this.origin = origin;&#10;  &#125;&#10;&#10;  public Whisky() &#123;&#10;    this.id = COUNTER.getAndIncrement();&#10;  &#125;&#10;&#10;  public String getName() &#123;&#10;    return name;&#10;  &#125;&#10;&#10;  public String getOrigin() &#123;&#10;    return origin;&#10;  &#125;&#10;&#10;  public int getId() &#123;&#10;    return id;&#10;  &#125;&#10;&#10;  public void setName(String name) &#123;&#10;    this.name = name;&#10;  &#125;&#10;&#10;  public void setOrigin(String origin) &#123;&#10;    this.origin = origin;&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
@@ -246,7 +246,7 @@ var duoshuoQuery = {short_name:"quanke"};
   
     <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
   
-    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>4</small></li>
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>5</small></li>
   
     <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
   
@@ -275,9 +275,9 @@ var duoshuoQuery = {short_name:"quanke"};
   
     <li><a href="/tags/MBaaS/">MBaaS</a><small>4</small></li>
   
-    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>4</small></li>
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>5</small></li>
   
-    <li><a href="/tags/Vertx/">Vertx</a><small>4</small></li>
+    <li><a href="/tags/Vertx/">Vertx</a><small>5</small></li>
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   

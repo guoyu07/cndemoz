@@ -66,6 +66,46 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2012-11-21T18:31:54.000Z"><a href="/2012/11/22/imageview-e6-8e-a7-e4-bb-b6-e5-bc-80-e5-8f-91-e6-bb-a4-e9-95-9c-e6-95-88-e6-9e-9c/">2012-11-22</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/22/imageview-e6-8e-a7-e4-bb-b6-e5-bc-80-e5-8f-91-e6-bb-a4-e9-95-9c-e6-95-88-e6-9e-9c/"> ImageView控件开发滤镜效果</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>实现过程说明：<br>使用设置图片对象的ColorFilter属性，把ColorMatrixColorFilter设置灰度通道，传递到ColorFilter属性中<br>注意两点：1 图片滤镜效果，只是在图层上面 加了一层效果，不是对图片的实际修改<br>\如果对单个图片加滤镜效果后，其他地方使用到这个图片也会变成带滤镜效果。<br>下面是实际实现代码<br>[code lang=”java”]<br>public final float[] BT_SELECTED = new float[] {1,0,0,0,99,0,1,0,0,99,0,0,1,0,99,0,0,0,1,0};<br>public final float[] BT_NOT_SELECTED = new float[] {1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0};;<br>public final static float[] BT_SELECTED1 = new float[] {<br>.338f, 0.339f, 0.332f, 0, 0,<br>.338f, 0.339f, 0.332f, 0, 0,<br>.338f, 0.339f, 0.332f, 0, 0,<br>, 0, 0, 1, 0<br>}; </p>
+<p>@Override<br>public void onCreate(Bundle savedInstanceState) {<br>super.onCreate(savedInstanceState);<br>setContentView(R.layout.main);</p>
+<p>ImageView ib2;<br>ib1 = (ImageView) findViewById(R.id.imageViewt);<br>ib2 = (ImageView) findViewById(R.id.imageView2);</p>
+<p>ib1.setOnTouchListener(new ImageView.OnTouchListener()<br>{<br>@Override<br>public boolean onTouch(View v, MotionEvent event) {<br>if (event.getAction() == MotionEvent.ACTION_DOWN) {</p>
+<p>ib1.setImageResource(R.drawable.icon1);<br>ib1.getDrawable().setColorFilter(<br>new ColorMatrixColorFilter(BT_SELECTED));</p>
+<p>ib1.setImageDrawable(ib1.getDrawable());<br>} else if (event.getAction() == MotionEvent.ACTION_UP) {<br>ib1.getDrawable().clearColorFilter();</p>
+<p>ib1.getDrawable().setColorFilter(new ColorMatrixColorFilter(BT_NOT_SELECTED));<br>ib1.setImageResource(R.drawable.icon2);<br>}<br>return false;<br>}<br>});</p>
+<p>}<br>[/code] </p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-11-21T18:09:26.000Z"><a href="/2012/11/22/e7-a8-8b-e5-ba-8f-e4-b8-ad-e5-a6-82-e4-bd-95-e8-8e-b7-e5-8f-96android-e7-9a-84root-e6-9d-83-e9-99-90/">2012-11-22</a></time>
       
       
@@ -495,62 +535,6 @@ var _hmt = _hmt || [];
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-11-12T02:17:22.000Z"><a href="/2012/11/12/android/android-e4-b9-8bexpandablelistview-e5-87-a0-e4-b8-aa-e7-89-b9-e6-ae-8a-e7-9a-84-e5-b1-9e-e6-80-a7/">2012-11-12</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/11/12/android/android-e4-b9-8bexpandablelistview-e5-87-a0-e4-b8-aa-e7-89-b9-e6-ae-8a-e7-9a-84-e5-b1-9e-e6-80-a7/">Android 之ExpandableListView几个特殊的属性</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>1. 设置ExpandableListView 默认是展开的:<br>先实例化 exListView<br>然后<br>   exListView.setAdapter(exlvAdapter);<br>   //遍历所有group,将所有项设置成默认展开<br>   int groupCount = exListView.getCount();<br>   for (int i=0; i&lt;groupCount; i++) {<br>       exListView.expandGroup(i);<br>       };</p>
-<p>2. 去掉ExpandableListView 默认的箭头<br>  用到ExpandableListView时有个箭头图标系统自带的在你自定义布局也不能去掉只要设置一个属性即可，如下：<br>  settingLists.setGroupIndicator(null);  <del>~</del><del>~</del><del>~</del>~~此处就是设置自定义的箭头图标的。置空则没有了。</p>
-<p>也可以自定义（但是位置还是在那个地方不推荐）如下：<br>首先，自定义一个expandablelistviewselector.xml文件，具体内容如下：<br>Java代码<br>&lt;?xml version=”1.0” encoding=”utf-8”?&gt;   </p>
-<p><selector xmlns:android="http://schemas.android.com/apk/res/android"><br>    <item android:state_expanded="true" android:drawable="@drawable/expandablelistviewindicatordown"><br>    <item android:drawable="@drawable/expandablelistviewindicator"><br></item></item></selector><br>加一句代码如下：<br>settingLists.setGroupIndicator(this.getResources().getDrawable(R.layout.expandablelistviewselector));<br>大功告成<br>3. 将默认的箭头修改到右边显示:</p>
-<p>1首先 ExpandableListView elistview;<br>         elistview.setGroupIndicator(null);//将控件默认的左边箭头去掉，<br>2在 自定义的继承自BaseExpandableListAdapter的adapter中有一个方法<br>/**</p>
-<ul>
-<li><p>父类view<br>*/<br> @Override<br> public View getGroupView(int groupPosition, boolean isExpanded,</p>
-<pre><code>    View convertView, ViewGroup parent) {
-Log.i<span class="params">(<span class="string">"zhaoxiong"</span>,<span class="string">"parent view"</span>)</span>;
-    LinearLayout parentLayout=<span class="params">(LinearLayout)</span> View.inflate<span class="params">(context, R.layout.wowocoupons_parent_item, null)</span>;
-    TextView parentTextView=<span class="params">(TextView)</span> parentLayout.findViewById<span class="params">(R.id.parentitem)</span>;
-    parentTextView.setText<span class="params">(parentlist.get<span class="params">(groupPosition)</span>)</span>;
-    ImageView parentImageViw=<span class="params">(ImageView)</span> parentLayout.findViewById<span class="params">(R.id.arrow)</span>;
-</code></pre><p>//判断isExpanded就可以控制是按下还是关闭，同时更换图片</p>
-<pre><code>    <span class="keyword">if</span><span class="params">(isExpanded)</span>{
-        parentImageViw.setBackgroundResource<span class="params">(R.drawable.arrow_down)</span>;
-    }<span class="keyword">else</span>{
-        parentImageViw.setBackgroundResource<span class="params">(R.drawable.arrow_up)</span>;
-    }
-
-return parentLayout;
-</code></pre><p> }</p>
-</li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -578,7 +562,7 @@ return parentLayout;
   
     <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
   
-    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>4</small></li>
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>5</small></li>
   
     <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
   
@@ -607,9 +591,9 @@ return parentLayout;
   
     <li><a href="/tags/MBaaS/">MBaaS</a><small>4</small></li>
   
-    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>4</small></li>
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>5</small></li>
   
-    <li><a href="/tags/Vertx/">Vertx</a><small>4</small></li>
+    <li><a href="/tags/Vertx/">Vertx</a><small>5</small></li>
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   

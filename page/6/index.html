@@ -66,6 +66,55 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2012-11-07T18:58:23.000Z"><a href="/2012/11/08/android/android-e5-bc-80-e5-8f-91-e4-b8-ad-e7-bd-91-e7-bb-9c-e8-af-b7-e6-b1-82-e7-9a-84-e5-8e-8b-e7-bc-a9-e2-94-80-e2-94-80-gzip-e7-9a-84-e4-bd-bf-e7-94-a8/">2012-11-08</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/08/android/android-e5-bc-80-e5-8f-91-e4-b8-ad-e7-bd-91-e7-bb-9c-e8-af-b7-e6-b1-82-e7-9a-84-e5-8e-8b-e7-bc-a9-e2-94-80-e2-94-80-gzip-e7-9a-84-e4-bd-bf-e7-94-a8/">Android开发中网络请求的压缩 ── GZip的使用</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>gzip是GNUzip的缩写，它是一个GNU自由软件的文件压缩程序。</p>
+<p>HTTP协议上的GZIP编码是一种用来改进WEB应用程序性能的技术。一般服务器中都安装有这个功能模块的，服务器端不需做改动。</p>
+<p>当浏览器支持gzip 格式的时候， 服务器端会传输gzip格式的数据。</p>
+<p>从Http 技术细节上讲，就是 http request 头中 有 “Accept-Encoding”, “gzip” ，response 中就有返回头Content-Encoding=gzip 。</p>
+<p>我们现在从浏览器上访问玩啥网站都是gzip格式传输的。</p>
+<p>但是我们现在Android 客户端，没有用gzip 格式访问。</p>
+<p>同样的的道理，我们可以在android 客户端 request 头中加入 “Accept-Encoding”, “gzip” ，来让服务器传送gzip 数据。</p>
+<p>具体代码如下。<br>[code lang=”java”]<br>   private String getJsonStringFromGZIP(HttpResponse response) {<br>        String jsonString = null;<br>        try {<br>            InputStream is = response.getEntity().getContent();<br>            BufferedInputStream bis = new BufferedInputStream(is);<br>            bis.mark(2);<br>            // 取前两个字节<br>            byte[] header = new byte[2];<br>            int result = bis.read(header);<br>            // reset输入流到开始位置<br>            bis.reset();<br>            // 判断是否是GZIP格式<br>            int headerData = getShort(header);<br>            // Gzip 流 的前两个字节是 0x1f8b<br>            if (result != -1 &amp;&amp; headerData == 0x1f8b) { LogUtil.d(&quot;HttpTask&quot;, &quot; use GZIPInputStream  &quot;);<br>                is = new GZIPInputStream(bis);<br>            } else {<br>                LogUtil.d(&quot;HttpTask&quot;, &quot; not use GZIPInputStream&quot;);<br>                is = bis;<br>            }<br>            InputStreamReader reader = new InputStreamReader(is, &quot;utf-8&quot;);<br>            char[] data = new char[100];<br>            int readSize;<br>            StringBuffer sb = new StringBuffer();<br>            while ((readSize = reader.read(data)) &gt; 0) {<br>                sb.append(data, 0, readSize);<br>            }<br>            jsonString = sb.toString();<br>            bis.close();<br>            reader.close();<br>        } catch (Exception e) {<br>            LogUtil.e(&quot;HttpTask&quot;, e.toString(),e);<br>        }</p>
+<pre><code>    LogUtil.d(&amp;quot;HttpTask&amp;quot;, &amp;quot;getJsonStringFromGZIP net output : &amp;quot; + jsonString );
+    <span class="keyword">return</span> jsonString;
+}
+
+<span class="keyword">private</span> <span class="built_in">int</span> getShort(byte[] <span class="type">data</span>) {
+    <span class="keyword">return</span> (<span class="built_in">int</span>)((<span class="type">data</span>[<span class="number">0</span>]&amp;lt;&amp;lt;<span class="number">8</span>) | <span class="type">data</span>[<span class="number">1</span>]&amp;amp;xFF);
+}
+</code></pre><p>[/code]<br>参考 ，注意实际使用中，我发现gzip 流前两个字节是0x1e8b ，不是0x1f8b .后来检查一下code ，代码处理错误，加上第二个字节的时候需 &amp;0xFF</p>
+<p>0x1f8b 可参考标准 <a href="http://www.gzip.org/zlib/rfc-gzip.html#file-format" target="_blank" rel="external">http://www.gzip.org/zlib/rfc-gzip.html#file-format</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-11-07T17:58:44.000Z"><a href="/2012/11/08/e5-ae-89-e5-8d-93-e8-87-aa-e5-b8-a6-e7-9a-84-e4-b8-bb-e9-a2-98androidtheme/">2012-11-08</a></time>
       
       
@@ -715,48 +764,6 @@ com.android.music</code><br>Monkey是一个命令行工具，可以运行在模�
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-11-03T19:30:43.000Z"><a href="/2012/11/04/e8-bd-acwebp-e6-a0-bc-e5-bc-8f-e5-9b-be-e7-89-87-e7-9a-84-e6-96-b0-e5-8a-9f-e8-83-bd/">2012-11-04</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/11/04/e8-bd-acwebp-e6-a0-bc-e5-bc-8f-e5-9b-be-e7-89-87-e7-9a-84-e6-96-b0-e5-8a-9f-e8-83-bd/">[转]WebP格式图片的新功能</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>自从我们宣布WebP格式图片后，我们一直在努力提高和增强WebP。今天，我们很高兴分享一些关于WebP的新的功能和扩展。</p>
-<p><strong>新功能</strong></p>
-<p>WebP的压缩算法有了显著的提高，同时完全保持了与以前版本的兼容。在解码方面，亦有所增强。</p>
-<p>新的解码方式，可以逐步从网络上下载图片到您的计算机中，这一特性在Chrome 12以上的浏览器中得到应用，用户不必等待下载整个图片。</p>
-<p>在编码方面，我们更加注重压缩图片的细节。对于其中的每一个环节，我们调整压缩和过滤图片的不同部分，重新分配，以达到最好的效果。WebP现在能够保留图像的原始许多细节。</p>
-<p><strong>更多支持</strong></p>
-<p>Chrome浏览器和Opera浏览器现在原生支持WebP图片。Gmail和Picasa网络相册也可以分享、发送和接收WebP图片。WebP格式图片已经应用于Google搜索结果的即时预览功能中，这样可以增加用户访问的速度。</p>
-<p>如果你想使用或编辑WebP图片，你可以使用<a href="http://www.pixelmator.com/weblog/2010/10/06/pixelmator-1-6-2-adds-webp-support/" target="_blank" rel="external">Pixelmator</a>，<a href="http://www.imagemagick.org/script/index.php" target="_blank" rel="external">ImageMagick</a>软件，或Photoshop专门针对<a href="http://www.telegraphics.com.au/sw/product/WebPFormat" target="_blank" rel="external">WebP的开发插件</a>和<a href="http://sourceforge.net/projects/javavp8decoder/" target="_blank" rel="external">Java VP8的解码器</a>。在开源社区，Mac用户可使用<a href="http://distfiles.macports.org/webp/" target="_blank" rel="external">MacPorts Mac OS X</a>的软件包，Linux用户可使用<a href="http://packages.debian.org/unstable/main/libwebp-dev" target="_blank" rel="external">Debian</a>，或<a href="https://build.opensuse.org/package/show?package=libwebp&amp;project=devel%3Alibraries%3Ac_c%2B%2B" target="_blank" rel="external">openSUSE</a>和<a href="http://packages.gentoo.org/package/media-libs/libwebp" target="_blank" rel="external">Gentoo</a>的包，<a href="http://httpd.apache.org/" target="_blank" rel="external">Apache HTTP服务器</a>包亦可使用。Windows用户，可以下载<a href="http://code.google.com/speed/webp/docs/webp_codec.html" target="_blank" rel="external">WebP编解码器</a>。在微软Office 2010，Windows媒体中心和照片编辑等软件中，将会支持解码WebP。</p>
-<p>好了。这些新功能让你我感到非常的兴奋，一如既往的，谢谢你们的反馈和对开源社区的源码贡献。</p>
-<p>via <a href="http://blog.chromium.org/2011/05/webp-in-chrome-picasa-gmail-with-slew.html" target="_blank" rel="external">Chromium官方博客</a></p>
-<div>转载文章请注明：文章转载自：<strong>Chrome迷</strong> (<a href="http://www.chromi.org/" target="_blank" rel="external">http://www.chromi.org</a>)<br>本文标题：WebP格式图片的新功能<br>本文地址：<a href="http://www.chromi.org/archives/11920" target="_blank" rel="external">http://www.chromi.org/archives/11920</a></div>
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -784,7 +791,7 @@ com.android.music</code><br>Monkey是一个命令行工具，可以运行在模�
   
     <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
   
-    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>4</small></li>
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>5</small></li>
   
     <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
   
@@ -813,9 +820,9 @@ com.android.music</code><br>Monkey是一个命令行工具，可以运行在模�
   
     <li><a href="/tags/MBaaS/">MBaaS</a><small>4</small></li>
   
-    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>4</small></li>
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>5</small></li>
   
-    <li><a href="/tags/Vertx/">Vertx</a><small>4</small></li>
+    <li><a href="/tags/Vertx/">Vertx</a><small>5</small></li>
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   

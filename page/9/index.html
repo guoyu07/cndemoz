@@ -66,6 +66,105 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2012-10-16T22:18:06.000Z"><a href="/2012/10/17/android/android-tts-e7-9a-84-e5-bc-80-e5-8f-91/">2012-10-17</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/17/android/android-tts-e7-9a-84-e5-bc-80-e5-8f-91/"> Android TTS 的开发 </a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>1、首先要tts是否有所需语言的语音数据，如果没有需安装它<br>[code lang=”java”]<br>    Intent checkIntent = new Intent();<br>    checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);<br>    startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);  </p>
+<pre><code><span class="keyword">private</span> TextToSpeech mTts;  
+<span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onActivityResult</span><span class="params">(<span class="keyword">int</span> requestCode, <span class="keyword">int</span> resultCode, Intent data)</span> </span>{  
+    <span class="keyword">if</span> (requestCode == MY_DATA_CHECK_CODE) {  
+        <span class="keyword">if</span> (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {  
+            <span class="comment">// success, create the TTS instance  </span>
+            mTts = <span class="keyword">new</span> TextToSpeech(<span class="keyword">this</span>, <span class="keyword">this</span>);  
+        } <span class="keyword">else</span> {  
+            <span class="comment">// missing data, install it  </span>
+            Intent installIntent = <span class="keyword">new</span> Intent();  
+            installIntent.setAction(  
+                TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);  
+            startActivity(installIntent);  
+        }  
+    }  
+}  
+</code></pre><p>[/code]</p>
+<p>2、设置地区（语言）</p>
+<p>[code lang=”java”]<br>    mTts.setLanguage(Locale.US);<br>[/code]</p>
+<p>3、判断是否支持某地区的语言</p>
+<p>[code lang=”java”]<br>    mTts.isLanguageAvailable(Locale.FRANCE))<br>[/code]</p>
+<p>或<br>[code lang=”java”]<br>    mTts.isLanguageAvailable(new Locale(&quot;spa&quot;, &quot;ESP&quot;)))<br>[/code]</p>
+<p>或<br>[code lang=”java”]</p>
+<pre><code>mTts.<span class="function"><span class="title">isLanguageAvailable</span><span class="params">(new Locale(&amp;quot;spa&amp;quot;)</span></span>)  
+</code></pre><p>[/code]<br>如果没有语言数据，会返回TextToSpeech.LANG_MISSING_DATA，否则返回ACTION_CHECK_TTS_DATA</p>
+<p>4、处理发音<br>[code lang=”java”]</p>
+<pre><code><span class="typename">String</span> myText1 = &amp;quot;Did you sleep well?&amp;quot;;  
+<span class="typename">String</span> myText2 = &amp;quot;I hope so, because it<span class="attribute">'s</span> <span class="typename">time</span> <span class="keyword">to</span> wake up.&amp;quot;;  
+mTts.speak(myText1, TextToSpeech.QUEUE_FLUSH, <span class="keyword">null</span>);  
+mTts.speak(myText2, TextToSpeech.QUEUE_ADD, <span class="keyword">null</span>);  
+</code></pre><p>[/code]</p>
+<p>5、加参数</p>
+<p>[code lang=”java”]</p>
+<pre><code>HashMap<span class="subst">&amp;</span><span class="literal">lt</span>;<span class="built_in">String</span>, <span class="built_in">String</span><span class="subst">&amp;</span><span class="literal">gt</span>; myHashAlarm <span class="subst">=</span> <span class="literal">new</span> HashMap();  
+myHashAlarm<span class="built_in">.</span>put(TextToSpeech<span class="built_in">.</span>Engine<span class="built_in">.</span>KEY_PARAM_STREAM, <span class="built_in">String</span><span class="built_in">.</span>valueOf(AudioManager<span class="built_in">.</span>STREAM_ALARM));  
+mTts<span class="built_in">.</span>speak(myText1, TextToSpeech<span class="built_in">.</span>QUEUE_FLUSH, myHashAlarm);  
+mTts<span class="built_in">.</span>speak(myText2, TextToSpeech<span class="built_in">.</span>QUEUE_ADD, myHashAlarm);  
+</code></pre><p>[/code]</p>
+<p>6、加完成监听</p>
+<p>[code lang=”java”]</p>
+<pre><code>mTts.setOnUtteranceCompletedListener<span class="params">(this)</span>;  
+myHashAlarm.put<span class="params">(TextToSpeech.Engine.KEY_PARAM_STREAM, String.valueOf<span class="params">(AudioManager.STREAM_ALARM)</span>)</span>;  
+mTts.speak<span class="params">(myText1, TextToSpeech.QUEUE_FLUSH, myHashAlarm)</span>;  
+myHashAlarm.put<span class="params">(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, &amp;quot;end of wakeup message ID&amp;quot;)</span>;  
+<span class="comment">// myHashAlarm now contains two optional parameters  </span>
+mTts.speak<span class="params">(myText2, TextToSpeech.QUEUE_ADD, myHashAlarm)</span>;  
+
+public void onUtteranceCompleted<span class="params">(String uttId)</span> {  
+<span class="keyword">if</span> <span class="params">(uttId == &amp;quot;end of wakeup message ID&amp;quot;)</span> {  
+    playAnnoyingMusic<span class="params">()</span>;  
+}  
+}  
+</code></pre><p>[/code]</p>
+<p>7、将发音录入文件</p>
+<p>[code lang=”java”]</p>
+<pre><code>HashMap<span class="subst">&amp;</span><span class="literal">lt</span>;<span class="built_in">String</span>, <span class="built_in">String</span><span class="subst">&amp;</span><span class="literal">gt</span>; myHashRender <span class="subst">=</span> <span class="literal">new</span> HashMap();  
+<span class="built_in">String</span> wakeUpText <span class="subst">=</span> <span class="subst">&amp;</span>quot;Are you up yet<span class="subst">?&amp;</span>quot;;  
+<span class="built_in">String</span> destFileName <span class="subst">=</span> <span class="subst">&amp;</span>quot;/sdcard/myAppCache/wakeUp<span class="built_in">.</span>wav<span class="subst">&amp;</span>quot;;  
+myHashRender<span class="built_in">.</span>put(TextToSpeech<span class="built_in">.</span>Engine<span class="built_in">.</span>KEY_PARAM_UTTERANCE_ID, wakeUpText);  
+
+mTts<span class="built_in">.</span>addSpeech(wakeUpText, destFileName);  
+mTts<span class="built_in">.</span>speak(wakeUpText, TextToSpeech<span class="built_in">.</span>QUEUE_ADD, myHashAlarm);  
+</code></pre><p>[/code]</p>
+<p>8、关闭tts<br>[code lang=”java”]</p>
+<pre><code><span class="tag">mTts</span><span class="class">.shutdown</span>();  
+<span class="tag">mTts</span><span class="class">.synthesizeToFile</span>(<span class="tag">wakuUpText</span>, <span class="tag">myHashRender</span>, <span class="tag">destFileName</span>);  
+</code></pre><p>[/code] </p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-10-15T18:39:19.000Z"><a href="/2012/10/16/go-e8-af-ad-e8-a8-80-e4-b8-ad-e6-96-87-e7-a4-be-e5-8c-ba/">2012-10-16</a></time>
       
       
@@ -564,46 +663,6 @@ export PATH=${JAVA_HOME}/bin:$PATH:<span style="color: #ff0000;">${ANDROID_HOME}
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-08-27T06:35:37.000Z"><a href="/2012/08/27/android/android-e5-ba-94-e7-94-a8-e4-bb-8e-e9-9b-b6-e5-bc-80-e5-a7-8b-e5-88-b0-e5-8f-91-e5-b8-83/">2012-08-27</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/08/27/android/android-e5-ba-94-e7-94-a8-e4-bb-8e-e9-9b-b6-e5-bc-80-e5-a7-8b-e5-88-b0-e5-8f-91-e5-b8-83/">android应用从零开始到发布</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>android应用从零开始到发布</p>
-<p>android应用从零开始到发布要经历几个过程：</p>
-<p>1．搭建android开发环境。</p>
-<p>2．开发应用（中间很多步省略）。</p>
-<p>3．发布。<br>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2012/08/27/android/android-e5-ba-94-e7-94-a8-e4-bb-8e-e9-9b-b6-e5-bc-80-e5-a7-8b-e5-88-b0-e5-8f-91-e5-b8-83/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -631,7 +690,7 @@ export PATH=${JAVA_HOME}/bin:$PATH:<span style="color: #ff0000;">${ANDROID_HOME}
   
     <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
   
-    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>4</small></li>
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>5</small></li>
   
     <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
   
@@ -660,9 +719,9 @@ export PATH=${JAVA_HOME}/bin:$PATH:<span style="color: #ff0000;">${ANDROID_HOME}
   
     <li><a href="/tags/MBaaS/">MBaaS</a><small>4</small></li>
   
-    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>4</small></li>
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>5</small></li>
   
-    <li><a href="/tags/Vertx/">Vertx</a><small>4</small></li>
+    <li><a href="/tags/Vertx/">Vertx</a><small>5</small></li>
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   
