@@ -66,6 +66,79 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2012-11-14T21:29:23.000Z"><a href="/2012/11/15/android/android-e5-b1-8f-e5-b9-95-e9-80-82-e9-85-8d-e9-97-ae-e9-a2-98/">2012-11-15</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/15/android/android-e5-b1-8f-e5-b9-95-e9-80-82-e9-85-8d-e9-97-ae-e9-a2-98/">android 屏幕适配问题</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>如何将一个应用程序适配在不同的手机上，虽然这不算是一个技术问题，但是对于刚刚做屏幕的开发人员来说，还真不是一件多么简单的事情。</p>
+<p>首先：你需要在AndroidManifest.xml文件的<manifest>元素如下添加子元素<br>[code lang=”xml”]<br>&lt;supports-screens android:largeScreens=&quot;true&quot;<br>       android:normalScreens=&quot;true&quot; android:anyDensity=&quot;true&quot;<br>       android:smallScreens=&quot;true&quot;&gt;<br>&lt;/supports-screens&gt;<br>[/code]</manifest></p>
+<pre><code>名如其意，以上是为我们的屏幕设置多分辨率支持（更准确的说是适配大、中、小三种密度）。<span class="string">android:</span>anyDensity=<span class="string">"true"</span> ，这一句对整个的屏幕都起着十分重要的作用，值为<span class="literal">true</span>，我们的应用程序当安装在不同密度的手机上时，程序会分别加载hdpi,mdpi,ldpi文件夹中的资源。
+</code></pre><p>相反，如果值设置为false，即使我们在hdpi,mdpi,ldpi文件夹下拥有同一种资源，那么应用也不会自动地去相应文件夹下寻找资源，这种情况都是出现在高密度，以及低密度的手机上，比如说一部240×320像素的手机，如果设置android:anyDensity=”false”，Android系统会将240 x 320(低密度)转换为 320×480(中密度)，这样的话，应用就会在小密度手机上加载mdpi文件中的资源。</p>
+<p>2.细心的人会发现自android2.0开始之后drawable文件被三个文件夹drawable-hdpi,drawable-mdpi,drawable-ldpi三个文件夹所取代，有些编程人员为了让应用程序默认地加载某些图片，他们会特意地去在android2.0之后的应用程序中重新创建drawable文件夹，其实这样做完全没有必要，通过第一段的分析我们得知，android:anyDensity=”false”，则应用会将大小密度转变成中密度，从而去加载mdpi中的资源。这里同样，当android:anyDensity=”false”，则应用会去加载mdpi中的资源。</p>
+<p>总结一下：</p>
+<p>第一：android:anyDensity=”true”，系统会依据屏幕密度，自动去找对应的文件夹</p>
+<p>第二：android:anyDensity=”false”,</p>
+<p>(1)              如果drawable-hdpi,drawable-mdpi,drawable-ldpi三个文件夹中有同一张图片资源的不同密度表示，那么系统会去加载drawable_mdpi文件夹中的资源</p>
+<p>(2)              如果drawable-hpdi中有高密度图片，其它两个文件夹中没有对应图片资源，那么系统会去加载drawable-hdpi中的资源。</p>
+<p>(3)              如果drawable-hdpi,drawable-mdpi中有图片资源，drawable-ldpi中没有对应的图片资源，那么系统会加载drawable-mdpi文件夹中的资源</p>
+<p>3. 注意上图各种文件夹的不同表示。</p>
+<p>drawable-hdpi 该图片即适用于横屏，也适用于竖屏</p>
+<p>drawable-land-hdpi,当屏幕为横屏，且为高密度时，加载此文件夹中的资源</p>
+<p>drawable-port-hdpi,当屏幕为竖屏，且为高密度时，加载此文件夹中的资源</p>
+<p>3. 有时候会根据需要在代码中动态地设置某个值，比如地图，地图的pin和地图的地址提示框的相对偏移量在不同密度的手机上是不同的。这时候可以通过以下方法求出屏幕密度：</p>
+<p>[code lang=”java”]<br>DisplayMetrics metric = new DisplayMetrics();<br>getWindowManager().getDefaultDisplay().getMetrics(metric);</p>
+<p>int densityDpi = metric.densityDpi;  // 屏幕密度DPI（120 / 160 / 240）</p>
+<p>[/code]</p>
+<p>然后可以在代码中为这几种密度分别设置便宜量</p>
+<p>但是这种方法最好不要使用，最好的方式是在xml文件中不同密度的手机进行分别设置。</p>
+<p>这里地图的偏移量可以在values-hpdi,values-mdpi,values-ldpi三种文件夹中的dimens.xml文件进行设置</p>
+<p>值得一提的是：</p>
+<pre><code><span class="tag">&lt;<span class="title">dimen</span> <span class="attribute">name</span>=<span class="value">"bitmap_common_topoffset"</span>&gt;</span>40dp<span class="tag">&lt;/<span class="title">dimen</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">dimen</span> <span class="attribute">name</span>=<span class="value">"bitmap_common_bottomoffset"</span>&gt;</span>-14dp<span class="tag">&lt;/<span class="title">dimen</span>&gt;</span>
+</code></pre><p>这里的负数是完全起作用的，系统会认为它是一个负值</p>
+<p>4. 各大手机厂商对于Android操作系统都有或多或少的改动，当然这些改动会对我们应用程序产生某些影响</p>
+<p>  比如：</p>
+<p>   （1）系统源代码中连接music服务的aidl文件所在包名：com.android.music </p>
+<p>   （2）LG则可能将该aidl文件修改所在的包（例如修改为 com.android.music.player），并且修改其中的文件内容（增加一个方法，或者减少几个方法，或者修改方法名称）那么我们的应用要想在LG的手机上发布，那么我们就必须改变所要连接的aidl文件,必须跟LG厂商修改的完全一致。</p>
+<p>5. 国际化问题.</p>
+<p>   有时候在xml中设置了相应的语言，但是为什么当我们更改语言之后，UI显示仍然不起作用？</p>
+<p>   不要怀疑是系统出了问题，这与我们在代码中引用values/string.xml中字符串的方式有关。</p>
+<p>   错误的方式：</p>
+<p>   1. 声明全局变量 private static String tempStr;</p>
+<p>   2. 在onCreate方法中对该变量赋值 tempStr = context.getString(R.string.test);</p>
+<p>   3. 在更新UI的方法（非onCreate方法）中引用该变量。 textView.setText(tempStr);</p>
+<p>   原因是由于，当修改本地语言时，onCreate不会再被执行一遍. 变量tempStr 依然会使用页面刚启动时加载的默认英语。</p>
+<p>   正确的方式：</p>
+<p>   直接进行第三步：textView.setText(context.getString(R.string.test));</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-11-13T01:48:50.000Z"><a href="/2012/11/13/ahk--autohotkey/">2012-11-13</a></time>
       
       
@@ -754,41 +827,6 @@ Speex() {
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-11-07T19:31:49.000Z"><a href="/2012/11/08/e5-a3-b0-e9-9f-b3-e5-8e-8b-e7-bc-a9-e5-ba-93-speex/">2012-11-08</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/11/08/e5-a3-b0-e9-9f-b3-e5-8e-8b-e7-bc-a9-e5-ba-93-speex/">声音压缩库 Speex </a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p><img src="http://www.oschina.net/uploads/img/200906/18121058_90zB.png" alt=""></p>
-<p>Speex是一套专门用于压缩声音的库,由于其专门针对声音,所以压缩声音的性能非常高.Speex由于其压缩性能,及0.80版后的跨平台的性能,所以在网络声音的传输中有很大的价值.但是需要注意的是speex只能对声音进行压缩,不支持音乐的压缩,如果你需要音乐的压缩你或许需要用vorbis库.</p>
-<p>支持包括Linux、BSD、MacOS 以及 Symbian 系统。</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -816,7 +854,7 @@ Speex() {
   
     <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
   
-    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>6</small></li>
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>7</small></li>
   
     <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
   
@@ -847,9 +885,9 @@ Speex() {
   
     <li><a href="/tags/Vert-x-Core手册-for-Java/">Vert.x Core手册 for Java</a><small>1</small></li>
   
-    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>6</small></li>
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>7</small></li>
   
-    <li><a href="/tags/Vertx/">Vertx</a><small>6</small></li>
+    <li><a href="/tags/Vertx/">Vertx</a><small>7</small></li>
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   

@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Vert-x配置项VertxOptions的使用 | 全科-不安分的码农</title>
+  <meta name="author" content="全科">
+  
+  <meta name="description" content="欢迎关注http://quanke.name/
+交流群：231419585
+转载请注明出处，谢谢
+
+今天清明节，一大早被孩子吵醒，起来撸一篇关于VertxOptions的文章，此文章诞生于洗手间，读此文章可能会闻到臭臭的味道。下面正是开始：
+在发布Vert.x实例时，需要传入一个VertxOptio">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Vert-x配置项VertxOptions的使用"/>
+  <meta property="og:site_name" content="全科-不安分的码农"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-不安分的码农" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-不安分的码农</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-04-03T22:59:52.000Z"><a href="/2016/04/04/Vert-x配置项VertxOptions的使用/">2016-04-04</a></time>
+      
+      
+  
+    <h1 class="title">Vert-x配置项VertxOptions的使用</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <ul>
+<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
+<li>交流群：<code>231419585</code></li>
+<li>转载请注明出处，谢谢</li>
+</ul>
+<p>今天清明节，一大早被孩子吵醒，起来撸一篇关于VertxOptions的文章，此文章诞生于洗手间，读此文章可能会闻到臭臭的味道。下面正是开始：</p>
+<p>在发布Vert.x实例时，需要传入一个<a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html" target="_blank" rel="external">VertxOptions</a>来实现针对Vert.x的配置项的管理，代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VertxOptions options = new VertxOptions();&#10;options.setWorkerPoolSize(40)//&#20030;&#20010;&#26647;&#23376;&#65292;&#35774;&#32622;&#25903;&#25345;&#30340;Worker&#32447;&#31243;&#30340;&#26368;&#22823;&#25968;&#37327;&#10;Vertx vertx = Vertx.vertx(options);</span><br></pre></td></tr></table></figure>
+<p>配置项的API说明：</p>
+<ul>
+<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setEventLoopPoolSize-int-" target="_blank" rel="external">setEventLoopPoolSize</a></p>
+<p>  设置Vert.x实例中使用的Event Loop线程的数量，默认值为：2 * Runtime.getRuntime().availableProcessors()（可用的处理器个数）；</p>
+</li>
+<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setWorkerPoolSize-int-" target="_blank" rel="external">setWorkerPoolSize</a></p>
+<p>  设置Vert.x实例中支持的Worker线程的最大数量，默认值为20；</p>
+</li>
+<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setInternalBlockingPoolSize-int-" target="_blank" rel="external">setInternalBlockingPoolSize</a></p>
+<p>  设置内部阻塞线程池最大线程数，这个参数主要被Vert.x的一些内部操作使用，默认值为20；</p>
+</li>
+<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setClustered-boolean-" target="_blank" rel="external">setClustered</a></p>
+<p>  是否开启Vert.x的Cluster集群模式，默认值为false；</p>
+</li>
+<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setClusterHost-java.lang.String-" target="_blank" rel="external">setClusterHost</a></p>
+<p>  【Cluster集群模式有效】设置集群运行的默认hostname，默认值为localhost；</p>
+</li>
+<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setClusterPort-int-" target="_blank" rel="external">setClusterPort</a></p>
+<p>  【Cluster集群模式有效】设置集群运行的端口号，可自定义固定端口号，默认值为0（随机分配）；</p>
+</li>
+<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setClusterPingInterval-long-" target="_blank" rel="external">setClusterPingInterval</a></p>
+<p>  【Cluster集群模式有效】使用ping命令检测Cluster的时间间隔，默认20000，单位毫秒ms，即20秒；</p>
+</li>
+<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setClusterPingReplyInterval-long-" target="_blank" rel="external">setClusterPingReplyInterval</a></p>
+<p>  【Cluster集群模式有效】集群响应ping命令的时间间隔，默认20000，单位毫秒ms，即20秒；</p>
+</li>
+<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setBlockedThreadCheckInterval-long-" target="_blank" rel="external">setBlockedThreadCheckInterval</a></p>
+<p>  阻塞线程检查的时间间隔，默认1000，单位ms，即1秒；</p>
+</li>
+<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setMaxEventLoopExecuteTime-long-" target="_blank" rel="external">setMaxEventLoopExecuteTime</a></p>
+<p>  Event Loop的最大执行时间，默认2l <em> 1000 </em> 1000000，单位ns，即2秒；</p>
+</li>
+<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setMaxWorkerExecuteTime-long-" target="_blank" rel="external">setMaxWorkerExecuteTime</a></p>
+<p>  Worker线程的最大执行时间，默认60l <em> 1000 </em> 1000000，单位ns，即60秒；</p>
+</li>
+<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setHAEnabled-boolean-" target="_blank" rel="external">setHAEnabled</a></p>
+<p>  是否支持HA架构，默认值false；（*：如果Vert.x启用了HA模式，其中一个Vert.x实例运行出现了异常或者死掉，那么这个Vert.x实例中运行的Verticle会执行重发布Redeploy的过程将运行在该实例中的Verticle实例重新发布到其他正常运行的Vert.x实例中【Verticle Fail-Over】。）</p>
+</li>
+<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setHAGroup-java.lang.String-" target="_blank" rel="external">setHAGroup</a></p>
+<p>  【HA模式有效】支持了HA模式过后，可根据不同的组名将Vert.x进行逻辑分组，此方法设置当前Vert.x的逻辑组名，默认<strong>DEFAULT</strong>；</p>
+</li>
+<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setQuorumSize-int-" target="_blank" rel="external">setQuorumSize</a></p>
+<p>  【HA模式有效】支持了HA模式过后，此方法设置冲裁节点的数量，默认值1；（*：这个值一旦设置过后，如果要发布Verticle组件，则需要运行环境中的节点数量达到这个值才可执行发布，比如quorum的值设置成3，如果仅仅运行了两个Vert.x实例，那么这种情况下Verticle不会被发布，必须要运行至少三个Vert.x实例，才会执行发布Deploy流程，Undeploy流程类似）</p>
+</li>
+<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setWarningExceptionTime-long-" target="_blank" rel="external">setWarningExceptionTime</a></p>
+<p>  如果线程阻塞时间超过了这个阀值，那么就会打印警告的堆栈信息，默认为5l <em> 1000 </em> 1000000，单位ns，即5秒；</p>
+</li>
+</ul>
+<pre><code>此文参考： <span class="string">http:</span><span class="comment">//dwz.cn/32dhMF</span>
+
+感谢戒子猪
+</code></pre>
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Vert-x3-系列/">Vert.x3 系列</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/Vert-x3/">Vert.x3</a>, <a href="/tags/Vertx/">Vertx</a>
+  </div>
+
+        
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+<!-- 多说评论框 start -->
+  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"quanke"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
+  
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>7</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>3</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>11</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>3</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>4</small></li>
+  
+    <li><a href="/tags/Vert-x-Core手册-for-Java/">Vert.x Core手册 for Java</a><small>1</small></li>
+  
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>7</small></li>
+  
+    <li><a href="/tags/Vertx/">Vertx</a><small>7</small></li>
+  
+    <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2016 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

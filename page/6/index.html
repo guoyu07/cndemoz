@@ -66,6 +66,41 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2012-11-07T19:31:49.000Z"><a href="/2012/11/08/e5-a3-b0-e9-9f-b3-e5-8e-8b-e7-bc-a9-e5-ba-93-speex/">2012-11-08</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/08/e5-a3-b0-e9-9f-b3-e5-8e-8b-e7-bc-a9-e5-ba-93-speex/">声音压缩库 Speex </a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><img src="http://www.oschina.net/uploads/img/200906/18121058_90zB.png" alt=""></p>
+<p>Speex是一套专门用于压缩声音的库,由于其专门针对声音,所以压缩声音的性能非常高.Speex由于其压缩性能,及0.80版后的跨平台的性能,所以在网络声音的传输中有很大的价值.但是需要注意的是speex只能对声音进行压缩,不支持音乐的压缩,如果你需要音乐的压缩你或许需要用vorbis库.</p>
+<p>支持包括Linux、BSD、MacOS 以及 Symbian 系统。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-11-07T19:24:41.000Z"><a href="/2012/11/08/android/android-e5-bd-95-e5-88-b6-e5-a3-b0-e9-9f-b3-e5-bd-95-e9-9f-b3-e8-be-93-e8-be-93-e5-87-ba-e6-a0-bc-e5-bc-8f/">2012-11-08</a></time>
       
       
@@ -672,135 +707,6 @@ com.android.music</code><br>Monkey是一个命令行工具，可以运行在模�
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-11-04T19:13:31.000Z"><a href="/2012/11/05/relativelayout/">2012-11-05</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/11/05/relativelayout/">RelativeLayout的基本属性用法以及代码实现</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>RelativeLayout，顾名思义，就是以“相对”位置/对齐 为基础的布局方式。android.widget.RelativeLayout 有个 继承自android.view.ViewGroup.LayoutParams 的内嵌类 LayoutParams，使用这个类的实例调用 RelativeLayout.addView 就可以实现“相对布局”。他比LinearLyout更灵活的为控件布置位置.</p>
-<p><span style="color: #ff0000;">在新版本中属性的设置可能有变化，具体请看官方api</span></p>
-<p>RelativeLayout 的属性：<br>// 相对于给定ID控件</p>
-<p>android:layout_above 将该控件的底部置于给定ID的控件之上;</p>
-<p>android:layout_below 将该控件的底部置于给定ID的控件之下;</p>
-<p>android:layout_toLeftOf 将该控件的右边缘与给定ID的控件左边缘对齐;</p>
-<p>android:layout_toRightOf 将该控件的左边缘与给定ID的控件右边缘对齐;</p>
-<p>android:layout_alignBaseline 将该控件的baseline与给定ID的baseline对齐;</p>
-<p>android:layout_alignTop 将该控件的顶部边缘与给定ID的顶部边缘对齐;</p>
-<p>android:layout_alignBottom 将该控件的底部边缘与给定ID的底部边缘对齐;</p>
-<p>android:layout_alignLeft 将该控件的左边缘与给定ID的左边缘对齐;</p>
-<p>android:layout_alignRight 将该控件的右边缘与给定ID的右边缘对齐;</p>
-<p>// 相对于父组件</p>
-<p>android:layout_alignParentTop 如果为true,将该控件的顶部与其父控件的顶部对齐;</p>
-<p>android:layout_alignParentBottom 如果为true,将该控件的底部与其父控件的底部对齐;</p>
-<p>android:layout_alignParentLeft 如果为true,将该控件的左部与其父控件的左部对齐;</p>
-<p>android:layout_alignParentRight 如果为true,将该控件的右部与其父控件的右部对齐;</p>
-<p>// 居中</p>
-<p>android:layout_centerHorizontal 如果为true,将该控件的置于水平居中;</p>
-<p>android:layout_centerVertical 如果为true,将该控件的置于垂直居中;</p>
-<p>android:layout_centerInParent 如果为true,将该控件的置于父控件的中央;</p>
-<p>// 指定移动像素</p>
-<p>android:layout_marginTop 上偏移的值;</p>
-<p>android:layout_marginBottom 下偏移的值;</p>
-<p>android:layout_marginLeft 　　左偏移的值;</p>
-<p>android:layout_marginRight 　 右偏移的值;</p>
-<p>example:</p>
-<p>android:layout_below = “@id/<em>*</em>“</p>
-<p>android:layout_alignBaseline = “@id/<em>*</em>“</p>
-<p>android:layout_alignParentTop = true</p>
-<p>android:layout_marginLeft = “10px”</p>
-<p>以下是代码中的用法：</p>
-<p>[code lang=”java”]<br>import android.app.Activity;<br>import android.os.Bundle;<br>import android.widget.<em>;<br>import android.view.</em>;</p>
-<p>public class RLTest extends Activity {</p>
-<pre><code><span class="label">private</span> RelativeLayout rl<span class="comment">;</span>
-
-<span class="label">private</span> <span class="keyword">Button </span><span class="keyword">btn1;
-</span><span class="label">private</span> <span class="keyword">Button </span><span class="keyword">btn2;
-</span><span class="label">private</span> <span class="keyword">Button </span><span class="keyword">btn3;
-</span><span class="label">private</span> <span class="keyword">Button </span><span class="keyword">btn4;
-</span>
-<span class="label">private</span> static final int ID_BTN1 = <span class="number">1</span><span class="comment">;</span>
-<span class="label">private</span> static final int ID_BTN2 = <span class="number">2</span><span class="comment">;</span>
-<span class="label">private</span> static final int ID_BTN3 = <span class="number">3</span><span class="comment">;</span>
-<span class="label">private</span> static final int ID_BTN4 = <span class="number">4</span><span class="comment">;</span>
-
-<span class="comment">/** Called when the activity is first created. */</span>
-<span class="comment">@Override</span>
-<span class="label">public</span> void onCreate(<span class="keyword">Bundle </span>icicle) {
-    super.onCreate(icicle)<span class="comment">;</span>
-
-    rl = new RelativeLayout(this)<span class="comment">;</span>
-
-    <span class="keyword">btn1 </span>= new <span class="keyword">Button(this);
-</span>    <span class="keyword">btn1.setText(&amp;quot;----------------------&amp;quot;);
-</span>    <span class="keyword">btn1.setId(ID_BTN1);
-</span>
-    RelativeLayout.LayoutParams lp1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)<span class="comment">;</span>
-    lp1.<span class="keyword">addRule(RelativeLayout.ALIGN_WITH_PARENT_TOP);
-</span>    lp1.<span class="keyword">addRule(RelativeLayout.CENTER_HORIZONTAL, </span>RelativeLayout.TRUE)<span class="comment">;</span>
-    // <span class="keyword">btn1 </span>位于父 View 的顶部，在父 View 中水平居中
-    rl.<span class="keyword">addView(btn1, </span>lp1 )<span class="comment">;</span>
-
-    <span class="keyword">btn2 </span>= new <span class="keyword">Button(this);
-</span>    <span class="keyword">btn2.setText(&amp;quot;|\n|\n|\n|\n|\n|&amp;quot;);
-</span>    <span class="keyword">btn2.setId(ID_BTN2);
-</span>
-    RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)<span class="comment">;</span>
-    lp2.<span class="keyword">addRule(RelativeLayout.POSITION_BELOW, </span>ID_BTN1)<span class="comment">;</span>
-    lp2.<span class="keyword">addRule(RelativeLayout.ALIGN_LEFT, </span>ID_BTN1)<span class="comment">;</span>
-    // <span class="keyword">btn2 </span>位于 <span class="keyword">btn1 </span>的下方、其左边和 <span class="keyword">btn1 </span>的左边对齐
-    rl.<span class="keyword">addView(btn2, </span>lp2)<span class="comment">;</span>
-
-    <span class="keyword">btn3 </span>= new <span class="keyword">Button(this);
-</span>    <span class="keyword">btn3.setText(&amp;quot;|\n|\n|\n|\n|\n|&amp;quot;);
-</span>    <span class="keyword">btn3.setId(ID_BTN3);
-</span>
-    RelativeLayout.LayoutParams lp3 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)<span class="comment">;</span>
-   lp3.<span class="keyword">addRule(RelativeLayout.POSITION_BELOW, </span>ID_BTN1)<span class="comment">;</span>
-    lp3.<span class="keyword">addRule(RelativeLayout.POSITION_TO_RIGHT, </span>ID_BTN2)<span class="comment">;</span>
-    lp3.<span class="keyword">addRule(RelativeLayout.ALIGN_RIGHT, </span>ID_BTN1)<span class="comment">;</span>
-    // <span class="keyword">btn3 </span>位于 <span class="keyword">btn1 </span>的下方、<span class="keyword">btn2 </span>的右方且其右边和 <span class="keyword">btn1 </span>的右边对齐（要扩充）
-    rl.<span class="keyword">addView(btn3,lp3);
-</span>
-    <span class="keyword">btn4 </span>= new <span class="keyword">Button(this);
-</span>    <span class="keyword">btn4.setText(&amp;quot;--------------------------------------------&amp;quot;);
-</span>    <span class="keyword">btn4.setId(ID_BTN4);
-</span>
-    RelativeLayout.LayoutParams lp4 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)<span class="comment">;</span>
-    lp4.<span class="keyword">addRule(RelativeLayout.POSITION_BELOW, </span>ID_BTN2)<span class="comment">;</span>
-    lp4.<span class="keyword">addRule(RelativeLayout.CENTER_HORIZONTAL, </span>RelativeLayout.TRUE)<span class="comment">;</span>
-    // <span class="keyword">btn4 </span>位于 <span class="keyword">btn2 </span>的下方，在父 Veiw 中水平居中
-    rl.<span class="keyword">addView(btn4,lp4);
-</span>
-    setContentView(rl)<span class="comment">;</span>
-}
-</code></pre><p>}<br>[/code] </p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -828,7 +734,7 @@ com.android.music</code><br>Monkey是一个命令行工具，可以运行在模�
   
     <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
   
-    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>6</small></li>
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>7</small></li>
   
     <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
   
@@ -859,9 +765,9 @@ com.android.music</code><br>Monkey是一个命令行工具，可以运行在模�
   
     <li><a href="/tags/Vert-x-Core手册-for-Java/">Vert.x Core手册 for Java</a><small>1</small></li>
   
-    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>6</small></li>
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>7</small></li>
   
-    <li><a href="/tags/Vertx/">Vertx</a><small>6</small></li>
+    <li><a href="/tags/Vertx/">Vertx</a><small>7</small></li>
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   
