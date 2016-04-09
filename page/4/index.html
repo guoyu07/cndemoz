@@ -66,6 +66,56 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2012-11-24T23:42:58.000Z"><a href="/2012/11/25/e8-a7-a3-e5-86-b3eclipse-e6-97-a0-e6-b3-95-e6-89-93-e5-bc-80-e2-80-9cfailed-to-load-the-jni-shared-library-e2-80-9d/">2012-11-25</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/25/e8-a7-a3-e5-86-b3eclipse-e6-97-a0-e6-b3-95-e6-89-93-e5-bc-80-e2-80-9cfailed-to-load-the-jni-shared-library-e2-80-9d/">解决Eclipse无法打开“Failed to load the JNI shared library”</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>这是因为JDK配置错误所导致的现象。</p>
+<p><img src="http://m2.img.libdd.com/farm5/4/7C0BB5409B33F2E9BBA7EFF4BE607A04_389_187.PNG" alt=""></p>
+<p>一般说来，新购笔记本会预装64位的windows系统，而在网上下载软件时，32位会优先出现在页面中（现在来说是这个情况，但我认为未来64位会越来越普及）。</p>
+<p>如果你是64位的系统，却安装了32位的JDK，就会导致上面的情况。</p>
+<p>解决办法如下：</p>
+<ol>
+<li>卸载掉原来安装的32位的JDK，然后安装64位的JDK到电脑中。</li>
+<li>重新修改path 和 classpath 两个环境变量。因为在64系统当中，32位软件回安装到program files （<em>86）文件夹，64位软件会安装到program files 文件夹，当你先前安装32JDK时，你设置的环境变量路径当中当然会包括“program files （</em>86）”，而这时JDK已经转移到“program files”中了，修改过来即可。</li>
+<li>注意你两次安装的JDK版本号，不一定相同，因为安装时会根据你的版本号建立JDK文件夹，如果两次的版本号不同，在环境变量里也要修改。<br>现在，Eclipse应该可以正常使用了，快去练习Java程序吧！</li>
+</ol>
+<p>扩展阅读：</p>
+<ul>
+<li><a href="http://www.ludashi.com/html/20101028/1107.html" title="32位与64位操作系统" target="_blank" rel="external">32位与64位操作系统</a></li>
+<li><p><a href="http://zh.wikipedia.org/wiki/JDK" title="JDK——Java开发套件" target="_blank" rel="external">JDK——Java开发套件</a><br>下载链接：</p>
+</li>
+<li><p>64位JDK下载    <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk-7u4-downloads-1591156.html" title="Oracle官方下载" target="_blank" rel="external">Oracle官方下载</a></p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-11-22T17:31:11.000Z"><a href="/2012/11/23/go-e8-af-ad-e8-a8-80-e6-95-99-e7-a8-8b/">2012-11-23</a></time>
       
       
@@ -455,40 +505,6 @@ var _hmt = _hmt || [];
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-11-14T21:41:16.000Z"><a href="/2012/11/15/android/android-e7-95-8c-e9-9d-a2-e9-80-82-e9-85-8d-e5-a4-84-e7-90-86-e8-ae-b0-e5-bd-95/">2012-11-15</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/11/15/android/android-e7-95-8c-e9-9d-a2-e9-80-82-e9-85-8d-e5-a4-84-e7-90-86-e8-ae-b0-e5-bd-95/">android 界面适配处理记录</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>android 界面琐碎，各种分辨率，各种destiny 当然,按照官方的处理方法，图片可以分别准备几套分辨率不同的图片放几个drawable 文件夹下，而不同的界面布局也可以写几套xml 分别放于不同的llayout 文件夹下，当图片比较多时，达到几兆或者更大，上面的处理方法会让apk变得很大，显的很冗余。<br>写xml文件时，我们一般采用相对分辨率dip ，dip与像素之间的转化公式不知道的大家可以查下，这里就不说了<br>px = dip*destiny/160</p>
-<p>destiny 是每英寸的像素点数<br>这几个参数可以手动计算，也可以通过程序获得，虽然目前几种获取屏幕参数的方法在几种设备上，各种山寨非山寨得出的准确性有待考究。<br>在淘宝的热卖手机中取了几个参数，目前市面常见的手机或者说销量高的手机， 按照上面的公式把像素转化为dip ，由于一般的手机的分辨率 长宽比还是比较接近的，所以测出虽然手机的destiny从210到300不等（题外话：其实300已经接近或超出人眼能识别的极限了）但算出来 x轴即横线dip一般大于320 位于320 到370 之间，纵向640左右，，所以写xml时可以把处理的面积设成 320 *620 左右，再适当的调整 ，而对于图片较多，其实可以选相对适中的分辨率 图片，然后涉及到图片的控件吧相应属性设置如下<br>android:layout_width=”20dip”<br>android:layout_height=”20dip”<br>android:scaleType=”fitCenter”<br>后面的数值可调，看你想要的大小， 这样图片会自动居中填满你指定的区域，一般手机是没问题（其实也就随便找了3部手机测了测）。对于实在前面算出的横向和纵向分辨率大的 ，可以在java层一开始读取xml文件之前判断一下 读取不同的xml文件，至于图片要求不是特别高清的，上面的处理其实程序自动伸缩的  效果就可以了，当然 你可以测试下。当然有特别要求的图片 可以相应的放不同的文件夹（没测过），这样，至少减少图片的数量 xml文件的数量 处理起来比较简单，当然pad没做相应调查，目前也值做了手机的适配。<br>只是今天突然有点忘记，记录一下，不知道的了解下，知道的 一笑而过就好了</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -516,7 +532,7 @@ var _hmt = _hmt || [];
   
     <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
   
-    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>7</small></li>
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>8</small></li>
   
     <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
   
@@ -547,9 +563,9 @@ var _hmt = _hmt || [];
   
     <li><a href="/tags/Vert-x-Core手册-for-Java/">Vert.x Core手册 for Java</a><small>1</small></li>
   
-    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>7</small></li>
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>8</small></li>
   
-    <li><a href="/tags/Vertx/">Vertx</a><small>7</small></li>
+    <li><a href="/tags/Vertx/">Vertx</a><small>8</small></li>
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   

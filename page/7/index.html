@@ -66,6 +66,42 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2012-11-05T07:02:48.000Z"><a href="/2012/11/05/spannablestring-e8-ae-b0-e5-bd-95/">2012-11-05</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/05/spannablestring-e8-ae-b0-e5-bd-95/">android中的spannable String 使用记录</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>SpannableString<br>TextView是用来显示文本的，有时需要给TextView中的个别字设置为超链接，或者设置个别字的颜色、字体等，那就需要用到Spannable对象，可以借助Spannable对象实现以上设置<br>[code lang=”java”]<br>myTextView = (TextView) this.findViewById(R.id.myTextView);</p>
+<p>//创建一个 SpannableString对象<br>SpannableString sp = new SpannableString(&quot;这句话中有百度超链接,有高亮显示，这样，或者这样，还有斜体.&quot;);<br>//设置超链接<br>sp.setSpan(new URLSpan(&quot;<a href="http://www.baidu.com&amp;quot" target="_blank" rel="external">http://www.baidu.com&amp;quot</a>;), 5, 7,<br>Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);<br>//设置高亮样式一<br>sp.setSpan(new BackgroundColorSpan(Color.RED), 17 ,19,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);<br>//设置高亮样式二<br>sp.setSpan(new ForegroundColorSpan(Color.YELLOW),20,24,Spannable.SPAN_EXCLUSIVE_INCLUSIVE);<br>//设置斜体<br>sp.setSpan(new StyleSpan(android.graphics.Typeface.BOLD_ITALIC), 27, 29, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);<br>//SpannableString对象设置给TextView<br>myTextView.setText(sp);<br>//设置TextView可点击<br>myTextView.setMovementMethod(LinkMovementMethod.getInstance());<br>[/code]<br>textview显示不同的颜色、样式来表示，需要用到SpannableString对象来处理<br>下面是从网上找的一段代码，已验证过：<br>[code lang=”java”]<br>mTextView = (TextView)findViewById(R.id.test);<br>SpannableString tSS = new SpannableString(“SpannableString学习中”);<br>tSS.setSpan(new BackgroundColorSpan(Color.RED), 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); //红色高亮<br>tSS.setSpan(new UnderlineSpan(), 15, 18,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); //下划线<br>tSS.setSpan(new StyleSpan(android.graphics.Typeface.BOLD_ITALIC), 2, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); //斜体<br>mTextView.setText(tSS);<br>[/code]<br>关键方法：<br>[code lang=”java”]<br>public void setSpan (Object what, int start, int end, int flags)<br>[/code]<br>主要是start跟end<br>start是起始位置,无论中英文，都算一个。从0开始计算起。end是结束位置，所以处理的文字，包含开始位置，但不包含结束位置。</p>
+<p>下面解决点击不同文字跳转到不同activity的问题：<br>直接贴代码：<br>[code lang=”java”]<br>import android.app.Activity;<br>import android.os.Bundle;<br>import android.text.SpannableString;<br>import android.text.Spanned;<br>import android.text.method.LinkMovementMethod;<br>import android.text.style.ClickableSpan;<br>import android.view.View;<br>import android.view.View.OnClickListener;<br>import android.widget.LinearLayout;<br>import android.widget.TextView;<br>import android.widget.Toast;<br>public class TextViewJump2Activity extends Activity {<br>/<em>* Called when the activity is first created. </em>/<br>private TextView mClickableText;<br>@Override<br>public void onCreate(Bundle savedInstanceState) {<br>super.onCreate(savedInstanceState);<br>LinearLayout layout = new LinearLayout(this);<br>mClickableText = new TextView(this);<br>mClickableText.setClickable(true);<br>mClickableText.setTextSize(20);</p>
+<p>layout.addView(mClickableText);<br>setContentView(layout);<br>mClickableText.setText(getClickableSpan());<br>mClickableText.setMovementMethod(LinkMovementMethod.getInstance());<br>}<br>private SpannableString getClickableSpan() {<br>View.OnClickListener l = new View.OnClickListener() {<br>//如下定义自己的动作<br>public void onClick(View v) {<br>Toast.makeText(TextViewJump2Activity.this, &quot;Click Success&quot;, Toast.LENGTH_SHORT).show();<br>//在这里就可以做跳转到activity或者弹出对话框的操作了<br>}<br>};<br>SpannableString spanableInfo = new SpannableString(&quot;This is a test, Click Here!&quot;);<br>int start = 16;<br>int end = spanableInfo.length();<br>spanableInfo.setSpan(new Clickable(l), start, end,<br>Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);<br>return spanableInfo;<br>}<br>}<br>class Clickable extends ClickableSpan implements OnClickListener {<br>private final View.OnClickListener mListener;<br>public Clickable(View.OnClickListener l) {<br>mListener = l;<br>}<br>@Override<br>public void onClick(View v) {<br>mListener.onClick(v);<br>}<br>}<br>[/code]<br>转自：<a href="http://blog.csdn.net/rockcoding/article/details/7231756" target="_blank" rel="external">http://blog.csdn.net/rockcoding/article/details/7231756</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-11-04T19:13:31.000Z"><a href="/2012/11/05/relativelayout/">2012-11-05</a></time>
       
       
@@ -508,101 +544,6 @@ var _hmt = _hmt || [];
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-10-30T00:04:04.000Z"><a href="/2012/10/30/xcode-4-x-e5-85-8d-e8-af-81-e4-b9-a6-e7-9c-9f-e6-9c-ba-e5-8f-91-e5-b8-83-e5-8f-8a-e8-b0-83-e8-af-95/">2012-10-30</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/10/30/xcode-4-x-e5-85-8d-e8-af-81-e4-b9-a6-e7-9c-9f-e6-9c-ba-e5-8f-91-e5-b8-83-e5-8f-8a-e8-b0-83-e8-af-95/">xCode 4.X 免证书真机发布及调试</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>由于没有购买苹果的开发者证书，所以目前大多数开发环境都是使用以下的方式实现开发与真机测试（本文部分摘自网络）</p>
-<p>【2012年3月15日更新】：目前我使用的是Xcode4.3.1 mac os 10.7.3</p>
-<p>最简单的办法就是让xcode不检查签名，直接编译发布。</p>
-<p>1、 修改SDKSettings.plist文件：<br>进入SDK目录：xcode4.3版本以前是：/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3（可能是5.0/4.2等）.sdk/<br>xcode4.3及以上版本的目录是：/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk</p>
-<p>打开该目录下的SDKSettings.plist文件，把其中所有的包含REQUIRED的项的值改成NO（在实际就是有2项值需要修改：CODE_SIGNING_REQUIRED和ENTITLEMENTS_REQUIRED）。</p>
-<p>2、工程的配置修改：<br>对每个工程进行修改，把所有的Code Signing Identity 全部改为 Don’t Code Sign</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>旧的方法可以参考：</p>
-<p>&nbsp;</p>
-<p>使用环境：越狱过的iPhone 机器 Mac OS 10.6.8 xCode 4.0.1 及Xcode4.0.2</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>操作步骤过程：</p>
-<p>（一）制作证书</p>
-<p>1、 打开   Finder－&gt;应用程序－&gt;实用工具 -&gt;  钥匙串访问</p>
-<p>2、单击：”钥匙串访问”选择  “证书” 再选择”创建证书”过程如下图：</p>
-<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354057979.png" alt=""></a></p>
-<p>3、证书名称必须填写为：”iPhone Developer” ，（不能随便填写）然后点击”创建”。(如图）</p>
-<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354068012.png" alt=""></a></p>
-<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354069997.png" alt=""></a></p>
-<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354068394.png" alt=""></a></p>
-<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354071525.png" alt=""></a></p>
-<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354073194.png" alt=""></a></p>
-<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354089083.png" alt=""></a></p>
-<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354082180.png" alt=""></a></p>
-<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354086117.png" alt=""></a></p>
-<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354095278.png" alt=""></a></p>
-<p>(二)修改xcode配置文件</p>
-<p>注意：由于这些配置文件是系统文件，修改系统文件需要管理员权限才可以进行操作，所以保存的时候不能直接保存，会遇到系统提示”你没有修改此文件得权限”，但可以保存一个副本。可以先修改这个副本，然后再复制到原先的目录，系统会提示你是否修改替换，选择”替换”，这时候是需要管理员密码才可以覆盖原来的文件，输入密码后，修改完成。</p>
-<p>1.修改SDKsettings.plist文件。</p>
-<p>找到 “  /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk “下得  SDKSettings.plist  文件，修改”Default Properties “项下面得 “CODE_SIGNING_REQUIRED “得值为：NO。</p>
-<p>2.修改”/Developer/Platforms/iPhoneOS.platform/Info.plist”文件（用文本编辑器或者Xcode打开）：</p>
-<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354098343.png" alt=""></p>
-<p>增加两项：</p>
-<p>PROVISIONING_PROFILE_ALLOWED = NO</p>
-<p>PROVISIONING_PROFILE_REQUIRED = NO</p>
-<p>效果如下图所示：</p>
-<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354092279.png" alt=""></p>
-<p>然后将所有”XCiPhoneOSCodeSignContext”替换为”XCCodeSignContext”。</p>
-<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354096772.png" alt=""></p>
-<p>3.修改好配置文件后重启xcode，修改项目的属性</p>
-<p>1）点击  项目图标，找到”Build Settings”  找到  “Code Sign Identity”</p>
-<p>按照下面得方式设置一下就可以 了。</p>
-<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354108442.png" alt=""></p>
-<p>2） 设置工程属性：</p>
-<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354105476.png" alt=""></p>
-<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354119413.png" alt=""></p>
-<p>3）然后点击  “Run” 我们会看到工程正在编译，然后弹出如图提示（两次）：我们选择 “总是允许”</p>
-<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354111398.png" alt=""></p>
-<p>4）在项目中添加一个Entitlement.plist文件，设置允许调试。</p>
-<p>注：若不操作该步可能连接真机调试的时候还会出现一个错误：Error launching remote program: failed to get the task for process xxx</p>
-<p>操作步骤：在Xcode4.X  中这样做：</p>
-<p>a.在工程中按照这个执行创建一个名为：Entitlement.plist 文件In the File Menu, select New File -&gt; iPhone OS -&gt; Code Signing -&gt; Entitlements. Name the file “Entitlements.plist” and click ‘Finish’.</p>
-<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354113067.png" alt=""></p>
-<p>b.打开  这个  “Entitlement.plist”文件，将 “Can be debugged”属性值改为 “YES”。</p>
-<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354122544.png" alt=""></p>
-<p>c.将Code Signing Entitlements 那项得值改为刚刚新建得”Entitlements.plist”.</p>
-<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354126513.png" alt=""></p>
-<p>4。提示选择完后：可以看到</p>
-<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354122086.png" alt=""></p>
-<p>我们就可以看到 程序可以出现在 你得iphone上了。</p>
-<p>当你运行程序时，可以通过 organizer 看到你得iphone 运行时打印出来得Log。</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -630,7 +571,7 @@ var _hmt = _hmt || [];
   
     <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
   
-    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>7</small></li>
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>8</small></li>
   
     <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
   
@@ -661,9 +602,9 @@ var _hmt = _hmt || [];
   
     <li><a href="/tags/Vert-x-Core手册-for-Java/">Vert.x Core手册 for Java</a><small>1</small></li>
   
-    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>7</small></li>
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>8</small></li>
   
-    <li><a href="/tags/Vertx/">Vertx</a><small>7</small></li>
+    <li><a href="/tags/Vertx/">Vertx</a><small>8</small></li>
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   

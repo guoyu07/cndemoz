@@ -1,0 +1,254 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Vert.x 3.x版本callback hell的解决 | 全科-不安分的码农</title>
+  <meta name="author" content="全科">
+  
+  <meta name="description" content="欢迎关注http://quanke.name/
+交流群：231419585
+转载请注明出处，谢谢
+
+Vert.x乃神器也，管玩管住还包饭，异步处理，很多人头疼的callback hell（回调地狱），也就是金字塔，不知不觉就走入了金字塔的陷阱里，一般callback都发生在异步处理期间，而异步处理，">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Vert.x 3.x版本callback hell的解决"/>
+  <meta property="og:site_name" content="全科-不安分的码农"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-不安分的码农" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-不安分的码农</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-04-09T11:15:01.000Z"><a href="/2016/04/09/Vert-x-3-x版本callback-hell的解决/">2016-04-09</a></time>
+      
+      
+  
+    <h1 class="title">Vert.x 3.x版本callback hell的解决</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <ul>
+<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
+<li>交流群：<code>231419585</code></li>
+<li>转载请注明出处，谢谢</li>
+</ul>
+<p><code>Vert.x</code>乃神器也，管玩管住还包饭，异步处理，很多人头疼的<code>callback hell</code>（回调地狱），也就是金字塔，不知不觉就走入了金字塔的陷阱里，一般<code>callback</code>都发生在异步处理期间，而异步处理，除了少数数据量极大的<code>cpu intense</code>的代码块以外（这部分主要通过降低算法时间复杂度来优化），绝大多数都集中在<code>io</code>上，将一个<code>io</code>操作包装成一个异步程序块来执行，是比较常见的优化方式，<code>vert.x</code>的<code>io</code>集中在以下几个部分。</p>
+<p>第一，<a href="http://vertx.io/docs/apidocs/io/vertx/core/eventbus/EventBus.html#send-java.lang.String-java.lang.Object-" target="_blank" rel="external">eventbus.send()</a>方法。</p>
+<p>第二，<code>jdbcclient.getconnection</code>以及<code>connection.update/query</code>等方法。</p>
+<p>第三，httpclient.get/post等方法，其中前两个都可以通过vert.x自带的Future来对付。</p>
+<p>首先我们要实例化一个<code>future</code>对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Future&#60;MyResult&#62; future = Future.future();</span><br></pre></td></tr></table></figure>
+<p>然后<code>future</code>有几个方法值得注意，其中一个是<code>setHandler</code>方法，这个方法就是设置后续处理的函数，另外一个，与之相对应的是<code>completer()</code>方法，这个方法返回的就是<code>setHandler</code>方法<code>set</code>的<code>handler</code>函数，通俗点说，就是<code>getHandler()</code>方法，在<code>callback</code>位置调用该方法，就可以在<code>callback</code>的时候执行<code>handler</code>方法/函数，比如原本是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vertx.eventBus().send(CommerceVerticle.class.getName(),myAsyncResult -&#62; &#123;...&#125;);</span><br></pre></td></tr></table></figure>
+<p>经过改写之后，就变成了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vertx.eventBus().send(CommerceVerticle.class.getName(),future.completer());&#10;future.setHandler(myAsyncResult -&#62; &#123;...&#125;);</span><br></pre></td></tr></table></figure>
+<p>这样通过拆分原来的内嵌<code>lambda</code>/匿名函数来达到扁平化的效果。<br><code>callback hell</code>一个典型特征就是金字塔，也就是经过多层回调<code>/callback</code>函数嵌套之后，程序会变成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar -&#62; &#123; &#10;    ar1 -&#62; &#123;&#10;         ar2 -&#62; &#123;&#10;             ...&#10;         &#125;&#10;    &#125;&#10;&#125;;</span><br></pre></td></tr></table></figure>
+<p>这种方式，或者<code>fp</code>里面常见的<code>(+ 1 (+ 1 (+ 1 1)))</code>;如果强行<code>format</code>的话，就会变成一个多层多次缩进的，向右凸起的金字塔，极为丑陋，但是如果不这么做，又无法保证顺序，所以为了保证顺序的同时，我们要扁平化该金字塔，那么如何保证顺序呢？<br>用<code>compose</code>方法，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Future fut1 = Future.future();&#10;Future fut2 = Future.future();&#10;fut1.compose(asyncMyResult -&#62; &#123;&#10;    ...&#10;    fut2.complete();&#10;    ...&#10;&#125;, fut2);&#10;&#10;fut2.setHandler(asyncMyResult2 -&#62; &#123;&#10;    ...&#10;&#125;);</span><br></pre></td></tr></table></figure>
+<p>那么当<code>fut1</code>被触发之后，如果成功，则执行<code>compose</code>方法里面的第一个参数，也就是那个回调函数<code>/handler</code>，如果失败，则直接传递给<code>compose</code>方法的第二个参数，也就是<code>fut2</code>，依次类推，便可以很轻松地组装出你想要的扁平化链条，使得多层缩进的噩梦不再。<br>利用这种方式，可以扁平化处理<code>vertx.eventBus()</code>，<code>jdbcClient.getConnection()</code>等包含有异步<code>callback</code>的代码块。<br>至于<code>Vert.x</code>自带的<code>httpclient</code>，这个稍微有些特殊，因为执行<code>get/post</code>等方法的时候，<code>response handler</code>并不能囊括全部情况，尤其是常见的超时/<code>timeout</code>，属于<code>exception</code>范畴，也就是说，要想囊括全部返回情况，至少需要<code>response</code>的<code>body handler</code>，同时也需要一个<code>exception handler</code>，最后还要调用end方法才能将全部常见的情况全部覆盖住，代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">client1.get(port, ip, url, response -&#62; &#123;&#10;    response.bodyHandler(respBody -&#62; &#123;&#10;    //&#36825;&#37324;&#22788;&#29702;&#27491;&#24120;&#36820;&#22238;&#10;    &#125;);&#10;&#125;).exceptionHandler(exception -&#62; &#123;&#10;    //&#36825;&#37324;&#22788;&#29702;&#36229;&#26102;&#10;&#125;).end();</span><br></pre></td></tr></table></figure>
+<p>如果要在这里面用<code>future</code>的话，需要显式处理标识成功<code>future.complete(...)</code>或者失败<code>future.fail(...)</code><br>另外，常见的<code>httpClient.getNow()</code>;等方法相当于：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">client1.get(port, ip, url, response -&#62; &#123;&#10;    response.bodyHandler(respBody -&#62; &#123;&#10;    //&#36825;&#37324;&#22788;&#29702;&#27491;&#24120;&#36820;&#22238;&#10;    &#125;);&#10;&#125;).end();</span><br></pre></td></tr></table></figure>
+<p>也就是没有<code>exception handler</code>的普通<code>get/post</code>等方法<code>＋end</code>方法，所以如果用<code>getNow</code>等方法发送请求，会无法捕捉处理<code>timeout</code>超时异常。</p>
+<p>通过这篇文章想必对Vertx如何避免callback hell有所了解。</p>
+<p><a href="http://dwz.cn/34QFDQ" target="_blank" rel="external">参考此文编辑</a> 非常感谢。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Vert-x3-系列/">Vert.x3 系列</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/Vert-x3/">Vert.x3</a>, <a href="/tags/Vertx/">Vertx</a>
+  </div>
+
+        
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+<!-- 多说评论框 start -->
+  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"quanke"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
+  
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>8</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>3</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>11</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>3</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>4</small></li>
+  
+    <li><a href="/tags/Vert-x-Core手册-for-Java/">Vert.x Core手册 for Java</a><small>1</small></li>
+  
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>8</small></li>
+  
+    <li><a href="/tags/Vertx/">Vertx</a><small>8</small></li>
+  
+    <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2016 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

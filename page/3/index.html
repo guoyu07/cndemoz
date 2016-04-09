@@ -66,6 +66,38 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2014-02-25T00:21:20.000Z"><a href="/2014/02/25/e7-94-a8wifi-e8-bf-9e-e6-8e-a5-e7-94-b5-e8-84-91-e6-9f-a5-e7-9c-8blogcat-e7-9a-84-e6-96-b9-e6-b3-95/">2014-02-25</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/02/25/e7-94-a8wifi-e8-bf-9e-e6-8e-a5-e7-94-b5-e8-84-91-e6-9f-a5-e7-9c-8blogcat-e7-9a-84-e6-96-b9-e6-b3-95/">用wifi连接电脑查看logcat的方法</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <div>通过wifi将Android设备连接到电脑。</div><br><div>从SDK 的 platform-tools 目录，在命令行输入adb tcpip 5555</div><br><div>输入：adb connect &lt;设备的IP地址&gt;:5555 ，你现在将被连接到Android设备并能像adb logcat一样发出通用的adb命令。</div>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2013-03-03T22:04:53.000Z"><a href="/2013/03/04/e5-ad-a6-e4-b9-a0-e4-ba-a4-e6-b5-81-e7-bd-91-e7-ab-99-e6-94-b6-e8-97-8f/">2013-03-04</a></time>
       
       
@@ -626,56 +658,6 @@ ViewfinderView 自定义的View，就是我们看见的拍摄时中间的框框�
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-11-24T23:42:58.000Z"><a href="/2012/11/25/e8-a7-a3-e5-86-b3eclipse-e6-97-a0-e6-b3-95-e6-89-93-e5-bc-80-e2-80-9cfailed-to-load-the-jni-shared-library-e2-80-9d/">2012-11-25</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/11/25/e8-a7-a3-e5-86-b3eclipse-e6-97-a0-e6-b3-95-e6-89-93-e5-bc-80-e2-80-9cfailed-to-load-the-jni-shared-library-e2-80-9d/">解决Eclipse无法打开“Failed to load the JNI shared library”</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>这是因为JDK配置错误所导致的现象。</p>
-<p><img src="http://m2.img.libdd.com/farm5/4/7C0BB5409B33F2E9BBA7EFF4BE607A04_389_187.PNG" alt=""></p>
-<p>一般说来，新购笔记本会预装64位的windows系统，而在网上下载软件时，32位会优先出现在页面中（现在来说是这个情况，但我认为未来64位会越来越普及）。</p>
-<p>如果你是64位的系统，却安装了32位的JDK，就会导致上面的情况。</p>
-<p>解决办法如下：</p>
-<ol>
-<li>卸载掉原来安装的32位的JDK，然后安装64位的JDK到电脑中。</li>
-<li>重新修改path 和 classpath 两个环境变量。因为在64系统当中，32位软件回安装到program files （<em>86）文件夹，64位软件会安装到program files 文件夹，当你先前安装32JDK时，你设置的环境变量路径当中当然会包括“program files （</em>86）”，而这时JDK已经转移到“program files”中了，修改过来即可。</li>
-<li>注意你两次安装的JDK版本号，不一定相同，因为安装时会根据你的版本号建立JDK文件夹，如果两次的版本号不同，在环境变量里也要修改。<br>现在，Eclipse应该可以正常使用了，快去练习Java程序吧！</li>
-</ol>
-<p>扩展阅读：</p>
-<ul>
-<li><a href="http://www.ludashi.com/html/20101028/1107.html" title="32位与64位操作系统" target="_blank" rel="external">32位与64位操作系统</a></li>
-<li><p><a href="http://zh.wikipedia.org/wiki/JDK" title="JDK——Java开发套件" target="_blank" rel="external">JDK——Java开发套件</a><br>下载链接：</p>
-</li>
-<li><p>64位JDK下载    <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk-7u4-downloads-1591156.html" title="Oracle官方下载" target="_blank" rel="external">Oracle官方下载</a></p>
-</li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -703,7 +685,7 @@ ViewfinderView 自定义的View，就是我们看见的拍摄时中间的框框�
   
     <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
   
-    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>7</small></li>
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>8</small></li>
   
     <li><a href="/categories/android开发/">android开发</a><small>49</small></li>
   
@@ -734,9 +716,9 @@ ViewfinderView 自定义的View，就是我们看见的拍摄时中间的框框�
   
     <li><a href="/tags/Vert-x-Core手册-for-Java/">Vert.x Core手册 for Java</a><small>1</small></li>
   
-    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>7</small></li>
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>8</small></li>
   
-    <li><a href="/tags/Vertx/">Vertx</a><small>7</small></li>
+    <li><a href="/tags/Vertx/">Vertx</a><small>8</small></li>
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   
