@@ -3,21 +3,13 @@
 <head>
   <meta charset="utf-8">
   
-  <title>设置打开新Activity的动画效果 | 全科-不安分的码农</title>
+  <title>职业规划 | 全科-不安分的码农</title>
   <meta name="author" content="全科">
-  
-  <meta name="description" content="package com.jay.demo;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="设置打开新Activity的动画效果"/>
+  
   <meta property="og:site_name" content="全科-不安分的码农"/>
 
   
@@ -67,101 +59,25 @@ var _hmt = _hmt || [];
 </nav>
 <div class="clearfix"></div></header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-10-28T19:41:30.000Z"><a href="/2012/10/29/e8-ae-be-e7-bd-ae-e6-89-93-e5-bc-80-e6-96-b0activity-e7-9a-84-e5-8a-a8-e7-94-bb-e6-95-88-e6-9e-9c/">2012-10-29</a></time>
-      
-      
-  
-    <h1 class="title">设置打开新Activity的动画效果</h1>
-  
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title tag">职业规划</h2>
 
-    </header>
-    <div class="entry">
-      
-        <pre>package com.jay.demo;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-
-public class HomeActivity extends Activity {
-
-        /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout1);
-        Button gotoBtn = (Button) findViewById(R.id.gotobtn);
-        gotoBtn.setOnClickListener(listener);
-    }
-    private OnClickListener listener = new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                        Intent intent = new Intent(HomeActivity.this, SecondActivity.class);
-                        startActivityForResult(intent, 0);
-//                        HomeActivity.this.finish();
-                        int version =  Integer.valueOf(android.os.Build.VERSION.SDK);
-                        if(version &gt; 5 ){
-                                overridePendingTransition(R.anim.zoomin, R.anim.zoomout);
-                        }
-//                        HomeActivity.this.finish();
-                }
-        };
-}</pre>
-      
-    </div>
-    <footer>
-      
-        
-  
-  <div class="categories">
-    <a href="/categories/android开发/">android开发</a>
+  <div class="archive">
+    
+      <article class="post">
+        <div class="post-content">
+          <header>
+            <div class="icon"></div>
+            <time datetime="2016-04-23T10:56:22.000Z"><a href="/2016/04/23/10多年码代码经验腾讯管理谈职业规划/">2016-04-23</a></time>
+            
+              <h1 class="title"><a href="/2016/04/23/10多年码代码经验腾讯管理谈职业规划/">10多年码代码经验腾讯管理谈职业规划</a></h1>
+            
+          </header>
+        </div>
+      </article>
+    
   </div>
-
-        
-        
-<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
-<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
-
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-<section id="comment">
-  <h1 class="title">留言</h1>
-
-<!-- 多说评论框 start -->
-  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
-<!-- 多说评论框 end -->
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"quanke"};
-  (function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0] 
-     || document.getElementsByTagName('body')[0]).appendChild(ds);
-  })();
-  </script>
-<!-- 多说公共JS代码 end -->
-
-
-</section>
-
 </div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">
