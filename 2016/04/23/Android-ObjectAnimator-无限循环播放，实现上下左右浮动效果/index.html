@@ -1,0 +1,243 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android ObjectAnimator 无限循环播放，实现上下左右浮动效果 | 全科-不安分的码农</title>
+  <meta name="author" content="全科">
+  
+  <meta name="description" content="欢迎关注http://quanke.name/
+转载请注明出处，谢谢
+
+Android Property Animation 动画有很多大神写过，都非常好，这里只通过ObjectAnimator /ValueAnimator实现上下左右浮动效果。
+很简单看代码就好
+1private void flo">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Android ObjectAnimator 无限循环播放，实现上下左右浮动效果"/>
+  <meta property="og:site_name" content="全科-不安分的码农"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-不安分的码农" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-不安分的码农</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-04-23T11:04:41.000Z"><a href="/2016/04/23/Android-ObjectAnimator-无限循环播放，实现上下左右浮动效果/">2016-04-23</a></time>
+      
+      
+  
+    <h1 class="title">Android ObjectAnimator 无限循环播放，实现上下左右浮动效果</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <ul>
+<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
+<li>转载请注明出处，谢谢</li>
+</ul>
+<p><code>Android Property Animation</code> 动画有很多大神写过，都非常好，这里只通过ObjectAnimator /ValueAnimator实现上下左右浮动效果。</p>
+<p>很简单看代码就好</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private void floatAnim(View view,int delay)&#123;&#10;    List&#60;Animator&#62; animators = new ArrayList&#60;&#62;();&#10;    ObjectAnimator translationXAnim = ObjectAnimator.ofFloat(view, &#34;translationX&#34;, -6.0f,6.0f,-6.0f);&#10;    translationXAnim.setDuration(1500);&#10;    translationXAnim.setRepeatCount(ValueAnimator.INFINITE);//&#26080;&#38480;&#24490;&#29615;&#10;    translationXAnim.setRepeatMode(ValueAnimator.INFINITE);//&#10;    translationXAnim.start();&#10;    animators.add(translationXAnim);&#10;    ObjectAnimator translationYAnim = ObjectAnimator.ofFloat(view, &#34;translationY&#34;, -3.0f,3.0f,-3.0f);&#10;    translationYAnim.setDuration(1000);&#10;    translationYAnim.setRepeatCount(ValueAnimator.INFINITE);&#10;    translationYAnim.setRepeatMode(ValueAnimator.INFINITE);&#10;    translationYAnim.start();&#10;    animators.add(translationYAnim);&#10;&#10;    AnimatorSet btnSexAnimatorSet = new AnimatorSet();&#10;    btnSexAnimatorSet.playTogether(animators);&#10;    btnSexAnimatorSet.setStartDelay(delay);&#10;    btnSexAnimatorSet.start();&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>开始设置<code>setRepeatMode(ValueAnimator.INFINITE);</code>方法没有效果，只有设置<code>setRepeatCount(ValueAnimator.INFINITE)</code>才可以。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/android开发/">android开发</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/android/">android</a>, <a href="/tags/android动画/">android动画</a>
+  </div>
+
+        
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+<!-- 多说评论框 start -->
+  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"quanke"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
+  
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>8</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>50</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>3</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>12</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>3</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>4</small></li>
+  
+    <li><a href="/tags/Vert-x-Core手册-for-Java/">Vert.x Core手册 for Java</a><small>1</small></li>
+  
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>8</small></li>
+  
+    <li><a href="/tags/Vertx/">Vertx</a><small>8</small></li>
+  
+    <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
+  
+    <li><a href="/tags/android/">android</a><small>1</small></li>
+  
+    <li><a href="/tags/android动画/">android动画</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/职业规划/">职业规划</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2016 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
