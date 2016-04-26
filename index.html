@@ -89,10 +89,10 @@ var _hmt = _hmt || [];
 <li>解压；</li>
 <li>打开<code>GitBook.exe</code>安装；</li>
 </ul>
-<h5 id="Mac">Mac</h5><ul>
+<h6 id="Mac">Mac</h6><ul>
 <li>下载 <code>gitbook-mac.dmg</code>安装即可</li>
 </ul>
-<h5 id="Linux">Linux</h5><ul>
+<h6 id="Linux">Linux</h6><ul>
 <li>下载 <code>gitbook-linux32.tar.gz</code></li>
 <li>使用<code>tar -xvzf gitbook-linux32.tar.gz</code>解压</li>
 <li>运行脚本 <code>cd GitBook &amp;&amp; ./install.sh</code>安装</li>
@@ -101,14 +101,14 @@ var _hmt = _hmt || [];
 <p>登录后，可以直接在gitbook上创建书籍，建议在<a href="https://www.gitbook.com" target="_blank" rel="external">gitbook</a>网站上创建书籍，然后通过GitBook Editor <code>clone</code> 下来；</p>
 <p><code>clone</code> 下来之后 可以直接写书了，先在感觉是不是特别简单？别急，为了更爽的写作还需要继续看看下面。</p>
 <p><strong>怎么和github同步？</strong></p>
-<p>如果没有github账号，先注册，之后绑定github账号 <a href="https://www.gitbook.com/@quanke/settings#social（把连接中的quanke修改为自己的用户名）" target="_blank" rel="external">https://www.gitbook.com/@quanke/settings#social（把连接中的quanke修改为自己的用户名）</a></p>
-<p>如果绑定了了github账号，需要设置权限，<a href="https://www.gitbook.com/@quanke/settings#github（把连接中的quanke修改为自己的用户名），" target="_blank" rel="external">https://www.gitbook.com/@quanke/settings#github（把连接中的quanke修改为自己的用户名），</a> Reconnect GitHub Account 选择 With access to public repositories</p>
-<p>当授权好了之后，我们来到书的设置（ Settings ）页面，点击设置github <a href="https://www.gitbook.com/book/quanke/vert-x-core-manual-for-java/settings/github（把quanke替换成你的用户名，把vert-x-core-manual-for-java替换成书名）" target="_blank" rel="external">https://www.gitbook.com/book/quanke/vert-x-core-manual-for-java/settings/github（把quanke替换成你的用户名，把vert-x-core-manual-for-java替换成书名）</a></p>
-<p>如果原来这本书是github里写的，直接填入github的地址就好，如果账号都是新建的，什么都没有，那就点击Export to GitHub （注意填入gitbook的用户名密码不是github的）</p>
-<p>如果上面的步骤没问题，点击 Add webhook 就OK了，给github增加了一个钩子，也就是说当你的github更新的时候，会告诉gitbook</p>
+<p>如果没有github账号，先注册，之后绑定<code>github</code>账号 <code>https://www.gitbook.com/@quanke/settings#social</code>（把连接中的quanke修改为自己的用户名）</p>
+<p>如果绑定了了github账号，需要设置权限，<code>https://www.gitbook.com/@quanke/settings#github</code>（把连接中的quanke修改为自己的用户名）， <code>Reconnect GitHub Account</code> 选择 <code>With access to public repositories</code></p>
+<p>当授权好了之后，我们来到书的设置（ <code>Settings</code> ）页面，点击设置<code>github https://www.gitbook.com/book/quanke/vert-x-core-manual-for-java/settings/github</code>（把<code>quanke</code>替换成你的用户名，把<code>vert-x-core-manual-for-java</code>替换成书名）</p>
+<p>如果原来这本书是<code>github</code>里写的，直接填入<code>github</code>的地址就好，如果账号都是新建的，什么都没有，那就点击<code>Export to GitHub</code> （注意填入<code>gitbook</code>的用户名密码不是<code>github</code>的）</p>
+<p>如果上面的步骤没问题，点击 <code>Add webhook</code> 就OK了，给<code>github</code>增加了一个钩子，也就是说当你的github更新的时候，会告诉gitbook</p>
 <blockquote>
-<p>还有一步很关键,在你的GitBook Editor中，打开我们刚才<code>clone</code>下来的书，点击菜单里的 <code>Book -&gt;
-Repository Settings</code> ，把这个设置成为刚才导到<code>github</code>的地址，之后就可以在GitBook Editor写作了。。有什么不懂的，直接可以留言问我</p>
+<p>还有一步很关键,在你的<code>GitBook Editor</code>中，打开我们刚才<code>clone</code>下来的书，点击菜单里的 <code>Book -&gt;
+Repository Settings</code> ，把这个设置成为刚才导到<code>github</code>的地址，之后就可以在<code>GitBook Editor</code>写作了。。有什么不懂的，直接可以留言问我</p>
 </blockquote>
 <h3 id="进阶（适合有编程基础的童鞋看）">进阶（适合有编程基础的童鞋看）</h3><h4 id="gitbook_安装">gitbook 安装</h4><ol>
 <li>安装npm<br>从网站 <a href="https://nodejs.org/#download" target="_blank" rel="external">https://nodejs.org/#download</a> 下载node.js源代码（点击绿色的INSTALL），<br>解压</li>
