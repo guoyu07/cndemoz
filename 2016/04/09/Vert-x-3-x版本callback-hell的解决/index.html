@@ -97,7 +97,7 @@ var _hmt = _hmt || [];
 <p>经过改写之后，就变成了：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vertx.eventBus().send(CommerceVerticle.class.getName(),future.completer());&#10;future.setHandler(myAsyncResult -&#62; &#123;...&#125;);</span><br></pre></td></tr></table></figure>
 <p>这样通过拆分原来的内嵌<code>lambda</code>/匿名函数来达到扁平化的效果。<br><code>callback hell</code>一个典型特征就是金字塔，也就是经过多层回调<code>/callback</code>函数嵌套之后，程序会变成：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar -&#62; &#123; &#10;    ar1 -&#62; &#123;&#10;         ar2 -&#62; &#123;&#10;             ...&#10;         &#125;&#10;    &#125;&#10;&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar -&#62; &#123;&#10;    ar1 -&#62; &#123;&#10;         ar2 -&#62; &#123;&#10;             ...&#10;         &#125;&#10;    &#125;&#10;&#125;;</span><br></pre></td></tr></table></figure>
 <p>这种方式，或者<code>fp</code>里面常见的<code>(+ 1 (+ 1 (+ 1 1)))</code>;如果强行<code>format</code>的话，就会变成一个多层多次缩进的，向右凸起的金字塔，极为丑陋，但是如果不这么做，又无法保证顺序，所以为了保证顺序的同时，我们要扁平化该金字塔，那么如何保证顺序呢？<br>用<code>compose</code>方法，比如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Future fut1 = Future.future();&#10;Future fut2 = Future.future();&#10;fut1.compose(asyncMyResult -&#62; &#123;&#10;    ...&#10;    fut2.complete();&#10;    ...&#10;&#125;, fut2);&#10;&#10;fut2.setHandler(asyncMyResult2 -&#62; &#123;&#10;    ...&#10;&#125;);</span><br></pre></td></tr></table></figure>
 <p>那么当<code>fut1</code>被触发之后，如果成功，则执行<code>compose</code>方法里面的第一个参数，也就是那个回调函数<code>/handler</code>，如果失败，则直接传递给<code>compose</code>方法的第二个参数，也就是<code>fut2</code>，依次类推，便可以很轻松地组装出你想要的扁平化链条，使得多层缩进的噩梦不再。<br>利用这种方式，可以扁平化处理<code>vertx.eventBus()</code>，<code>jdbcClient.getConnection()</code>等包含有异步<code>callback</code>的代码块。<br>至于<code>Vert.x</code>自带的<code>httpclient</code>，这个稍微有些特殊，因为执行<code>get/post</code>等方法的时候，<code>response handler</code>并不能囊括全部情况，尤其是常见的超时/<code>timeout</code>，属于<code>exception</code>范畴，也就是说，要想囊括全部返回情况，至少需要<code>response</code>的<code>body handler</code>，同时也需要一个<code>exception handler</code>，最后还要调用end方法才能将全部常见的情况全部覆盖住，代码如下：</p>
@@ -184,7 +184,7 @@ var duoshuoQuery = {short_name:"quanke"};
   
     <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
   
-    <li><a href="/categories/使用/">使用</a><small>3</small></li>
+    <li><a href="/categories/使用/">使用</a><small>4</small></li>
   
     <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
   
@@ -216,6 +216,8 @@ var duoshuoQuery = {short_name:"quanke"};
     <li><a href="/tags/android/">android</a><small>1</small></li>
   
     <li><a href="/tags/android动画/">android动画</a><small>1</small></li>
+  
+    <li><a href="/tags/gitbook/">gitbook</a><small>1</small></li>
   
     <li><a href="/tags/ios/">ios</a><small>1</small></li>
   
