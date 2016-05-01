@@ -66,6 +66,103 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2012-11-07T17:49:11.000Z"><a href="/2012/11/08/android/android-e5-8e-8b-e7-bc-a9-e5-9b-be-e7-89-87-e7-9a-84-e5-87-a0-e7-a7-8d-e6-96-b9-e6-b3-95/">2012-11-08</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/08/android/android-e5-8e-8b-e7-bc-a9-e5-9b-be-e7-89-87-e7-9a-84-e5-87-a0-e7-a7-8d-e6-96-b9-e6-b3-95/">Android压缩图片的几种方法和实例demo</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>在移动设备上进行图片相关软件的开发，一定得先压缩图片，毕竟移动设备的内存有限，稍不注意就会导致内存溢出，刚好用到这里，就学习了一下相关的压缩图片，现在总结出来和大家共享。</p>
+<p><wbr> <wbr> <wbr> <wbr> 一般情况下，我们要将图片按照固定大小取缩略图，一般取缩略图的方法是使用 BitmapFactory的decodeFile方法，然后通过传递进去 BitmapFactory.Option类型的参数进行取缩略图，在Option中，属性值inSampleSize表示缩略图大小为原始图片大小的几分之一，即如果这个值为2，则取出的缩略图的宽和高都是原始图片的1/2，图片大小就为原始大小的1/4。 Options中有个属性inJustDecodeBounds，SDK中的英文引用如下：<br>If set totrue, the decoder will return null (no bitmap), but the out… fields will stillbe set, allowing the caller to query the bitmap without having to allocate thememory for its pixels.<br>大致意思就是说如果该值设为true那么将不返回实际的bitmap不给其分配内存空间而里面只包括一些解码边界信息即图片大小信息，那么相应的方法也就出来了，通过设置inJustDecodeBounds为true，获取到outHeight(图片原始高度)和 outWidth(图片的原始宽度)，然后计算一个inSampleSize(缩放值)，然后就可以取图片了，这里要注意的是，inSampleSize 可能小于0，必须做判断。</p>
+<p><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>  <wbr>BitmapFactory.Options options = new BitmapFactory.Options();<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> options.inJustDecodeBounds = true;<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>pic[i] <wbr> = BitmapFactory.decodeFile(path[i], options); //此时返回bm为空<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>options.inJustDecodeBounds = false;<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> //缩放比<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> int be = (int)(options.outHeight / (float)215);<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> if (be &lt;= 0)<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> be = 1;<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> options.inSampleSize = be;<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>options.inSampleSize = computeSampleSize(options, -1, 300*350); <wbr><br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>  <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> //重新读入图片，注意这次要把options.inJustDecodeBounds 设为 false哦<br><wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>pic[i] <wbr> = BitmapFactory.decodeFile(path[i], options);</p>
+<p>这是option的UML图：</p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html#blogid=7f311ef501017zhs&amp;url=http://s4.sinaimg.cn/orignal/7f311ef5gc8b3e16c3f33" target="_blank" rel="external"><img src="http://s4.sinaimg.cn/middle/7f311ef5gc8b3e16c3f33&amp;690" alt="Android压缩图片的几种方法" title="Android压缩图片的几种方法"></a><br><wbr>  <wbr>  <wbr>  <wbr>  <wbr>  <wbr></p>
+<p>这样出来的图片一般不会失真，但是当你压缩的长宽比例相差较大时还会有失真现象。</p>
+<p>这个是等比例缩放:<br>bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);width和height是缩放后的大小，true表示过滤，可消除锯齿感。</p>
+<p><span style="color: #000000; font-family: 'Times New Roman'; font-size: small;">newBitmap = Bitmap.createBitmap(oldBitmap, 0, 0, width, height, matrix, true);//用距阵的方式缩放</span></p>
+<p>这个是截取图片某部分:<br>bitmap = Bitmap.createBitmap(bitmap, x, y, width, height);，意思是从（x，y）开始截取width宽和height高大小的图片。</p>
+<p>这些就是android系统中压缩图片的几个方法了。</p>
+<p>&nbsp;</p>
+<h2 id="实例">实例</h2><p>&nbsp;<br>[code lang=”java”]<br>//对图片进行压缩<br>           BitmapFactory.Options options = new BitmapFactory.Options();<br>           options.inJustDecodeBounds = true;  </p>
+<pre><code>   <span class="comment">//获取这个图片的宽和高  </span>
+   Bitmap bitmap = BitmapFactory.decodeFile<span class="params">(&amp;quot;/sdcard/dcim/Camera/hello.jpg&amp;quot;,options)</span>;<span class="comment">//此时返回bm为空  </span>
+   options.inJustDecodeBounds =<span class="literal">false</span>;  
+   <span class="comment">//计算缩放比  </span>
+   int be = <span class="params">(int)</span><span class="params">(options.outHeight / <span class="params">(float)</span><span class="number">200</span>)</span>;  
+   <span class="keyword">if</span><span class="params">(be &amp;lt;= <span class="number">0</span>)</span>  
+        be =<span class="number">1</span>;  
+   options.inSampleSize =be;  
+   <span class="comment">//重新读入图片，注意这次要把options.inJustDecodeBounds设为false哦  </span>
+   bitmap = BitmapFactory.decodeFile<span class="params">(&amp;quot;/sdcard/dcim/Camera/hello.jpg&amp;quot;,options)</span>;  
+   int w = bitmap.getWidth<span class="params">()</span>;  
+   int h=bitmap.getHeight<span class="params">()</span>;  
+   System.out.println<span class="params">(w+&amp;quot; &amp;quot;+h)</span>;  
+   myImageView.setImageBitmap<span class="params">(bitmap)</span>;  
+
+   <span class="comment">//保存入sdCard  </span>
+   File file2= new File<span class="params">(&amp;quot;/sdcard/dcim/Camera/test.jpg&amp;quot;)</span>;  
+   try {  
+    FileOutputStream out = new FileOutputStream<span class="params">(file2)</span>;  
+    <span class="keyword">if</span><span class="params">(bitmap.compress<span class="params">(Bitmap.CompressFormat.JPEG, <span class="number">100</span>, out)</span>)</span>{  
+        out.flush<span class="params">()</span>;  
+        out.close<span class="params">()</span>;  
+    }  
+} catch <span class="params">(Exception e)</span> {  
+    <span class="comment">// <span class="doctag">TODO</span>: handle exception  </span>
+}  
+
+<span class="comment">//读取sd卡  </span>
+   File file =new File<span class="params">(&amp;quot;/sdcard/dcim/Camera/test.jpg&amp;quot;)</span>;  
+   int maxBufferSize = <span class="number">16</span> <span class="built_in">*</span> <span class="number">1024</span>;  
+
+    int len = <span class="number">0</span>;  
+    ByteArrayOutputStream outStream = new ByteArrayOutputStream<span class="params">()</span>;  
+     BufferedInputStream bufferedInputStream;  
+    try {  
+        bufferedInputStream = new BufferedInputStream<span class="params">(new FileInputStream<span class="params">(file)</span>)</span>;  
+        int bytesAvailable = bufferedInputStream.available<span class="params">()</span>;  
+        int bufferSize = Math.<span class="built_in">min</span><span class="params">(bytesAvailable, maxBufferSize)</span>;  
+        byte[] buffer = new byte[bufferSize];  
+        while <span class="params">(<span class="params">(len = bufferedInputStream.read<span class="params">(buffer)</span>)</span> != -<span class="number">1</span>)</span>  
+        {  
+            outStream.write<span class="params">(buffer, <span class="number">0</span>, bufferSize)</span>;  
+        }  
+         data = outStream.toByteArray<span class="params">()</span>;  
+        outStream.close<span class="params">()</span>;  
+        bufferedInputStream.close<span class="params">()</span>;  
+
+    } catch <span class="params">(FileNotFoundException e)</span> {  
+        e.printStackTrace<span class="params">()</span>;  
+    } catch <span class="params">(IOException e)</span> {  
+        e.printStackTrace<span class="params">()</span>;  
+    }  
+</code></pre><p>[/code] </p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-11-06T18:16:51.000Z"><a href="/2012/11/07/codecademy-linux-e7-89-88-e8-af-9e-e7-94-9f-ef-bc-8c-e5-9b-bd-e5-86-85it-e5-9f-b9-e8-ae-ad-e5-b8-88-e6-8e-a8-e5-87-balinux-e5-85-8d-e8-b4-b9-e5-9c-a8-e7-ba-bf-e8-a7-86-e9-a2-91-e5-ad-a6-e4-b9-a0/">2012-11-07</a></time>
       
       
@@ -675,44 +772,6 @@ com.android.music</code><br>Monkey是一个命令行工具，可以运行在模�
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-11-02T20:32:54.000Z"><a href="/2012/11/03/android/android-view-e5-a6-82-e4-bd-95-e8-8e-b7-e5-8f-96-e7-84-a6-e7-82-b9/">2012-11-03</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/11/03/android/android-view-e5-a6-82-e4-bd-95-e8-8e-b7-e5-8f-96-e7-84-a6-e7-82-b9/">Android View如何获取焦点</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p> Android新启动Activity，dialog或者其他窗体中中包含EditText， 新启动的activity的焦点默认在EditText上，这是android系统会弹出软键盘，挤压activity本来的界面，影响美观。</p>
-<pre><code>因此最好在新窗体创建时，最好在<span class="function"><span class="title">onCreate</span><span class="params">()</span></span>方法中将焦点放在另一个view上.  view使用<span class="function"><span class="title">requestFocus</span><span class="params">()</span></span>焦点，但是如果让button或者textView之类控件直接使用<span class="function"><span class="title">requestFocus</span><span class="params">()</span></span>方法，则无法获取焦点，焦点会依然在editText上。
-
-只能在使用View的<span class="function"><span class="title">requestFocus</span><span class="params">()</span></span>方法之前调用下面<span class="number">2</span>个方法，view才可获取焦点:
-</code></pre><p> [code lang=”java”]<br> 　　　　view.setFocusable(true);</p>
-<p> 　　　　view.setFocusableInTouchMode(true);<br> [/code]<br> 　　然后调用 requestFocus()即可获取焦点。</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -740,7 +799,7 @@ com.android.music</code><br>Monkey是一个命令行工具，可以运行在模�
   
     <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
   
-    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>8</small></li>
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>9</small></li>
   
     <li><a href="/categories/android开发/">android开发</a><small>50</small></li>
   
@@ -771,9 +830,9 @@ com.android.music</code><br>Monkey是一个命令行工具，可以运行在模�
   
     <li><a href="/tags/Vert-x-Core手册-for-Java/">Vert.x Core手册 for Java</a><small>1</small></li>
   
-    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>8</small></li>
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>9</small></li>
   
-    <li><a href="/tags/Vertx/">Vertx</a><small>8</small></li>
+    <li><a href="/tags/Vertx/">Vertx</a><small>9</small></li>
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   
