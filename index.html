@@ -66,6 +66,48 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2016-05-03T23:58:21.000Z"><a href="/2016/05/04/Vert-x-3-Core手册-for-Java-中文版/">2016-05-04</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/05/04/Vert-x-3-Core手册-for-Java-中文版/">Vert.x 3 Core手册 for Java 中文版</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <ul>
+<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
+<li>交流群：<code>231419585</code>- </li>
+<li>转载请注明出处，谢谢</li>
+</ul>
+<ul>
+<li>阅读地址：<a href="http://vertx.quanke.name/" target="_blank" rel="external">http://vertx.quanke.name/</a></li>
+<li>下载地址：<a href="https://www.gitbook.com/book/quanke/vert-x-core-manual-for-java" target="_blank" rel="external">https://www.gitbook.com/book/quanke/vert-x-core-manual-for-java</a></li>
+<li>本书源码地址：<a href="https://github.com/quanke/vert-x-core-manual-for-java" target="_blank" rel="external">https://github.com/quanke/vert-x-core-manual-for-java</a></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2016-05-03T23:56:26.000Z"><a href="/2016/05/04/设计模式Java版-Gitbook开源电子书，含源码/">2016-05-04</a></time>
       
       
@@ -889,77 +931,6 @@ Repository Settings</code> ，把这个设置成为刚才导到<code>github</cod
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-01-16T08:36:32.000Z"><a href="/2016/01/16/怎样写一个安全的Vert-x-Web-apps/">2016-01-16</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/01/16/怎样写一个安全的Vert-x-Web-apps/">怎样写一个安全的Vert.x Web apps</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <ul>
-<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
-<li>交流群：<code>231419585</code></li>
-<li>转载请注明出处，谢谢</li>
-</ul>
-<p>此文只是对vert.x Web应用程序的入门指导（大神请绕道）。 这绝不是对Web应用程序安全性的全面指导，如<a href="https://www.owasp.org" target="_blank" rel="external">OWASP</a>。 标准规则和惯例适用于vert.x应用程序。</p>
-<h3 id="不要用root身份运行">不要用root身份运行</h3><p>DEVOPS团队成员会经常说，只给必要的运行权限，不要多给。有些新手试图以root用户在80或443端口下运行，虽然这样简单，但也为坏蛋打开一扇门。 让我们看看下面的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class App extends AbstractVerticle &#123;&#10;  @Override&#10;  public void start() &#123;&#10;&#10;    Router router = Router.router(vertx);&#10;&#10;    router.route().handler(StaticHandler.create(&#34;&#34;));&#10;&#10;    vertx.createHttpServer().requestHandler(router::accept).listen(80);&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<p>当与开始<code>CWD</code>设置为<code>/</code> (<code>java -Dvertx.cwd=/ ...</code>)你就创建了一个简单的文件服务器，给所有服务器存储。 现在，假设你要启动这个程序，会打印如下错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Aug 26, 2015 2:02:18 PM io.vertx.core.http.impl.HttpServerImpl&#10;SEVERE: java.net.SocketException: Permission denied</span><br></pre></td></tr></table></figure>
-<p>如果你现在使用<code>root</code>运行的，浏览器输入<code>http://localhost/etc/shadow</code>，恭喜你，你的服务器<code>logins</code> 和 <code>passwords</code> 暴露了 ！</p>
-<p>有几种方法，可以root用户运行，使用<code>iptables</code>请求转发到更高的端口，使用<code>authbind</code>，配置代理服务器<code>ngnix</code>等…</p>
-<h3 id="Sessions">Sessions</h3><p>许多应用程序要处理在某些时候用户会话。</p>
-<p>会话<code>Cookie</code>应该有<code>SECURE</code>和<code>HTTPOnly</code>设置的标志，只发送<code>HTTPS</code>（在使用<code>HTTPS</code>？），也没有脚本访问<code>cookie</code>的客户端：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Router router = Router.router(vertx);&#10;&#10;    router.route().handler(CookieHandler.create());&#10;    router.route().handler(SessionHandler&#10;        .create(LocalSessionStore.create(vertx))&#10;        .setCookieHttpOnlyFlag(true)&#10;        .setCookieSecureFlag(true)&#10;    );&#10;&#10;    router.route().handler(routingContext -&#62; &#123;&#10;&#10;      Session session = routingContext.session();&#10;&#10;      Integer cnt = session.get(&#34;hitcount&#34;);&#10;      cnt = (cnt == null ? 0 : cnt) + 1;&#10;&#10;      session.put(&#34;hitcount&#34;, cnt);&#10;&#10;      routingContext.response().end(&#34;Hitcount: &#34; + cnt);&#10;    &#125;);&#10;&#10;    vertx.createHttpServer().requestHandler(router::accept).listen(8080);</span><br></pre></td></tr></table></figure>
-<p>在这种情况下，检查浏览器，应该看到：</p>
-<p><img src="http://vertx.io/assets/blog/vertx3-secure-webapps/nocookie.png" alt="image"></p>
-<p>你的浏览器的脚本有读取的能力，可以嗅探劫持或篡改您的会话。</p>
-<h3 id="Security_Headers">Security Headers</h3><p>有很多的安全<code>headers</code>有助于提高安全性，只需几行代码。 没有必要在这里解释，因为网上有很好的文章说的做得可能会比我更好。</p>
-<p>怎么实现：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class App extends AbstractVerticle &#123;&#10;&#10;  @Override&#10;  public void start() &#123;&#10;&#10;    Router router = Router.router(vertx);&#10;    router.route().handler(ctx -&#62; &#123;&#10;      ctx.response()&#10;          // do not allow proxies to cache the data&#10;          .putHeader(&#34;Cache-Control&#34;, &#34;no-store, no-cache&#34;)&#10;          // prevents Internet Explorer from MIME - sniffing a&#10;          // response away from the declared content-type&#10;          .putHeader(&#34;X-Content-Type-Options&#34;, &#34;nosniff&#34;)&#10;          // Strict HTTPS (for about ~6Months)&#10;          .putHeader(&#34;Strict-Transport-Security&#34;, &#34;max-age=&#34; + 15768000)&#10;          // IE8+ do not allow opening of attachments in the context of this resource&#10;          .putHeader(&#34;X-Download-Options&#34;, &#34;noopen&#34;)&#10;          // enable XSS for IE&#10;          .putHeader(&#34;X-XSS-Protection&#34;, &#34;1; mode=block&#34;)&#10;          // deny frames&#10;          .putHeader(&#34;X-FRAME-OPTIONS&#34;, &#34;DENY&#34;);&#10;    &#125;);&#10;&#10;    vertx.createHttpServer().requestHandler(router::accept).listen(8080);&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="保护跨站请求伪造（CSRF）">保护跨站请求伪造（CSRF）</h3><p><code>Vert.x web</code>在<code>handler</code>里提供了<code>CSRF</code>保护。下面代码增加CSRF保护：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class App extends AbstractVerticle &#123;&#10;&#10;  @Override&#10;  public void start() &#123;&#10;&#10;    Router router = Router.router(vertx);&#10;&#10;    router.route().handler(CookieHandler.create());&#10;    router.route().handler(SessionHandler&#10;        .create(LocalSessionStore.create(vertx))&#10;        .setCookieHttpOnlyFlag(true)&#10;        .setCookieSecureFlag(true)&#10;    );&#10;    router.route().handler(CSRFHandler.create(&#34;not a good secret&#34;));&#10;&#10;    router.route().handler(ctx -&#62; &#123;&#10;      ...&#10;    &#125;);</span><br></pre></td></tr></table></figure>
-<p>该处理器(handler)增加了一个CSRF令牌(token)。 为了改变<code>cookie</code>（XSRF-TOKEN），设置了一个独一无二的<code>token</code>，即预计返回一个（X-XSRF-TOKEN）header。</p>
-<h3 id="限制上传">限制上传</h3><p>上传处理一定要定义一个上限，否则你会很容易受到DDoS攻击。 例如，看看下面的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class App extends AbstractVerticle &#123;&#10;&#10;  @Override&#10;  public void start() &#123;&#10;&#10;    Router router = Router.router(vertx);&#10;&#10;    router.route().handler(BodyHandler.create());&#10;&#10;    router.route().handler(ctx -&#62; &#123;&#10;      ...</span><br></pre></td></tr></table></figure>
-<p>现在，“好心人”可以随机生成一个1GB的垃圾文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd if=/dev/urandom of=ddos bs=1G count=1</span><br></pre></td></tr></table></figure>
-<p>然后把它上传到你的服务器：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --data-binary &#34;@ddos&#34; -H &#34;Content-Type: application/octet-stream&#34; -X POST http://localhost:8080/</span><br></pre></td></tr></table></figure>
-<p>您的应用程序将愉快地处理，上面两步不断重复，它会耗尽磁盘空间或内存。 为了减轻这些类型的攻击，始终指定的最大允许上传的大小：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class App extends AbstractVerticle &#123;&#10;&#10;  private static final int KB = 1024;&#10;  private static final int MB = 1024 * KB;&#10;&#10;  @Override&#10;  public void start() &#123;&#10;&#10;    Router router = Router.router(vertx);&#10;    router.route().handler(BodyHandler.create().setBodyLimit(50 * MB));</span><br></pre></td></tr></table></figure>
-<h3 id="最后">最后</h3><p>虽然只有几点，也应该记住。</p>
-<p>当程序要用于生产，你还要注意更多：</p>
-<ul>
-<li><a href="https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project" target="_blank" rel="external">OWASP Top Ten Project</a></li>
-<li><a href="https://www.owasp.org/index.php/Preventing_SQL_Injection_in_Java" target="_blank" rel="external">Preventing SQL Injection in Java</a></li>
-<li><a href="https://www.owasp.org/index.php/Testing_for_NoSQL_injection" target="_blank" rel="external">Testing for NoSQL injection</a></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -985,7 +956,7 @@ Repository Settings</code> ，把这个设置成为刚才导到<code>github</cod
   
     <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
   
-    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>9</small></li>
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>10</small></li>
   
     <li><a href="/categories/android开发/">android开发</a><small>50</small></li>
   
@@ -1020,9 +991,9 @@ Repository Settings</code> ，把这个设置成为刚才导到<code>github</cod
   
     <li><a href="/tags/Vert-x-Core手册-for-Java/">Vert.x Core手册 for Java</a><small>1</small></li>
   
-    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>9</small></li>
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>10</small></li>
   
-    <li><a href="/tags/Vertx/">Vertx</a><small>9</small></li>
+    <li><a href="/tags/Vertx/">Vertx</a><small>10</small></li>
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   
