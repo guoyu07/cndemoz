@@ -66,6 +66,60 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2012-11-02T22:15:16.000Z"><a href="/2012/11/03/e7-bc-96-e8-af-91android-e5-87-ba-e9-94-99-ef-bc-9aunable-to-execute-dex-java-heap-space/">2012-11-03</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/03/e7-bc-96-e8-af-91android-e5-87-ba-e9-94-99-ef-bc-9aunable-to-execute-dex-java-heap-space/">编译Android出错：Unable to execute dex: Java heap space </a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>昨天在编译运行(Run As Android Application)同事写的应用(移植)时，提示Unable to execute dex: Java heap space，刚开始以为是Android SDK没装好，于是我写了个Hello Android程序来验证，Hello Android可以运行。</p>
+<p>于是，我Google了一下，据说是因为升级了ADT缘故(好像是Android小组的回复)，将最新的ADT换回之前的，或者使用Android小组(?)说的Fix了的版本就可以了(这一点我没有试验)。</p>
+<p>其实，继续使用ADT14也是可以的，这需要修改Eclipse的配置文件，也就是网上很多人说的那样，修改Eclipse安装目录下eclipse.ini文件:</p>
+<p>1)在文件开头添加</p>
+<p>-vm<br>D:\Program Files\Java\jre6\bin\javaw.exe</p>
+<p>其中，D:\Program Files\Java\jre6是本人机器上JRE的路径，需要根据实际情况修改</p>
+<p>2)搜索–launcher.XXMaxPermSize，将其下一行的</p>
+<p>256m</p>
+<p>改为</p>
+<p>512m</p>
+<p>其中，红色标出的部分可能不同的Eclipse版本，数字(256)不同。</p>
+<p>3)搜索-vmargs</p>
+<p>-vmargs<br>-Xms40m<br>-Xmx384m</p>
+<p>将</p>
+<p>-Xms40m<br>-Xmx384m</p>
+<p>改为</p>
+<p>-Xms512m<br>-Xmx1024m</p>
+<p>并在其后加上</p>
+<p>-XX:MaxPermSize=256m</p>
+<p>同上，可能不同版本的Eclipse，红色标出的部分，数字(40和384)会不同。</p>
+<p>然后重启Eclipse，编译出错的工程即可。</p>
+<p>出处：<a href="http://blog.sina.com.cn/s/blog_69b1501d01013b00.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_69b1501d01013b00.html</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-11-02T20:32:54.000Z"><a href="/2012/11/03/android/android-view-e5-a6-82-e4-bd-95-e8-8e-b7-e5-8f-96-e7-84-a6-e7-82-b9/">2012-11-03</a></time>
       
       
@@ -589,71 +643,6 @@ var _hmt = _hmt || [];
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-10-28T19:41:30.000Z"><a href="/2012/10/29/e8-ae-be-e7-bd-ae-e6-89-93-e5-bc-80-e6-96-b0activity-e7-9a-84-e5-8a-a8-e7-94-bb-e6-95-88-e6-9e-9c/">2012-10-29</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/10/29/e8-ae-be-e7-bd-ae-e6-89-93-e5-bc-80-e6-96-b0activity-e7-9a-84-e5-8a-a8-e7-94-bb-e6-95-88-e6-9e-9c/">设置打开新Activity的动画效果</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <pre>package com.jay.demo;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-
-public class HomeActivity extends Activity {
-
-        /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout1);
-        Button gotoBtn = (Button) findViewById(R.id.gotobtn);
-        gotoBtn.setOnClickListener(listener);
-    }
-    private OnClickListener listener = new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                        Intent intent = new Intent(HomeActivity.this, SecondActivity.class);
-                        startActivityForResult(intent, 0);
-//                        HomeActivity.this.finish();
-                        int version =  Integer.valueOf(android.os.Build.VERSION.SDK);
-                        if(version &gt; 5 ){
-                                overridePendingTransition(R.anim.zoomin, R.anim.zoomout);
-                        }
-//                        HomeActivity.this.finish();
-                }
-        };
-}</pre>
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -693,6 +682,8 @@ public class HomeActivity extends Activity {
   
     <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
   
+    <li><a href="/categories/设计模式/">设计模式</a><small>1</small></li>
+  
     <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
   
     <li><a href="/categories/随笔/">随笔</a><small>12</small></li>
@@ -705,6 +696,8 @@ public class HomeActivity extends Activity {
 <div class="widget tag">
   <h3 class="title">标签</h3>
   <ul class="entry">
+  
+    <li><a href="/tags/JAVA/">JAVA</a><small>1</small></li>
   
     <li><a href="/tags/LiveOak/">LiveOak</a><small>3</small></li>
   
@@ -733,6 +726,8 @@ public class HomeActivity extends Activity {
     <li><a href="/tags/注意/">注意</a><small>1</small></li>
   
     <li><a href="/tags/职业规划/">职业规划</a><small>1</small></li>
+  
+    <li><a href="/tags/设计模式/">设计模式</a><small>1</small></li>
   
     <li><a href="/tags/资料/">资料</a><small>2</small></li>
   

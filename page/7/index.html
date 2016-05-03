@@ -66,6 +66,51 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2012-11-07T17:57:34.000Z"><a href="/2012/11/08/android/android-ef-bc-9ainvalidate-e5-92-8cpostinvalidate-e7-9a-84-e5-8c-ba-e5-88-ab-e5-8f-8a-e4-bd-bf-e7-94-a8/">2012-11-08</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/08/android/android-ef-bc-9ainvalidate-e5-92-8cpostinvalidate-e7-9a-84-e5-8c-ba-e5-88-ab-e5-8f-8a-e4-bd-bf-e7-94-a8/">Android：invalidate()和postInvalidate() 的区别及使用</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Android提供了Invalidate方法实现界面刷新，但是Invalidate不能直接在线程中调用，因为他是违背了单线程模型：Android UI操作并不是线程安全的，并且这些操作必须在UI线程中调用。<br>invalidate()是用来刷新View的，必须是在UI线程中进行工作。比如在修改某个view的显示时，调用invalidate()才能看到重新绘制的界面。invalidate()的调用是把之前的旧的view从主UI线程队列中pop掉。 一个Android 程序默认情况下也只有一个进程，但一个进程下却可以有许多个线程。<br>在这么多线程当中，把主要是负责控制UI界面的显示、更新和控件交互的线程称为UI线程，由于onCreate()方法是由UI线程执行的，所以也可以把UI线程理解为主线程。其余的线程可以理解为工作者线程。<br>invalidate()得在UI线程中被调动，在工作者线程中可以通过Handler来通知UI线程进行界面更新。</p>
+<p>而postInvalidate()在工作者线程中被调用</p>
+<p>利用invalidate()刷新界面</p>
+<p>　　实例化一个Handler对象，并重写handleMessage方法调用invalidate()实现界面刷新;而在线程中通过sendMessage发送界面更新消息。<br>[code lang=”java”]<br>// 在onCreate()中开启线程</p>
+<p>new Thread(new GameThread()).start();、</p>
+<p>// 实例化一个handler</p>
+<p>Handler myHandler = new Handler() {<br>// 接收到消息后处理<br>public void handleMessage(Message msg) {<br>switch (msg.what) {<br>case Activity01.REFRESH:<br>mGameView.invalidate(); // 刷新界面<br>break;<br>}</p>
+<p>super.handleMessage(msg);<br>}<br>};</p>
+<p>class GameThread implements Runnable {<br>public void run() {<br>while (!Thread.currentThread().isInterrupted()) {<br>Message message = new Message();<br>message.what = Activity01.REFRESH;<br>// 发送消息<br>Activity01.this.myHandler.sendMessage(message);<br>try {<br>Thread.sleep(100);<br>} catch (InterruptedException e) {<br>Thread.currentThread().interrupt();<br>}<br>}<br>}<br>}</p>
+<p>[/code]<br>使用postInvalidate()刷新界面</p>
+<pre><code>使用postInvalidate则比较简单，不需要<span class="keyword">handler</span>，直接在线程中调用postInvalidate即可。 
+</code></pre><p>[code lang=”java”]<br>class GameThread implements Runnable {<br>public void run() {<br>while (!Thread.currentThread().isInterrupted()) {<br>try {<br>Thread.sleep(100);<br>} catch (InterruptedException e) {<br>Thread.currentThread().interrupt();<br>}</p>
+<p>// 使用postInvalidate可以直接在线程中更新界面<br>mGameView.postInvalidate();<br>}<br>}<br>}<br>[/code] </p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-11-07T17:49:11.000Z"><a href="/2012/11/08/android/android-e5-8e-8b-e7-bc-a9-e5-9b-be-e7-89-87-e7-9a-84-e5-87-a0-e7-a7-8d-e6-96-b9-e6-b3-95/">2012-11-08</a></time>
       
       
@@ -718,60 +763,6 @@ com.android.music</code><br>Monkey是一个命令行工具，可以运行在模�
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-11-02T22:15:16.000Z"><a href="/2012/11/03/e7-bc-96-e8-af-91android-e5-87-ba-e9-94-99-ef-bc-9aunable-to-execute-dex-java-heap-space/">2012-11-03</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/11/03/e7-bc-96-e8-af-91android-e5-87-ba-e9-94-99-ef-bc-9aunable-to-execute-dex-java-heap-space/">编译Android出错：Unable to execute dex: Java heap space </a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>昨天在编译运行(Run As Android Application)同事写的应用(移植)时，提示Unable to execute dex: Java heap space，刚开始以为是Android SDK没装好，于是我写了个Hello Android程序来验证，Hello Android可以运行。</p>
-<p>于是，我Google了一下，据说是因为升级了ADT缘故(好像是Android小组的回复)，将最新的ADT换回之前的，或者使用Android小组(?)说的Fix了的版本就可以了(这一点我没有试验)。</p>
-<p>其实，继续使用ADT14也是可以的，这需要修改Eclipse的配置文件，也就是网上很多人说的那样，修改Eclipse安装目录下eclipse.ini文件:</p>
-<p>1)在文件开头添加</p>
-<p>-vm<br>D:\Program Files\Java\jre6\bin\javaw.exe</p>
-<p>其中，D:\Program Files\Java\jre6是本人机器上JRE的路径，需要根据实际情况修改</p>
-<p>2)搜索–launcher.XXMaxPermSize，将其下一行的</p>
-<p>256m</p>
-<p>改为</p>
-<p>512m</p>
-<p>其中，红色标出的部分可能不同的Eclipse版本，数字(256)不同。</p>
-<p>3)搜索-vmargs</p>
-<p>-vmargs<br>-Xms40m<br>-Xmx384m</p>
-<p>将</p>
-<p>-Xms40m<br>-Xmx384m</p>
-<p>改为</p>
-<p>-Xms512m<br>-Xmx1024m</p>
-<p>并在其后加上</p>
-<p>-XX:MaxPermSize=256m</p>
-<p>同上，可能不同版本的Eclipse，红色标出的部分，数字(40和384)会不同。</p>
-<p>然后重启Eclipse，编译出错的工程即可。</p>
-<p>出处：<a href="http://blog.sina.com.cn/s/blog_69b1501d01013b00.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_69b1501d01013b00.html</a></p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -811,6 +802,8 @@ com.android.music</code><br>Monkey是一个命令行工具，可以运行在模�
   
     <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
   
+    <li><a href="/categories/设计模式/">设计模式</a><small>1</small></li>
+  
     <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
   
     <li><a href="/categories/随笔/">随笔</a><small>12</small></li>
@@ -823,6 +816,8 @@ com.android.music</code><br>Monkey是一个命令行工具，可以运行在模�
 <div class="widget tag">
   <h3 class="title">标签</h3>
   <ul class="entry">
+  
+    <li><a href="/tags/JAVA/">JAVA</a><small>1</small></li>
   
     <li><a href="/tags/LiveOak/">LiveOak</a><small>3</small></li>
   
@@ -851,6 +846,8 @@ com.android.music</code><br>Monkey是一个命令行工具，可以运行在模�
     <li><a href="/tags/注意/">注意</a><small>1</small></li>
   
     <li><a href="/tags/职业规划/">职业规划</a><small>1</small></li>
+  
+    <li><a href="/tags/设计模式/">设计模式</a><small>1</small></li>
   
     <li><a href="/tags/资料/">资料</a><small>2</small></li>
   

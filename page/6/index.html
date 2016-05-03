@@ -66,6 +66,41 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2012-11-11T23:57:30.000Z"><a href="/2012/11/12/e5-a6-82-e4-bd-95-e8-ae-a9edittext-e5-9c-a8activity-e8-b5-b7-e5-a7-8b-e7-9a-84-e6-97-b6-e5-80-99-e4-b8-8d-e8-87-aa-e5-8a-a8-e8-8e-b7-e5-be-97-e7-84-a6-e7-82-b9-ef-bc-9f/">2012-11-12</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/12/e5-a6-82-e4-bd-95-e8-ae-a9edittext-e5-9c-a8activity-e8-b5-b7-e5-a7-8b-e7-9a-84-e6-97-b6-e5-80-99-e4-b8-8d-e8-87-aa-e5-8a-a8-e8-8e-b7-e5-be-97-e7-84-a6-e7-82-b9-ef-bc-9f/">如何让edittext在activity起始的时候不自动获得焦点？</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>在AndroidManifest.xml里的Activity定义里添加进这个属性<br>[code lang=”xml”]android:windowSoftInputMode=&quot;adjustResize|stateHidden&quot;[/code]<br>或者在onCreate 里添加进<br>[code lang=”java”]<br>getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);[/code]<br>有时候在某些手机上只添加stateHidden也许无效，需要加入下面这段</p>
+<p>EditText始终不弹出软件键盘<br>例：EditText edit=(EditText)findViewById(R.id.edit);<br>edit.setInputType(InputType.TYPE_NULL);</p>
+<p>让EditText失去焦点，使用EditText的clearFocus方法<br>例如：EditText edit=(EditText)findViewById(R.id.edit);<br>edit.clearFocus();</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-11-09T21:19:43.000Z"><a href="/2012/11/10/e8-bd-ac-e4-b8-80-e4-b8-aa-e5-bd-93-e4-ba-86-e7-88-b9-e7-9a-84-e7-a8-8b-e5-ba-8f-e5-91-98-e7-9a-84-e8-87-aa-e7-99-bd/">2012-11-10</a></time>
       
       
@@ -790,51 +825,6 @@ Speex() {
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-11-07T17:57:34.000Z"><a href="/2012/11/08/android/android-ef-bc-9ainvalidate-e5-92-8cpostinvalidate-e7-9a-84-e5-8c-ba-e5-88-ab-e5-8f-8a-e4-bd-bf-e7-94-a8/">2012-11-08</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/11/08/android/android-ef-bc-9ainvalidate-e5-92-8cpostinvalidate-e7-9a-84-e5-8c-ba-e5-88-ab-e5-8f-8a-e4-bd-bf-e7-94-a8/">Android：invalidate()和postInvalidate() 的区别及使用</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>Android提供了Invalidate方法实现界面刷新，但是Invalidate不能直接在线程中调用，因为他是违背了单线程模型：Android UI操作并不是线程安全的，并且这些操作必须在UI线程中调用。<br>invalidate()是用来刷新View的，必须是在UI线程中进行工作。比如在修改某个view的显示时，调用invalidate()才能看到重新绘制的界面。invalidate()的调用是把之前的旧的view从主UI线程队列中pop掉。 一个Android 程序默认情况下也只有一个进程，但一个进程下却可以有许多个线程。<br>在这么多线程当中，把主要是负责控制UI界面的显示、更新和控件交互的线程称为UI线程，由于onCreate()方法是由UI线程执行的，所以也可以把UI线程理解为主线程。其余的线程可以理解为工作者线程。<br>invalidate()得在UI线程中被调动，在工作者线程中可以通过Handler来通知UI线程进行界面更新。</p>
-<p>而postInvalidate()在工作者线程中被调用</p>
-<p>利用invalidate()刷新界面</p>
-<p>　　实例化一个Handler对象，并重写handleMessage方法调用invalidate()实现界面刷新;而在线程中通过sendMessage发送界面更新消息。<br>[code lang=”java”]<br>// 在onCreate()中开启线程</p>
-<p>new Thread(new GameThread()).start();、</p>
-<p>// 实例化一个handler</p>
-<p>Handler myHandler = new Handler() {<br>// 接收到消息后处理<br>public void handleMessage(Message msg) {<br>switch (msg.what) {<br>case Activity01.REFRESH:<br>mGameView.invalidate(); // 刷新界面<br>break;<br>}</p>
-<p>super.handleMessage(msg);<br>}<br>};</p>
-<p>class GameThread implements Runnable {<br>public void run() {<br>while (!Thread.currentThread().isInterrupted()) {<br>Message message = new Message();<br>message.what = Activity01.REFRESH;<br>// 发送消息<br>Activity01.this.myHandler.sendMessage(message);<br>try {<br>Thread.sleep(100);<br>} catch (InterruptedException e) {<br>Thread.currentThread().interrupt();<br>}<br>}<br>}<br>}</p>
-<p>[/code]<br>使用postInvalidate()刷新界面</p>
-<pre><code>使用postInvalidate则比较简单，不需要<span class="keyword">handler</span>，直接在线程中调用postInvalidate即可。 
-</code></pre><p>[code lang=”java”]<br>class GameThread implements Runnable {<br>public void run() {<br>while (!Thread.currentThread().isInterrupted()) {<br>try {<br>Thread.sleep(100);<br>} catch (InterruptedException e) {<br>Thread.currentThread().interrupt();<br>}</p>
-<p>// 使用postInvalidate可以直接在线程中更新界面<br>mGameView.postInvalidate();<br>}<br>}<br>}<br>[/code] </p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -874,6 +864,8 @@ Speex() {
   
     <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
   
+    <li><a href="/categories/设计模式/">设计模式</a><small>1</small></li>
+  
     <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
   
     <li><a href="/categories/随笔/">随笔</a><small>12</small></li>
@@ -886,6 +878,8 @@ Speex() {
 <div class="widget tag">
   <h3 class="title">标签</h3>
   <ul class="entry">
+  
+    <li><a href="/tags/JAVA/">JAVA</a><small>1</small></li>
   
     <li><a href="/tags/LiveOak/">LiveOak</a><small>3</small></li>
   
@@ -914,6 +908,8 @@ Speex() {
     <li><a href="/tags/注意/">注意</a><small>1</small></li>
   
     <li><a href="/tags/职业规划/">职业规划</a><small>1</small></li>
+  
+    <li><a href="/tags/设计模式/">设计模式</a><small>1</small></li>
   
     <li><a href="/tags/资料/">资料</a><small>2</small></li>
   
