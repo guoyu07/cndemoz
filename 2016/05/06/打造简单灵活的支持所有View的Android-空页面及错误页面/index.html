@@ -1,0 +1,287 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>打造简单灵活的支持所有View的Android 空页面及错误页面 | 全科-不安分的码农</title>
+  <meta name="author" content="全科">
+  
+  <meta name="description" content="欢迎关注http://quanke.name/
+转载请注明出处，谢谢
+
+
+当页面加载数据失败，数据为空，或者数据加载中需要可以操作其他地方，我们应该怎么办？
+体验良好的APP都会做相应的处理。
+
+比如网络异常，会显示一个网络异常页面，提示用户去检查网络；
+
+数据为空时，出现一个温馨的空页面，引导用户">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="打造简单灵活的支持所有View的Android 空页面及错误页面"/>
+  <meta property="og:site_name" content="全科-不安分的码农"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="true" title="全科-不安分的码农" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">全科-不安分的码农</a></h1>
+  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/app">Opus</a></li>
+    
+      <li><a href="/open-source">Open Source</a></li>
+    
+      <li><a href="/todo">TODO</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-05-05T16:18:24.000Z"><a href="/2016/05/06/打造简单灵活的支持所有View的Android-空页面及错误页面/">2016-05-06</a></time>
+      
+      
+  
+    <h1 class="title">打造简单灵活的支持所有View的Android 空页面及错误页面</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <ul>
+<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
+<li>转载请注明出处，谢谢</li>
+</ul>
+<hr>
+<p>当页面加载数据失败，数据为空，或者数据加载中需要可以操作其他地方，我们应该怎么办？</p>
+<p>体验良好的APP都会做相应的处理。</p>
+<ol>
+<li><p>比如网络异常，会显示一个网络异常页面，提示用户去检查网络；</p>
+</li>
+<li><p>数据为空时，出现一个温馨的空页面，引导用户去创建数据等；</p>
+</li>
+<li><p>当数据在加载中时，我想按返回按钮，想切换tab，想做更多的事情时，弹出一个loading就不是那么友好了，直接在页面的内容显示区域显示加载中，问题就解决了。</p>
+</li>
+</ol>
+<p>这些方法各大app都在使用，但是怎么发开？每一个页面都写一个空页、面错误页面和loading页面吗？那也太恶心了吧。</p>
+<p>下面我们一起打造简单灵活的支持所有View的Android 空页面及错误页面：</p>
+<p>开始之前先看效果：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/432952-7e05ff41a62e9bce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="打造简单灵活的支持所有View的Android 空页面及错误页面.png"></p>
+<p>继承LinearLayout</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class EmptyLayout extends LinearLayout&#123;&#10;&#10;public EmptyLayout(Context context, AttributeSet attrs) &#123;&#10;        super(context, attrs);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>我们需要实现三种不同的页面，所以需要定义三种类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;/**&#10;    * The empty state&#10;    */&#10;   public final static int TYPE_EMPTY = 1;&#10;   /**&#10;    * The loading state&#10;    */&#10;   public final static int TYPE_LOADING = 2;&#10;   /**&#10;    * The error state&#10;    */&#10;   public final static int TYPE_ERROR = 3;</span><br></pre></td></tr></table></figure>
+<p>定义操作方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;/**&#10;     * &#23637;&#31034;&#38169;&#35823;&#20449;&#24687;&#10;     * @param resId &#22270;&#29255;&#36164;&#28304;id&#10;     * @param text&#10;     */&#10;    public void showError(int resId,String text)&#10;&#10;/**&#10;     * &#23637;&#31034;&#31354;&#20449;&#24687;&#10;     * @param resId &#22270;&#29255;&#36164;&#28304;id&#10;     * @param text&#10;     */&#10;    public void showEmpty(int resId,String text)&#10;&#10;/**&#10;     * &#23637;&#31034;&#21152;&#36733;&#20013;&#10;     * @param resId &#22270;&#29255;&#36164;&#28304;id&#10;     * @param text&#10;     */&#10;    public void showLoading(int resId,String text)&#10;&#10;/**&#10;     *&#38544;&#34255;EmptyLayout&#10;     */&#10;    public void hide()</span><br></pre></td></tr></table></figure>
+<p>获得EmptyLayout的子view，方便隐藏或者展示子view（这里的子view 一般用户展示本来的内容）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/**&#10;     * &#33719;&#24471;EmptyLayout&#30340;&#23376;view&#10;     */&#10;    private void getChildViews()&#123;&#10;        int childCount = getChildCount();&#10;        Log.d(&#34;EmptyLayout&#34;,&#34;ChildCount:&#34;+childCount);&#10;        View view;&#10;        for (int i=0;i&#60;childCount;i++)&#123;&#10;            view = getChildAt(i);&#10;            if (isEmptyView(view))&#123;&#10;                continue;&#10;            &#125;&#10;            childViews.add(view);&#10;        &#125;&#10;    &#125;</span><br></pre></td></tr></table></figure>
+<p>判断view 对象是否是EmptyView ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;/**&#10;     * &#21028;&#26029;view &#23545;&#35937;&#26159;&#21542;&#26159;EmptyView&#10;     * @param view&#10;     * @return&#10;     */&#10;    private boolean isEmptyView(View view)&#123;&#10;        if ((view == null||mEmptyRelativeLayout == view||view == mLoadingView||view == mEmptyView||view == mErrorView))&#123;&#10;            return true;&#10;        &#125;&#10;        return false;&#10;    &#125;</span><br></pre></td></tr></table></figure>
+<p>当数据为空时调用:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void showEmpty()&#123;&#10;&#10;        getChildViews(); //&#33719;&#24471;&#38500;EmptyView&#30340;&#20854;&#20182;&#23376;view&#10;        hideChildView(); //&#25226;&#23376;view&#38544;&#34255;&#20102;&#10;        this.mEmptyType = TYPE_EMPTY;&#10;        changeEmptyType();&#10;        &#10;    &#125;</span><br></pre></td></tr></table></figure>
+<p>其他方法和这个类似，思路很简单，大家可以试试</p>
+<p>使用很简单</p>
+<p>在布局文件里增加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;name.quanke.app.libs.emptylayout.EmptyLayout&#10;        android:id=&#34;@+id/emptyLayout&#34;&#10;        android:layout_width=&#34;match_parent&#34;&#10;        android:layout_height=&#34;match_parent&#34;&#62;&#10;&#10;        &#60;TextView&#10;            android:id=&#34;@+id/textHello&#34;&#10;            android:layout_width=&#34;wrap_content&#34;&#10;            android:layout_height=&#34;wrap_content&#34;&#10;            android:text=&#34;Hello World!&#34; /&#62;&#10;&#10;&#60;/name.quanke.app.libs.emptylayout.EmptyLayout&#62;</span><br></pre></td></tr></table></figure>
+<p>代码里增加:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">findViewById(R.id.btnLoading).setOnClickListener(new View.OnClickListener() &#123;&#10;            @Override&#10;            public void onClick(View view) &#123;&#10;                emptyLayout.showLoading();&#10;            &#125;&#10;        &#125;);&#10;        findViewById(R.id.btnEmpty).setOnClickListener(new View.OnClickListener() &#123;&#10;            @Override&#10;            public void onClick(View view) &#123;&#10;                emptyLayout.showEmpty();&#10;            &#125;&#10;        &#125;);&#10;        findViewById(R.id.btnError).setOnClickListener(new View.OnClickListener() &#123;&#10;            @Override&#10;            public void onClick(View view) &#123;&#10;                emptyLayout.showError();&#10;            &#125;&#10;        &#125;);&#10;        findViewById(R.id.btnData).setOnClickListener(new View.OnClickListener() &#123;&#10;            @Override&#10;            public void onClick(View view) &#123;&#10;                emptyLayout.hide();&#10;            &#125;&#10;        &#125;);</span><br></pre></td></tr></table></figure>
+<p>好了，使用起来就这么简单。。。支持所有的view</p>
+<p>源码放在github上：<a href="https://github.com/quanke/AndroidEmptyLayout" target="_blank" rel="external">https://github.com/quanke/AndroidEmptyLayout</a></p>
+<p>欢迎讨论</p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/android开发/">android开发</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/android/">android</a>
+  </div>
+
+        
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+<!-- 多说评论框 start -->
+  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"quanke"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:quanke.name">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
+  
+    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
+  
+    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>10</small></li>
+  
+    <li><a href="/categories/android开发/">android开发</a><small>51</small></li>
+  
+    <li><a href="/categories/git/">git</a><small>3</small></li>
+  
+    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
+  
+    <li><a href="/categories/使用/">使用</a><small>4</small></li>
+  
+    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
+  
+    <li><a href="/categories/设计模式/">设计模式</a><small>1</small></li>
+  
+    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
+  
+    <li><a href="/categories/随笔/">随笔</a><small>12</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/JAVA/">JAVA</a><small>1</small></li>
+  
+    <li><a href="/tags/LiveOak/">LiveOak</a><small>3</small></li>
+  
+    <li><a href="/tags/MBaaS/">MBaaS</a><small>4</small></li>
+  
+    <li><a href="/tags/Vert-x-Core手册-for-Java/">Vert.x Core手册 for Java</a><small>1</small></li>
+  
+    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>10</small></li>
+  
+    <li><a href="/tags/Vertx/">Vertx</a><small>10</small></li>
+  
+    <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
+  
+    <li><a href="/tags/android/">android</a><small>2</small></li>
+  
+    <li><a href="/tags/android动画/">android动画</a><small>1</small></li>
+  
+    <li><a href="/tags/gitbook/">gitbook</a><small>1</small></li>
+  
+    <li><a href="/tags/ios/">ios</a><small>1</small></li>
+  
+    <li><a href="/tags/开源/">开源</a><small>1</small></li>
+  
+    <li><a href="/tags/总结/">总结</a><small>1</small></li>
+  
+    <li><a href="/tags/注意/">注意</a><small>1</small></li>
+  
+    <li><a href="/tags/职业规划/">职业规划</a><small>1</small></li>
+  
+    <li><a href="/tags/设计模式/">设计模式</a><small>1</small></li>
+  
+    <li><a href="/tags/资料/">资料</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2016 全科
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

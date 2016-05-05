@@ -66,6 +66,78 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2016-05-05T16:18:24.000Z"><a href="/2016/05/06/打造简单灵活的支持所有View的Android-空页面及错误页面/">2016-05-06</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/05/06/打造简单灵活的支持所有View的Android-空页面及错误页面/">打造简单灵活的支持所有View的Android 空页面及错误页面</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <ul>
+<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
+<li>转载请注明出处，谢谢</li>
+</ul>
+<hr>
+<p>当页面加载数据失败，数据为空，或者数据加载中需要可以操作其他地方，我们应该怎么办？</p>
+<p>体验良好的APP都会做相应的处理。</p>
+<ol>
+<li><p>比如网络异常，会显示一个网络异常页面，提示用户去检查网络；</p>
+</li>
+<li><p>数据为空时，出现一个温馨的空页面，引导用户去创建数据等；</p>
+</li>
+<li><p>当数据在加载中时，我想按返回按钮，想切换tab，想做更多的事情时，弹出一个loading就不是那么友好了，直接在页面的内容显示区域显示加载中，问题就解决了。</p>
+</li>
+</ol>
+<p>这些方法各大app都在使用，但是怎么发开？每一个页面都写一个空页、面错误页面和loading页面吗？那也太恶心了吧。</p>
+<p>下面我们一起打造简单灵活的支持所有View的Android 空页面及错误页面：</p>
+<p>开始之前先看效果：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/432952-7e05ff41a62e9bce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="打造简单灵活的支持所有View的Android 空页面及错误页面.png"></p>
+<p>继承LinearLayout</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class EmptyLayout extends LinearLayout&#123;&#10;&#10;public EmptyLayout(Context context, AttributeSet attrs) &#123;&#10;        super(context, attrs);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>我们需要实现三种不同的页面，所以需要定义三种类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;/**&#10;    * The empty state&#10;    */&#10;   public final static int TYPE_EMPTY = 1;&#10;   /**&#10;    * The loading state&#10;    */&#10;   public final static int TYPE_LOADING = 2;&#10;   /**&#10;    * The error state&#10;    */&#10;   public final static int TYPE_ERROR = 3;</span><br></pre></td></tr></table></figure>
+<p>定义操作方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;/**&#10;     * &#23637;&#31034;&#38169;&#35823;&#20449;&#24687;&#10;     * @param resId &#22270;&#29255;&#36164;&#28304;id&#10;     * @param text&#10;     */&#10;    public void showError(int resId,String text)&#10;&#10;/**&#10;     * &#23637;&#31034;&#31354;&#20449;&#24687;&#10;     * @param resId &#22270;&#29255;&#36164;&#28304;id&#10;     * @param text&#10;     */&#10;    public void showEmpty(int resId,String text)&#10;&#10;/**&#10;     * &#23637;&#31034;&#21152;&#36733;&#20013;&#10;     * @param resId &#22270;&#29255;&#36164;&#28304;id&#10;     * @param text&#10;     */&#10;    public void showLoading(int resId,String text)&#10;&#10;/**&#10;     *&#38544;&#34255;EmptyLayout&#10;     */&#10;    public void hide()</span><br></pre></td></tr></table></figure>
+<p>获得EmptyLayout的子view，方便隐藏或者展示子view（这里的子view 一般用户展示本来的内容）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/**&#10;     * &#33719;&#24471;EmptyLayout&#30340;&#23376;view&#10;     */&#10;    private void getChildViews()&#123;&#10;        int childCount = getChildCount();&#10;        Log.d(&#34;EmptyLayout&#34;,&#34;ChildCount:&#34;+childCount);&#10;        View view;&#10;        for (int i=0;i&#60;childCount;i++)&#123;&#10;            view = getChildAt(i);&#10;            if (isEmptyView(view))&#123;&#10;                continue;&#10;            &#125;&#10;            childViews.add(view);&#10;        &#125;&#10;    &#125;</span><br></pre></td></tr></table></figure>
+<p>判断view 对象是否是EmptyView ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;/**&#10;     * &#21028;&#26029;view &#23545;&#35937;&#26159;&#21542;&#26159;EmptyView&#10;     * @param view&#10;     * @return&#10;     */&#10;    private boolean isEmptyView(View view)&#123;&#10;        if ((view == null||mEmptyRelativeLayout == view||view == mLoadingView||view == mEmptyView||view == mErrorView))&#123;&#10;            return true;&#10;        &#125;&#10;        return false;&#10;    &#125;</span><br></pre></td></tr></table></figure>
+<p>当数据为空时调用:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void showEmpty()&#123;&#10;&#10;        getChildViews(); //&#33719;&#24471;&#38500;EmptyView&#30340;&#20854;&#20182;&#23376;view&#10;        hideChildView(); //&#25226;&#23376;view&#38544;&#34255;&#20102;&#10;        this.mEmptyType = TYPE_EMPTY;&#10;        changeEmptyType();&#10;        &#10;    &#125;</span><br></pre></td></tr></table></figure>
+<p>其他方法和这个类似，思路很简单，大家可以试试</p>
+<p>使用很简单</p>
+<p>在布局文件里增加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;name.quanke.app.libs.emptylayout.EmptyLayout&#10;        android:id=&#34;@+id/emptyLayout&#34;&#10;        android:layout_width=&#34;match_parent&#34;&#10;        android:layout_height=&#34;match_parent&#34;&#62;&#10;&#10;        &#60;TextView&#10;            android:id=&#34;@+id/textHello&#34;&#10;            android:layout_width=&#34;wrap_content&#34;&#10;            android:layout_height=&#34;wrap_content&#34;&#10;            android:text=&#34;Hello World!&#34; /&#62;&#10;&#10;&#60;/name.quanke.app.libs.emptylayout.EmptyLayout&#62;</span><br></pre></td></tr></table></figure>
+<p>代码里增加:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">findViewById(R.id.btnLoading).setOnClickListener(new View.OnClickListener() &#123;&#10;            @Override&#10;            public void onClick(View view) &#123;&#10;                emptyLayout.showLoading();&#10;            &#125;&#10;        &#125;);&#10;        findViewById(R.id.btnEmpty).setOnClickListener(new View.OnClickListener() &#123;&#10;            @Override&#10;            public void onClick(View view) &#123;&#10;                emptyLayout.showEmpty();&#10;            &#125;&#10;        &#125;);&#10;        findViewById(R.id.btnError).setOnClickListener(new View.OnClickListener() &#123;&#10;            @Override&#10;            public void onClick(View view) &#123;&#10;                emptyLayout.showError();&#10;            &#125;&#10;        &#125;);&#10;        findViewById(R.id.btnData).setOnClickListener(new View.OnClickListener() &#123;&#10;            @Override&#10;            public void onClick(View view) &#123;&#10;                emptyLayout.hide();&#10;            &#125;&#10;        &#125;);</span><br></pre></td></tr></table></figure>
+<p>好了，使用起来就这么简单。。。支持所有的view</p>
+<p>源码放在github上：<a href="https://github.com/quanke/AndroidEmptyLayout" target="_blank" rel="external">https://github.com/quanke/AndroidEmptyLayout</a></p>
+<p>欢迎讨论</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2016-05-03T23:58:21.000Z"><a href="/2016/05/04/Vert-x-3-Core手册-for-Java-中文版/">2016-05-04</a></time>
       
       
@@ -824,113 +896,6 @@ Repository Settings</code> ，把这个设置成为刚才导到<code>github</cod
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-01-16T09:45:54.000Z"><a href="/2016/01/16/Vert-x-通过异步的方式使用JDBC连接SQL/">2016-01-16</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/01/16/Vert-x-通过异步的方式使用JDBC连接SQL/">Vert.x 通过异步的方式使用JDBC连接SQL</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <ul>
-<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
-<li>交流群：<code>231419585</code></li>
-<li>转载请注明出处，谢谢</li>
-</ul>
-<p>在这篇文章中，我们将会看到怎样在vert.x应用中使用<a href="http://hsqldb.org/" target="_blank" rel="external">HSQL</a>，当然也可以使用任意JDBC，以及使用vertx-jdbc-client提供的异步的API，这篇文章的代码在<a href="https://github.com/quanke/vertx3_study_demo/tree/master/my-vertx-first-app-jdbc" target="_blank" rel="external">github</a>上。</p>
-<h3 id="异步？">异步？</h3><p>vert.x一个很重要的特点就是它的异步性。使用异步的API，不需要等结果返回，当有结果返回时，vert.x会主动通知。为了说明这个，我们来看一个简单的例子。</p>
-<p>我们假设有个<code>add</code>方法。一般来说，会像<code>int r = add(1, 1)</code>这样来使用它。这是一个同步的API，所以你必须等到返回结果。异步的API会是这样：<code>add(1, 1, r -&gt; { /*do something with the result*/})</code>。在这个版本中，你传入了一个Handler，当结果计算出来时才被调用。这个方法不返回任何东西，实现如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void add(int a, int b, Handler&#60;Integer&#62; resultHandler) &#123;&#10;    int r = a + b;&#10;    resultHandler.handle(r);&#10;&#125;</span><br></pre></td></tr></table></figure>
-<p>为了避免混淆概念，异步API并不是多线程。像我们在add例子里看到的，并没有涉及多线程。</p>
-<h3 id="异步JDBC">异步JDBC</h3><p>看了一些基本的异步的API，现在了解下<code>vertx-jdbc-client</code>。这个组件能够让我们通过<code>JDBC driver</code>与数据库交互。这些交互都是异步的，以前这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String sql = &#34;SELECT * FROM Products&#34;;&#10;ResultSet rs = stmt.executeQuery(sql);</span><br></pre></td></tr></table></figure>
-<p>现在要这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">connection.query(&#34;SELECT * FROM Products&#34;, result -&#62; &#123;&#10;        // do something with the result&#10;&#125;);</span><br></pre></td></tr></table></figure>
-<p>这个模型更高效，当结果出来后vert.x通知，避免了等待结果。</p>
-<h3 id="增加maven依赖">增加maven依赖</h3><p>在<code>pom.xml</code>文件中增加两个 <code>Maven dependencies</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;dependency&#62;&#10;  &#60;groupId&#62;io.vertx&#60;/groupId&#62;&#10;  &#60;artifactId&#62;vertx-jdbc-client&#60;/artifactId&#62;&#10;  &#60;version&#62;3.1.0&#60;/version&#62;&#10;&#60;/dependency&#62;&#10;&#60;dependency&#62;&#10;  &#60;groupId&#62;org.hsqldb&#60;/groupId&#62;&#10;  &#60;artifactId&#62;hsqldb&#60;/artifactId&#62;&#10;  &#60;version&#62;2.3.3&#60;/version&#62;&#10;&#60;/dependency&#62;</span><br></pre></td></tr></table></figure>
-<p>第一个依赖提供了<code>vertx-jdbc-client</code>，第二个提供了<code>HSQL JDBC</code>的驱动。如果你想使用另外一个数据库，修改这个依赖，同时你还需要修改<code>JDBC url</code>和<code>JDBC driver</code>名。</p>
-<h3 id="初始化JDBC_client">初始化JDBC client</h3><p>创建JDBC 客户端（client）：</p>
-<p>在<code>MyFirstVerticle</code>类中，声明一个新变量<code>JDBCClient jdbc</code>，并且在<code>start</code>方法中添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdbc = JDBCClient.createShared(vertx, config(), &#34;My-Whisky-Collection&#34;);</span><br></pre></td></tr></table></figure>
-<p>创建了一个JDBC client实例，使用verticle的配置文件配置JDBC client。这个配置文件需要提供下面的配置才能让JDBC client正常工作：</p>
-<ul>
-<li>url－JDBC url，例如：<code>jdbc:hsqldb:mem:db?shutdown=true</code></li>
-<li>_driver class－JDBC的驱动，例如：<code>org.hsqldb.jdbcDriver</code></li>
-</ul>
-<p>有了client，接下来需要连接数据库。连接数据库是通过使用<code>jdbc.getConnection</code>来实现的，<code>jdbc.getConnection</code>需要传入一个<code>Handler&lt;AsyncResult&lt;SQLConnection&gt;&gt;</code>参数。我们深入的了解下这个类型。首先，这是一个<code>Handler</code>，因此当结果准备好时它就会被调用。这个结果是<code>AsyncResult&lt;SQLConnection&gt;</code>的一个实例。<code>AsyncResult</code>是<code>vert.x</code>提供的一个结构，使用它能够知道连接数据库的操作是成功或失败了。如果成功了，它就会提供一个结果，这里结果是一个<code>SQLConnection</code>的实例。</p>
-<p>当你接收一个<code>AsyncResult</code>的实例时，代码通常是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (ar.failed()) &#123;&#10;  System.err.println(&#34;The operation has failed...: &#34;&#10;      + ar.cause().getMessage());&#10;&#125; else &#123;&#10;  // Use the result:&#10;  result = ar.result();&#10; &#125;</span><br></pre></td></tr></table></figure>
-<p>需要获取到<code>SQLConnection</code>，然后启动<code>rest</code>的应用。因为变成了异步的，这需要改变启动应用的方式。因此，如果将启动序列划分成多块：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">startBackend(&#10; (connection) -&#62; createSomeData(connection,&#10;     (nothing) -&#62; startWebApp(&#10;         (http) -&#62; completeStartup(http, fut)&#10;     ), fut&#10; ), fut);</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>startBackend</code>- 获取<code>SQLConnection</code>对象，然后调用下一步</li>
-<li><code>createSomeData</code>- 初始化数据库并插入数据。当完成后，调用下一步</li>
-<li><code>startWebApp</code>- 启动web应用</li>
-<li><code>completeStartup</code>- 最后完成启动</li>
-</ul>
-<p><code>fut</code>由vert.x传入，通知已经启动或者启动过程中遇到的问题。</p>
-<p><code>startBackend</code>方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private void startBackend(Handler&#60;AsyncResult&#60;SQLConnection&#62;&#62; next, Future&#60;Void&#62; fut) &#123;&#10;    jdbc.getConnection(ar -&#62; &#123;&#10;      if (ar.failed()) &#123;&#10;        fut.fail(ar.cause());&#10;      &#125; else &#123;&#10;        next.handle(Future.succeededFuture(ar.result()));&#10;      &#125;&#10;    &#125;);&#10;  &#125;</span><br></pre></td></tr></table></figure>
-<p>这个方法获取了一个SQLConnection对象，检查操作是否完成。如果成功，会调用下一步。失败了，就会报告一个错误。其他的方法遵循同样的模式：</p>
-<ul>
-<li>检查上一步操作是否成功</li>
-<li>处理业务逻辑</li>
-<li>调用下一步</li>
-</ul>
-<h3 id="SQL">SQL</h3><p>客户端已经准备好了，现在写SQL。从<code>createSomeData</code>方法开始，这个方法也是启动顺序中的一部分：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private void createSomeData(AsyncResult&#60;SQLConnection&#62; result,&#10;    Handler&#60;AsyncResult&#60;Void&#62;&#62; next, Future&#60;Void&#62; fut) &#123;&#10;    if (result.failed()) &#123;&#10;      fut.fail(result.cause());&#10;    &#125; else &#123;&#10;      SQLConnection connection = result.result();&#10;      connection.execute(&#10;          &#34;CREATE TABLE IF NOT EXISTS Whisky (id INTEGER IDENTITY, name varchar(100), &#34; +&#10;          &#34;origin varchar(100))&#34;,&#10;          ar -&#62; &#123;&#10;            if (ar.failed()) &#123;&#10;              fut.fail(ar.cause());&#10;              connection.close();&#10;              return;&#10;            &#125;&#10;            connection.query(&#34;SELECT * FROM Whisky&#34;, select -&#62; &#123;&#10;              if (select.failed()) &#123;&#10;                fut.fail(ar.cause());&#10;                connection.close();&#10;                return;&#10;              &#125;&#10;              if (select.result().getNumRows() == 0) &#123;&#10;                insert(&#10;                    new Whisky(&#34;Bowmore 15 Years Laimrig&#34;, &#34;Scotland, Islay&#34;),&#10;                    connection,&#10;                    (v) -&#62; insert(new Whisky(&#34;Talisker 57&#176; North&#34;, &#34;Scotland, Island&#34;),&#10;                        connection,&#10;                        (r) -&#62; &#123;&#10;                          next.handle(Future.&#60;Void&#62;succeededFuture());&#10;                          connection.close();&#10;                        &#125;));                                                    &#10;              &#125; else &#123;&#10;                next.handle(Future.&#60;Void&#62;succeededFuture());&#10;                connection.close();&#10;              &#125;&#10;            &#125;);&#10;          &#125;);&#10;    &#125;&#10;  &#125;</span><br></pre></td></tr></table></figure>
-<p>这个方法检查<code>SQLConnection</code>是否可用，然后执行一些SQL语句。首先，如果表不存在就创建表。看看下面代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">connection.execute(&#10;    SQL statement,&#10;    handler called when the statement has been executed&#10;)</span><br></pre></td></tr></table></figure>
-<p><code>handler</code>接收<code>AsyncResult&lt;Void&gt;</code>，例如：只有是通知而已，没有实际返回的结果。</p>
-<h5 id="关闭连接">关闭连接</h5><p><em>操作完成后，别忘了关闭SQL链接。这个连接会被放入连接池并且可以被重复利用。</em></p>
-<p>在这个<code>handler</code>的代码里，检查了<code>statement</code>是否正确的执行了，如果正确，我们接下来检查表是否含有数据，如果没有，将会使用<code>insert</code>方法插入数据：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private void insert(Whisky whisky, SQLConnection connection, Handler&#60;AsyncResult&#60;Whisky&#62;&#62; next) &#123;&#10;  String sql = &#34;INSERT INTO Whisky (name, origin) VALUES ?, ?&#34;;&#10;  connection.updateWithParams(sql,&#10;      new JsonArray().add(whisky.getName()).add(whisky.getOrigin()),&#10;      (ar) -&#62; &#123;&#10;        if (ar.failed()) &#123;&#10;          next.handle(Future.failedFuture(ar.cause()));&#10;          return;&#10;        &#125;&#10;        UpdateResult result = ar.result();&#10;        // Build a new whisky instance with the generated id.&#10;        Whisky w = new Whisky(result.getKeys().getInteger(0), whisky.getName(), whisky.getOrigin());&#10;        next.handle(Future.succeededFuture(w));&#10;      &#125;);&#10;&#125;</span><br></pre></td></tr></table></figure>
-<p>这个方法使用带有INSERT（插入）statement（声明）的<code>upateWithParams</code>方法，且传入了值。这个方法避免了<code>SQL</code>注入。一旦statement执行了（当数据库没有此条数据就会创建），就创建一个新的<code>Whisky</code>对象，自动生成ID。</p>
-<h3 id="带有数据库（SQL）的REST">带有数据库（SQL）的REST</h3><p>上面的方法都是启动顺序的一部分。但是，关于调用REST API的方法又是怎么样的呢？以<code>getAll</code>方法为例。这个方法被web应用前端调用，并检索存储的所有的产品：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private void getAll(RoutingContext routingContext) &#123;&#10;    jdbc.getConnection(ar -&#62; &#123;&#10;      SQLConnection connection = ar.result();&#10;      connection.query(&#34;SELECT * FROM Whisky&#34;, result -&#62; &#123;&#10;        List&#60;Whisky&#62; whiskies = result.result().getRows().stream().map(Whisky::new).collect(Collectors.toList());&#10;        routingContext.response()&#10;            .putHeader(&#34;content-type&#34;, &#34;application/json; charset=utf-8&#34;)&#10;            .end(Json.encodePrettily(whiskies));&#10;        connection.close(); // Close the connection        &#10;      &#125;);&#10;    &#125;);&#10;  &#125;</span><br></pre></td></tr></table></figure>
-<p>这个方法获得了一个<code>SQLConnection</code>对象，然后发出一个查询。一旦获取到查询结果，它会像之前的方法一样写<code>HTTP response</code>。<code>getOne</code>、<code>deleteOne</code>、<code>updateOne</code>和<code>addOne</code>方法都是一样的。注意，在response之后，需要要关闭SQL连接。</p>
-<p>看下传入到query方法的handler提供的结果。获取了一个包含了查询结果的ResultSet。每一行都是一个JsonObject，因此，如果你有一个数据对象使用JsonObject作为唯一的参数，那么创建这个对象很简单。</p>
-<h3 id="测试">测试</h3><p>需要小小的更新下测试程序，增加配置<code>JDBCClient</code>。在<code>MyFirstVerticleTest</code>类中，将<code>setUp</code>方法中创建的<code>DeploymentOption</code>对象修改成：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DeploymentOptions options = new DeploymentOptions()&#10;        .setConfig(new JsonObject()&#10;            .put(&#34;http.port&#34;, port)&#10;            .put(&#34;url&#34;, &#34;jdbc:hsqldb:mem:test?shutdown=true&#34;)&#10;            .put(&#34;driver_class&#34;, &#34;org.hsqldb.jdbcDriver&#34;)&#10;        );</span><br></pre></td></tr></table></figure>
-<p>除了<code>http.port</code>，还配置了<code>JDBC url</code>和<code>JDBC</code>驱动。测试时，使用的是一个内存数据库。在<code>src/test/resources/my-it-config.json</code>文件中也要做同样的修改。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#10;  &#34;http.port&#34;: $&#123;http.port&#125;,&#10;  &#34;url&#34;: &#34;jdbc:hsqldb:mem:it-test?shutdown=true&#34;,&#10;  &#34;driver_class&#34;: &#34;org.hsqldb.jdbcDriver&#34;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<p><code>src/main/conf/my-application-conf.json</code>文件也同样需要修改，这不是为了测试，而是为了运行这个应用：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#10;  &#34;http.port&#34; : 8082,&#10;  &#34;url&#34;: &#34;jdbc:hsqldb:file:db/whiskies&#34;,&#10;  &#34;driver_class&#34;: &#34;org.hsqldb.jdbcDriver&#34;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<p>这里这个<code>JDBC url</code>和上一个文件的有点不一样，因为需要将数据库存储到硬盘中。</p>
-<h3 id="展示时间！">展示时间！</h3><p>开始构建程序：</p>
-<p><code>mvn clean package</code></p>
-<p>没有修改API（没有更改发布的java文件和REST接口），测试应该是可以顺利的运行的。</p>
-<p>启动应用：</p>
-<p><code>java -jar target/my-first-app-1.0-SNAPSHOT-fat.jar -conf src/main/conf/my-application-conf.json</code></p>
-<p>访问<code>http://localhost:8082/assets/index.html</code>，然后，你可以看到这个应用使用的是数据库了。这一次，就算重启应用，这些数据仍然在，因为存储产品被持久化到硬盘里了。</p>
-<h3 id="总结">总结</h3><p>这篇文章中，知道了怎么在<code>vert.x</code>里使用<code>JDBC</code>数据库，并没有很多复杂的东西。开始可能会被这个异步的开发模型惊讶到，但是，一旦你开始使用了，你就很难再回去了。</p>
-<p>下一次，我们将看到这个应用怎么使用mongoDB来替换HSQL。</p>
-<p><em>Stay tuned, and happy coding !</em></p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -958,7 +923,7 @@ Repository Settings</code> ，把这个设置成为刚才导到<code>github</cod
   
     <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>10</small></li>
   
-    <li><a href="/categories/android开发/">android开发</a><small>50</small></li>
+    <li><a href="/categories/android开发/">android开发</a><small>51</small></li>
   
     <li><a href="/categories/git/">git</a><small>3</small></li>
   
@@ -997,7 +962,7 @@ Repository Settings</code> ，把这个设置成为刚才导到<code>github</cod
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   
-    <li><a href="/tags/android/">android</a><small>1</small></li>
+    <li><a href="/tags/android/">android</a><small>2</small></li>
   
     <li><a href="/tags/android动画/">android动画</a><small>1</small></li>
   
