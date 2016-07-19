@@ -66,6 +66,149 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2012-11-25T05:33:57.000Z"><a href="/2012/11/25/java-e4-bd-bf-e7-94-a8executors-e5-88-9b-e5-bb-ba-e5-92-8c-e7-ae-a1-e7-90-86-e7-ba-bf-e7-a8-8b/">2012-11-25</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/25/java-e4-bd-bf-e7-94-a8executors-e5-88-9b-e5-bb-ba-e5-92-8c-e7-ae-a1-e7-90-86-e7-ba-bf-e7-a8-8b/">Java:使用Executors创建和管理线程</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>1. 类 Executors<br>此类中提供的一些方法有：<br>1.1 public static ExecutorService newCachedThreadPool()<br>创建一个可根据需要创建新线程的线程池，但是在以前构造的线程可用时将重用它们。对于执行很多短期异步任务的程序而言，这些线程池通常可提高程序性能。</p>
+<p>1.2 public static ExecutorService newFixedThreadPool(int nThreads)<br>创建一个可重用固定线程数的线程池，以共享的无界队列方式来运行这些线程。</p>
+<p>1.3 public static ExecutorService newSingleThreadExecutor()<br>创建一个使用单个 worker 线程的 Executor，以无界队列方式来运行该线程。</p>
+<p>这三个方法都可以配合接口ThreadFactory的实例一起使用。并且返回一个ExecutorService接口的实例。<br>2. 接口 ThreadFactory<br>根据需要创建新线程的对象。使用线程工厂就无需再手工编写对 new Thread 的调用了，从而允许应用程序使用特殊的线程子类、属性等等。<br>此接口最简单的实现就是：<br>[code lang=”java”]<br>class SimpleThreadFactory implements ThreadFactory {<br>   public Thread newThread(Runnable r) {<br>     return new Thread(r);<br>   }<br> }<br>[/code]<br>3. 接口ExecutorService<br>该接口提供了管理终止的方法。<br>4.创建标准线程池启动线程<br>4.1 提供一个简单的实现Runnable接口的线程<br>[code lang=”java”]<br>MyThread.java<br>package com.zj.concurrency.executors;</p>
+<p>public class MyThread implements Runnable {<br>    private int count = 1, number;</p>
+<pre><code><span class="keyword">public</span> MyThread(<span class="built_in">int</span> num) {
+   <span class="keyword">number</span> = num;
+   System.<span class="type">out</span>.println(&amp;quot;Create Thread-&amp;quot; + <span class="keyword">number</span>);
+}
+
+<span class="keyword">public</span> void run() {
+   <span class="keyword">while</span> (true) {
+       System.<span class="type">out</span>.println(&amp;quot;Thread-&amp;quot; + <span class="keyword">number</span> + &amp;quot; run &amp;quot; + <span class="built_in">count</span>+&amp;quot; time(s)&amp;quot;);
+       <span class="keyword">if</span> (++<span class="built_in">count</span> == <span class="number">3</span>)
+          <span class="keyword">return</span>;
+   }
+}
+</code></pre><p>}<br>[/code]<br>这个线程会打印出相应的创建和执行信息。</p>
+<p>4.2使用CachedThreadPool启动线程<br>[code lang=”java”]<br>CachedThreadPool.java<br>package com.zj.concurrency.executors;<br>import java.util.concurrent.ExecutorService;<br>import java.util.concurrent.Executors;</p>
+<p>public class CachedThreadPool {<br>    public static void main(String[] args) {<br>       ExecutorService exec = Executors.newCachedThreadPool();<br>       for (int i = 0; i &lt; 5; i++)<br>           exec.execute(new MyThread(i));<br>       exec.shutdown();<br>    }<br>}<br>[/code]<br>结果：<br>Create Thread-0<br>Create Thread-1<br>Create Thread-2<br>Create Thread-3<br>Thread-0 run 1 time(s)<br>Thread-0 run 2 time(s)<br>Thread-1 run 1 time(s)<br>Thread-1 run 2 time(s)<br>Thread-2 run 1 time(s)<br>Thread-2 run 2 time(s)<br>Create Thread-4<br>Thread-4 run 1 time(s)<br>Thread-4 run 2 time(s)<br>Thread-3 run 1 time(s)<br>Thread-3 run 2 time(s)</p>
+<p>4.3 使用FixedThreadPool启动线程<br>[code lang=”java”]<br>FixedThreadPool.java<br>package com.zj.concurrency.executors;<br>import java.util.concurrent.ExecutorService;<br>import java.util.concurrent.Executors;</p>
+<p>public class FixedThreadPool {<br>    public static void main(String[] args) {<br>       ExecutorService exec = Executors.newFixedThreadPool(2);<br>       for (int i = 0; i &lt; 5; i++)<br>           exec.execute(new MyThread(i));<br>       exec.shutdown();<br>    }<br>}<br>[/code]<br>结果：<br>Create Thread-0<br>Create Thread-1<br>Create Thread-2<br>Create Thread-3<br>Create Thread-4<br>Thread-0 run 1 time(s)<br>Thread-0 run 2 time(s)<br>Thread-2 run 1 time(s)<br>Thread-2 run 2 time(s)<br>Thread-3 run 1 time(s)<br>Thread-3 run 2 time(s)<br>Thread-4 run 1 time(s)<br>Thread-4 run 2 time(s)<br>Thread-1 run 1 time(s)<br>Thread-1 run 2 time(s)</p>
+<p>4.4 使用SingleThreadExecutor启动线程<br>[code lang=”java”]<br>SingleThreadExecutor.java<br>package com.zj.concurrency.executors;<br>import java.util.concurrent.ExecutorService;<br>import java.util.concurrent.Executors;</p>
+<p>public class SingleThreadExecutor {<br>    public static void main(String[] args) {<br>       ExecutorService exec = Executors.newSingleThreadExecutor();<br>       for (int i = 0; i &lt; 5; i++)<br>           exec.execute(new MyThread(i));<br>       exec.shutdown();<br>    }<br>}<br>[/code]<br>结果：<br>Create Thread-0<br>Create Thread-1<br>Create Thread-2<br>Create Thread-3<br>Create Thread-4<br>Thread-0 run 1 time(s)<br>Thread-0 run 2 time(s)<br>Thread-1 run 1 time(s)<br>Thread-1 run 2 time(s)<br>Thread-2 run 1 time(s)<br>Thread-2 run 2 time(s)<br>Thread-3 run 1 time(s)<br>Thread-3 run 2 time(s)<br>Thread-4 run 1 time(s)<br>Thread-4 run 2 time(s)<br>5.配合ThreadFactory接口的使用<br>我们试图给线程加入daemon和priority的属性设置。<br>5.1设置后台线程属性<br>[code lang=”java”]<br>DaemonThreadFactory.java<br>package com.zj.concurrency.executors.factory;<br>import java.util.concurrent.ThreadFactory;</p>
+<p>public class DaemonThreadFactory implements ThreadFactory {<br>    public Thread newThread(Runnable r) {<br>       Thread t = new Thread(r);<br>       t.setDaemon(true);<br>       return t;<br>    }<br>}<br> [/code]<br>5.2 设置优先级属性<br>最高优先级MaxPriorityThreadFactory.java<br>[code lang=”java”]<br>package com.zj.concurrency.executors.factory;<br>import java.util.concurrent.ThreadFactory;</p>
+<p>public class MaxPriorityThreadFactory implements ThreadFactory {<br>    public Thread newThread(Runnable r) {<br>       Thread t = new Thread(r);<br>       t.setPriority(Thread.MAX_PRIORITY);<br>       return t;<br>    }<br>}<br>[/code]<br>最低优先级MinPriorityThreadFactory.java<br>[code lang=”java”]<br>package com.zj.concurrency.executors.factory;<br>import java.util.concurrent.ThreadFactory;</p>
+<p>public class MinPriorityThreadFactory implements ThreadFactory {<br>    public Thread newThread(Runnable r) {<br>       Thread t = new Thread(r);<br>       t.setPriority(Thread.MIN_PRIORITY);<br>       return t;<br>    }<br>}<br>[/code]<br>5.3启动带有属性设置的线程<br>[code lang=”java”]<br>ExecFromFactory.java<br>package com.zj.concurrency.executors;<br>import java.util.concurrent.ExecutorService;<br>import java.util.concurrent.Executors;<br>import com.zj.concurrency.executors.factory.DaemonThreadFactory;<br>import com.zj.concurrency.executors.factory.MaxPriorityThreadFactory;<br>import com.zj.concurrency.executors.factory.MinPriorityThreadFactory;</p>
+<p>public class ExecFromFactory {<br>    public static void main(String[] args) throws Exception {<br>       ExecutorService defaultExec = Executors.newCachedThreadPool();<br>       ExecutorService daemonExec = Executors<br>              .newCachedThreadPool(new DaemonThreadFactory());<br>       ExecutorService maxPriorityExec = Executors<br>              .newCachedThreadPool(new MaxPriorityThreadFactory());<br>       ExecutorService minPriorityExec = Executors<br>              .newCachedThreadPool(new MinPriorityThreadFactory());<br>       for (int i = 0; i &lt; 10; i++)<br>           daemonExec.execute(new MyThread(i));<br>       for (int i = 10; i &lt; 20; i++)<br>           if (i == 10)<br>              maxPriorityExec.execute(new MyThread(i));<br>           else if (i == 11)<br>              minPriorityExec.execute(new MyThread(i));<br>           else<br>              defaultExec.execute(new MyThread(i));<br>    }<br>}<br>[/code]<br>结果：<br>Create Thread-0<br>Create Thread-1<br>Create Thread-2<br>Create Thread-3<br>Thread-0 run 1 time(s)<br>Thread-0 run 2 time(s)<br>Thread-1 run 1 time(s)<br>Thread-1 run 2 time(s)<br>Thread-2 run 1 time(s)<br>Thread-2 run 2 time(s)<br>Create Thread-4<br>Thread-4 run 1 time(s)<br>Thread-4 run 2 time(s)<br>Create Thread-5<br>Thread-5 run 1 time(s)<br>Thread-5 run 2 time(s)<br>Create Thread-6<br>Create Thread-7<br>Thread-7 run 1 time(s)<br>Thread-7 run 2 time(s)<br>Create Thread-8<br>Thread-8 run 1 time(s)<br>Thread-8 run 2 time(s)<br>Create Thread-9<br>Create Thread-10<br>Thread-10 run 1 time(s)<br>Thread-10 run 2 time(s)<br>Create Thread-11<br>Thread-9 run 1 time(s)<br>Thread-9 run 2 time(s)<br>Thread-6 run 1 time(s)<br>Thread-6 run 2 time(s)<br>Thread-3 run 1 time(s)<br>Thread-3 run 2 time(s)<br>Create Thread-12<br>Create Thread-13<br>Create Thread-14<br>Thread-12 run 1 time(s)<br>Thread-12 run 2 time(s)<br>Thread-13 run 1 time(s)<br>Thread-13 run 2 time(s)<br>Create Thread-15<br>Thread-15 run 1 time(s)<br>Thread-15 run 2 time(s)<br>Create Thread-16<br>Thread-16 run 1 time(s)<br>Thread-16 run 2 time(s)<br>Create Thread-17<br>Create Thread-18<br>Create Thread-19<br>Thread-14 run 1 time(s)<br>Thread-14 run 2 time(s)<br>Thread-17 run 1 time(s)<br>Thread-17 run 2 time(s)<br>Thread-18 run 1 time(s)<br>Thread-18 run 2 time(s)<br>Thread-19 run 1 time(s)<br>Thread-19 run 2 time(s)<br>Thread-11 run 1 time(s)<br>Thread-11 run 2 time(s)</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-24T23:42:58.000Z"><a href="/2012/11/25/e8-a7-a3-e5-86-b3eclipse-e6-97-a0-e6-b3-95-e6-89-93-e5-bc-80-e2-80-9cfailed-to-load-the-jni-shared-library-e2-80-9d/">2012-11-25</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/25/e8-a7-a3-e5-86-b3eclipse-e6-97-a0-e6-b3-95-e6-89-93-e5-bc-80-e2-80-9cfailed-to-load-the-jni-shared-library-e2-80-9d/">解决Eclipse无法打开“Failed to load the JNI shared library”</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>这是因为JDK配置错误所导致的现象。</p>
+<p><img src="http://m2.img.libdd.com/farm5/4/7C0BB5409B33F2E9BBA7EFF4BE607A04_389_187.PNG" alt=""></p>
+<p>一般说来，新购笔记本会预装64位的windows系统，而在网上下载软件时，32位会优先出现在页面中（现在来说是这个情况，但我认为未来64位会越来越普及）。</p>
+<p>如果你是64位的系统，却安装了32位的JDK，就会导致上面的情况。</p>
+<p>解决办法如下：</p>
+<ol>
+<li>卸载掉原来安装的32位的JDK，然后安装64位的JDK到电脑中。</li>
+<li>重新修改path 和 classpath 两个环境变量。因为在64系统当中，32位软件回安装到program files （<em>86）文件夹，64位软件会安装到program files 文件夹，当你先前安装32JDK时，你设置的环境变量路径当中当然会包括“program files （</em>86）”，而这时JDK已经转移到“program files”中了，修改过来即可。</li>
+<li>注意你两次安装的JDK版本号，不一定相同，因为安装时会根据你的版本号建立JDK文件夹，如果两次的版本号不同，在环境变量里也要修改。<br>现在，Eclipse应该可以正常使用了，快去练习Java程序吧！</li>
+</ol>
+<p>扩展阅读：</p>
+<ul>
+<li><a href="http://www.ludashi.com/html/20101028/1107.html" title="32位与64位操作系统" target="_blank" rel="external">32位与64位操作系统</a></li>
+<li><p><a href="http://zh.wikipedia.org/wiki/JDK" title="JDK——Java开发套件" target="_blank" rel="external">JDK——Java开发套件</a><br>下载链接：</p>
+</li>
+<li><p>64位JDK下载    <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk-7u4-downloads-1591156.html" title="Oracle官方下载" target="_blank" rel="external">Oracle官方下载</a></p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-22T17:31:11.000Z"><a href="/2012/11/23/go-e8-af-ad-e8-a8-80-e6-95-99-e7-a8-8b/">2012-11-23</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/23/go-e8-af-ad-e8-a8-80-e6-95-99-e7-a8-8b/"> go语言教程</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><a href="http://www.yiibai.com/go" target="_blank" rel="external">http://www.yiibai.com/go</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-11-21T19:28:13.000Z"><a href="/2012/11/22/windows8-e9-bc-a0-e6-a0-87-e5-92-8c-e9-94-ae-e7-9b-98-e5-bf-ab-e6-8d-b7-e6-93-8d-e4-bd-9c/">2012-11-22</a></time>
       
       
@@ -389,146 +532,6 @@ var _hmt = _hmt || [];
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-11-14T22:12:57.000Z"><a href="/2012/11/15/e4-b8-ba-iphone-ios-e5-ba-94-e7-94-a8-e5-bc-80-e5-8f-91-e8-80-85-e5-92-8c-e6-b8-b8-e6-88-8f-e5-bc-80-e5-8f-91-e8-80-85-e6-8f-90-e4-be-9b-e6-95-99-e7-a8-8b-ef-bc-88-e5-9b-bd-e5-a4-96-e7-89-9b/">2012-11-15</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/11/15/e4-b8-ba-iphone-ios-e5-ba-94-e7-94-a8-e5-bc-80-e5-8f-91-e8-80-85-e5-92-8c-e6-b8-b8-e6-88-8f-e5-bc-80-e5-8f-91-e8-80-85-e6-8f-90-e4-be-9b-e6-95-99-e7-a8-8b-ef-bc-88-e5-9b-bd-e5-a4-96-e7-89-9b/">为 iPhone / iOS 应用开发者和游戏开发者提供教程（国外牛逼博客）</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p><a href="http://www.raywenderlich.com/" target="_blank" rel="external">http://www.raywenderlich.com</a></p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-11-14T21:41:16.000Z"><a href="/2012/11/15/android/android-e7-95-8c-e9-9d-a2-e9-80-82-e9-85-8d-e5-a4-84-e7-90-86-e8-ae-b0-e5-bd-95/">2012-11-15</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/11/15/android/android-e7-95-8c-e9-9d-a2-e9-80-82-e9-85-8d-e5-a4-84-e7-90-86-e8-ae-b0-e5-bd-95/">android 界面适配处理记录</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>android 界面琐碎，各种分辨率，各种destiny 当然,按照官方的处理方法，图片可以分别准备几套分辨率不同的图片放几个drawable 文件夹下，而不同的界面布局也可以写几套xml 分别放于不同的llayout 文件夹下，当图片比较多时，达到几兆或者更大，上面的处理方法会让apk变得很大，显的很冗余。<br>写xml文件时，我们一般采用相对分辨率dip ，dip与像素之间的转化公式不知道的大家可以查下，这里就不说了<br>px = dip*destiny/160</p>
-<p>destiny 是每英寸的像素点数<br>这几个参数可以手动计算，也可以通过程序获得，虽然目前几种获取屏幕参数的方法在几种设备上，各种山寨非山寨得出的准确性有待考究。<br>在淘宝的热卖手机中取了几个参数，目前市面常见的手机或者说销量高的手机， 按照上面的公式把像素转化为dip ，由于一般的手机的分辨率 长宽比还是比较接近的，所以测出虽然手机的destiny从210到300不等（题外话：其实300已经接近或超出人眼能识别的极限了）但算出来 x轴即横线dip一般大于320 位于320 到370 之间，纵向640左右，，所以写xml时可以把处理的面积设成 320 *620 左右，再适当的调整 ，而对于图片较多，其实可以选相对适中的分辨率 图片，然后涉及到图片的控件吧相应属性设置如下<br>android:layout_width=”20dip”<br>android:layout_height=”20dip”<br>android:scaleType=”fitCenter”<br>后面的数值可调，看你想要的大小， 这样图片会自动居中填满你指定的区域，一般手机是没问题（其实也就随便找了3部手机测了测）。对于实在前面算出的横向和纵向分辨率大的 ，可以在java层一开始读取xml文件之前判断一下 读取不同的xml文件，至于图片要求不是特别高清的，上面的处理其实程序自动伸缩的  效果就可以了，当然 你可以测试下。当然有特别要求的图片 可以相应的放不同的文件夹（没测过），这样，至少减少图片的数量 xml文件的数量 处理起来比较简单，当然pad没做相应调查，目前也值做了手机的适配。<br>只是今天突然有点忘记，记录一下，不知道的了解下，知道的 一笑而过就好了</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-11-14T21:29:23.000Z"><a href="/2012/11/15/android/android-e5-b1-8f-e5-b9-95-e9-80-82-e9-85-8d-e9-97-ae-e9-a2-98/">2012-11-15</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/11/15/android/android-e5-b1-8f-e5-b9-95-e9-80-82-e9-85-8d-e9-97-ae-e9-a2-98/">android 屏幕适配问题</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>如何将一个应用程序适配在不同的手机上，虽然这不算是一个技术问题，但是对于刚刚做屏幕的开发人员来说，还真不是一件多么简单的事情。</p>
-<p>首先：你需要在AndroidManifest.xml文件的<manifest>元素如下添加子元素<br>[code lang=”xml”]<br>&lt;supports-screens android:largeScreens=&quot;true&quot;<br>       android:normalScreens=&quot;true&quot; android:anyDensity=&quot;true&quot;<br>       android:smallScreens=&quot;true&quot;&gt;<br>&lt;/supports-screens&gt;<br>[/code]</manifest></p>
-<pre><code>名如其意，以上是为我们的屏幕设置多分辨率支持（更准确的说是适配大、中、小三种密度）。<span class="string">android:</span>anyDensity=<span class="string">"true"</span> ，这一句对整个的屏幕都起着十分重要的作用，值为<span class="literal">true</span>，我们的应用程序当安装在不同密度的手机上时，程序会分别加载hdpi,mdpi,ldpi文件夹中的资源。
-</code></pre><p>相反，如果值设置为false，即使我们在hdpi,mdpi,ldpi文件夹下拥有同一种资源，那么应用也不会自动地去相应文件夹下寻找资源，这种情况都是出现在高密度，以及低密度的手机上，比如说一部240×320像素的手机，如果设置android:anyDensity=”false”，Android系统会将240 x 320(低密度)转换为 320×480(中密度)，这样的话，应用就会在小密度手机上加载mdpi文件中的资源。</p>
-<p>2.细心的人会发现自android2.0开始之后drawable文件被三个文件夹drawable-hdpi,drawable-mdpi,drawable-ldpi三个文件夹所取代，有些编程人员为了让应用程序默认地加载某些图片，他们会特意地去在android2.0之后的应用程序中重新创建drawable文件夹，其实这样做完全没有必要，通过第一段的分析我们得知，android:anyDensity=”false”，则应用会将大小密度转变成中密度，从而去加载mdpi中的资源。这里同样，当android:anyDensity=”false”，则应用会去加载mdpi中的资源。</p>
-<p>总结一下：</p>
-<p>第一：android:anyDensity=”true”，系统会依据屏幕密度，自动去找对应的文件夹</p>
-<p>第二：android:anyDensity=”false”,</p>
-<p>(1)              如果drawable-hdpi,drawable-mdpi,drawable-ldpi三个文件夹中有同一张图片资源的不同密度表示，那么系统会去加载drawable_mdpi文件夹中的资源</p>
-<p>(2)              如果drawable-hpdi中有高密度图片，其它两个文件夹中没有对应图片资源，那么系统会去加载drawable-hdpi中的资源。</p>
-<p>(3)              如果drawable-hdpi,drawable-mdpi中有图片资源，drawable-ldpi中没有对应的图片资源，那么系统会加载drawable-mdpi文件夹中的资源</p>
-<p>3. 注意上图各种文件夹的不同表示。</p>
-<p>drawable-hdpi 该图片即适用于横屏，也适用于竖屏</p>
-<p>drawable-land-hdpi,当屏幕为横屏，且为高密度时，加载此文件夹中的资源</p>
-<p>drawable-port-hdpi,当屏幕为竖屏，且为高密度时，加载此文件夹中的资源</p>
-<p>3. 有时候会根据需要在代码中动态地设置某个值，比如地图，地图的pin和地图的地址提示框的相对偏移量在不同密度的手机上是不同的。这时候可以通过以下方法求出屏幕密度：</p>
-<p>[code lang=”java”]<br>DisplayMetrics metric = new DisplayMetrics();<br>getWindowManager().getDefaultDisplay().getMetrics(metric);</p>
-<p>int densityDpi = metric.densityDpi;  // 屏幕密度DPI（120 / 160 / 240）</p>
-<p>[/code]</p>
-<p>然后可以在代码中为这几种密度分别设置便宜量</p>
-<p>但是这种方法最好不要使用，最好的方式是在xml文件中不同密度的手机进行分别设置。</p>
-<p>这里地图的偏移量可以在values-hpdi,values-mdpi,values-ldpi三种文件夹中的dimens.xml文件进行设置</p>
-<p>值得一提的是：</p>
-<pre><code><span class="tag">&lt;<span class="title">dimen</span> <span class="attribute">name</span>=<span class="value">"bitmap_common_topoffset"</span>&gt;</span>40dp<span class="tag">&lt;/<span class="title">dimen</span>&gt;</span>
-
-<span class="tag">&lt;<span class="title">dimen</span> <span class="attribute">name</span>=<span class="value">"bitmap_common_bottomoffset"</span>&gt;</span>-14dp<span class="tag">&lt;/<span class="title">dimen</span>&gt;</span>
-</code></pre><p>这里的负数是完全起作用的，系统会认为它是一个负值</p>
-<p>4. 各大手机厂商对于Android操作系统都有或多或少的改动，当然这些改动会对我们应用程序产生某些影响</p>
-<p>  比如：</p>
-<p>   （1）系统源代码中连接music服务的aidl文件所在包名：com.android.music </p>
-<p>   （2）LG则可能将该aidl文件修改所在的包（例如修改为 com.android.music.player），并且修改其中的文件内容（增加一个方法，或者减少几个方法，或者修改方法名称）那么我们的应用要想在LG的手机上发布，那么我们就必须改变所要连接的aidl文件,必须跟LG厂商修改的完全一致。</p>
-<p>5. 国际化问题.</p>
-<p>   有时候在xml中设置了相应的语言，但是为什么当我们更改语言之后，UI显示仍然不起作用？</p>
-<p>   不要怀疑是系统出了问题，这与我们在代码中引用values/string.xml中字符串的方式有关。</p>
-<p>   错误的方式：</p>
-<p>   1. 声明全局变量 private static String tempStr;</p>
-<p>   2. 在onCreate方法中对该变量赋值 tempStr = context.getString(R.string.test);</p>
-<p>   3. 在更新UI的方法（非onCreate方法）中引用该变量。 textView.setText(tempStr);</p>
-<p>   原因是由于，当修改本地语言时，onCreate不会再被执行一遍. 变量tempStr 依然会使用页面刚启动时加载的默认英语。</p>
-<p>   正确的方式：</p>
-<p>   直接进行第三步：textView.setText(context.getString(R.string.test));</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -560,7 +563,7 @@ var _hmt = _hmt || [];
   
     <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>10</small></li>
   
-    <li><a href="/categories/android开发/">android开发</a><small>51</small></li>
+    <li><a href="/categories/android开发/">android开发</a><small>54</small></li>
   
     <li><a href="/categories/git/">git</a><small>3</small></li>
   
@@ -603,7 +606,7 @@ var _hmt = _hmt || [];
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   
-    <li><a href="/tags/android/">android</a><small>2</small></li>
+    <li><a href="/tags/android/">android</a><small>5</small></li>
   
     <li><a href="/tags/android动画/">android动画</a><small>1</small></li>
   

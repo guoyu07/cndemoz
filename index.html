@@ -66,6 +66,163 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2016-07-19T13:55:13.000Z"><a href="/2016/07/19/完美解决-Android-6-java-lang-AbstractMethodError/">2016-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/07/19/完美解决-Android-6-java-lang-AbstractMethodError/">完美解决 Android 6 java.lang.AbstractMethodError</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <ul>
+<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
+<li>转载请注明出处，谢谢</li>
+</ul>
+<p>在Android Marshmallow (6.0)中有一个异常，异常信息中居然没有和APP包相关的东西，感觉这是Android SDK的一个坑</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.AbstractMethodError: abstract method &#8220;int android.text.ParcelableSpan.getSpanTypeIdInternal()&#8221;</span><br></pre></td></tr></table></figure>
+<p>Google一下，还真有人也遇到了同样的问题，看了半天也没有解决方案,只是解释了，为什么会有这个问题，大概就是在 Android 6.0 之后 <code>ParcelableSpan</code> 接口的 <code>getSpanTypeIdInternal</code> 和 <code>writeToParcelInternal</code> 方法是 <code>@hide</code> 标记了，多次提醒我们要看Google的文档，但是怎么解决呢？找另外的方法吧，此处不通。。。</p>
+<p>既然不能实现<code>ParcelableSpan</code>接口了，那就换一种方式实现吧。</p>
+<p>我换成继承<code>android.text.style.UnderlineSpan</code>类，居然可以了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.utan.app.utantop;&#10;&#10;import android.os.Parcel;&#10;import android.text.style.UnderlineSpan;&#10;&#10;/**&#10; * &#10; * Created by quanke.name on 2016/7/16.&#10; * App Url:utantop.com&#10; */&#10;public class UtanUnderlineSpan extends UnderlineSpan &#123;&#10;    public UtanUnderlineSpan() &#123;&#10;        super();&#10;    &#125;&#10;&#10;    public UtanUnderlineSpan(Parcel src) &#123;&#10;        super(src);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://medium.com/@numan1617/android-framework-classes-choose-wisely-2f8300f6c255#.3669g6u0m" target="_blank" rel="external">https://medium.com/@numan1617/android-framework-classes-choose-wisely-2f8300f6c255#.3669g6u0m</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-07-19T13:53:59.000Z"><a href="/2016/07/19/完美解决-java-lang-NoClassDefFoundError-R-R-巨坑/">2016-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/07/19/完美解决-java-lang-NoClassDefFoundError-R-R-巨坑/">完美解决 java.lang.NoClassDefFoundError  R R 巨坑</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <ul>
+<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
+<li>转载请注明出处，谢谢</li>
+</ul>
+<blockquote>
+<p>此坑有点大，害我同事弄了一周没有搞定</p>
+</blockquote>
+<p>开始的时候是报另外一个错误，也是NoClassDefFoundError异常，但这个是因为包冲突的问题,删除掉一些包就好了。但是这个问题没有这么简单。</p>
+<p>首先描述一下我们的场景吧：</p>
+<p>我们做了一个<code>优谈TOP</code> APP，主要的逻辑代码是在一个单独的<code>android studio module</code> 实现的，这个主要是为了可以导入到公司其他APP里面，就是把<code>优谈TOP</code>当成sdk，嵌入到公司其他APP里，我们使用<code>优谈TOP</code>单独运行的时候没有一点问题，导入到另外要一个APP的时候，问题就出现了。</p>
+<p>百度，Google搜了以大堆资料，都没有解决，最后在<code>stackoverflow</code>找到了一种方案。还真可以</p>
+<p><code>stackoverflow</code> 连接 <a href="http://stackoverflow.com/questions/32110859/fatal-exception-java-lang-noclassdeffounderror-android-support-v7-appcompat-r" target="_blank" rel="external">http://stackoverflow.com/questions/32110859/fatal-exception-java-lang-noclassdeffounderror-android-support-v7-appcompat-r</a></p>
+<blockquote>
+<p>看了这个才知道，这是Dex超出方法数的限制问题，Dex达到极限时，会创建多个Dex文件，android Lollipop 没有处理，需要在应用中处理 。</p>
+</blockquote>
+<h3 id="第一步：">第一步：</h3><p>在 <code>build.gradle</code> 中增加(非 <code>root</code> <code>build.gradle</code> )</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;&#10;    compile &#39;com.android.support:multidex:1.0.0&#39;&#10;&#125;&#10;defaultConfig &#123;          &#10;    multiDexEnabled true&#10;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第二步：">第二步：</h3><p>在AndroidManifest.xml增加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;application&#10;        ...&#10;        android:name=&#34;android.support.multidex.MultiDexApplication&#34;&#62;&#10;        ...&#10;&#60;/application&#62;</span><br></pre></td></tr></table></figure>
+<p>如果需要自己实现 <code>Application</code>,需要重写<code>attachBaseContext</code>方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import android.support.multidex.MultiDexApplication;&#10;import android.support.multidex.MultiDex;&#10;&#10;public class MyApplication extends MultiDexApplication &#123;&#10; // ......&#10;&#10;    @Override&#10;    protected void attachBaseContext(Context base) &#123;&#10;        super.attachBaseContext(base);&#10;        MultiDex.install(this);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import android.support.multidex.MultiDex;&#10;public class MyApplication extends Application &#123;&#10; // ......&#10;&#10;    @Override&#10;    protected void attachBaseContext(Context base) &#123;&#10;        super.attachBaseContext(base);&#10;        MultiDex.install(this);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>参考：<a href="https://developer.android.com/tools/building/multidex.html#mdex-gradle" target="_blank" rel="external">https://developer.android.com/tools/building/multidex.html#mdex-gradle</a> </p>
+<p>这里记录一下没有解决我的问题的方案，也许你有用：</p>
+<p><a href="http://stackoverflow.com/questions/32110859/fatal-exception-java-lang-noclassdeffounderror-android-support-v7-appcompat-r?noredirect=1&amp;lq=1" target="_blank" rel="external">http://stackoverflow.com/questions/32110859/fatal-exception-java-lang-noclassdeffounderror-android-support-v7-appcompat-r?noredirect=1&amp;lq=1</a></p>
+<p><a href="http://stackoverflow.com/questions/27614538/crash-java-lang-noclassdeffounderror-android-support-v7-appcompat-rlayout" target="_blank" rel="external">http://stackoverflow.com/questions/27614538/crash-java-lang-noclassdeffounderror-android-support-v7-appcompat-rlayout</a></p>
+<p><a href="http://stackoverflow.com/questions/9870995/android-java-lang-noclassdeffounderror" target="_blank" rel="external">http://stackoverflow.com/questions/9870995/android-java-lang-noclassdeffounderror</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-07-19T13:52:11.000Z"><a href="/2016/07/19/Android-fastjson和Realm的完美结合，有坑/">2016-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/07/19/Android-fastjson和Realm的完美结合，有坑/">Android fastjson和Realm的完美结合，有坑</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <ul>
+<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
+<li>转载请注明出处，谢谢</li>
+</ul>
+<blockquote>
+<p>源码地址：<a href="https://github.com/quanke/FastjsonRealm" target="_blank" rel="external">https://github.com/quanke/FastjsonRealm</a></p>
+</blockquote>
+<p>Realm的安装和fastjson的安装这里就不详细说了。详细的文档在这里 <a href="https://realm.io/docs/java/" target="_blank" rel="external">https://realm.io/docs/java/</a> ，最好看英文文档，中文文档，不是最新的，而且看起来别扭。</p>
+<p>现在Realm Java 的最新版本是 1.1.0，fastjson Android的版本是1.1.52</p>
+<h3 id="安装Realm_Java">安装Realm Java</h3><h4 id="在项目中（最外层的build-gradle文件）build-gradle中增加">在项目中（最外层的build.gradle文件）build.gradle中增加</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;&#10;    repositories &#123;&#10;        jcenter()&#10;    &#125;&#10;    dependencies &#123;&#10;        classpath &#34;io.realm:realm-gradle-plugin:1.1.0&#34;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="在应用中(一般是名为app模型)build-gradle增加">在应用中(一般是名为app模型)build.gradle增加</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &#39;realm-android&#39;</span><br></pre></td></tr></table></figure>
+<h3 id="安装fastjson">安装fastjson</h3><h4 id="在应用中(一般是名为app模型)build-gradle增加-1">在应用中(一般是名为app模型)build.gradle增加</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compile &#39;com.alibaba:fastjson:1.1.52.android&#39;</span><br></pre></td></tr></table></figure>
+<h3 id="现在我们写一个模型">现在我们写一个模型</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/**&#10; * &#10; * Created by quanke(http://quanke.name) on 2016/7/18.&#10; */&#10;public class User extends RealmObject implements Serializable&#123;&#10;&#10;&#10;    public User() &#123;&#10;&#10;    &#125;&#10;&#10;    private String          name;&#10;    private int             age;&#10;&#10;    @Ignore&#10;    private int             sessionId;&#10;&#10;    // Standard getters &#38; setters generated by your IDE&#8230;&#10;    public String getName() &#123; return name; &#125;&#10;    public void   setName(String name) &#123; this.name = name; &#125;&#10;    public int    getAge() &#123; return age; &#125;&#10;    public void   setAge(int age) &#123; this.age = age; &#125;&#10;    public int    getSessionId() &#123; return sessionId; &#125;&#10;    public void   setSessionId(int sessionId) &#123; this.sessionId = sessionId; &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="把User对象通过fastjson转为String">把User对象通过fastjson转为String</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;/**&#10;&#10; * Created by quanke(http://quanke.name) on 2016/7/18.&#10; */&#10;public class MainActivity extends AppCompatActivity &#123;&#10;&#10;    @Override&#10;    protected void onCreate(Bundle savedInstanceState) &#123;&#10;        super.onCreate(savedInstanceState);&#10;        setContentView(R.layout.activity_main);&#10;&#10;        User user = new User();&#10;        user.setAge(2);&#10;        user.setName(&#34;http://quanke.name&#34;);&#10;&#10;        String userStr = JSON.toJSONString(user);&#10;&#10;        Log.d(&#34;userStr:&#34;,userStr);&#10;&#10;        User userObj = JSON.parseObject(userStr,User.class);&#10;&#10;        Log.d(&#34;userObj:&#34;,userObj+&#34;&#34;);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>这个时候，我以为可以完美的运行了，但是运行的时候，报异常了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.NoClassDefFoundError: rx.Observable&#10;at libcore.reflect.InternalNames.getClass(InternalNames.java:55)&#10;...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>怎么解决？这里有两种方法。。</p>
+</blockquote>
+<h4 id="第一种：直接使用_RxJava">第一种：直接使用 <code>RxJava</code></h4><h4 id="第二种，不想使用_RxJava，那就创建一个_Observable_空文件">第二种，不想使用 <code>RxJava</code>，那就创建一个 <code>Observable</code> 空文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package rx;&#10;&#10;public class Observable &#123;&#10;    // Dummy class required for Jackson-Databind support if&#10;    // RxJava is not a project dependency.&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>其实解决方案是官方提供的，只是里面的例子是Jackson而我用的是国产fastjson</p>
+<p>Realm 的详细使用这里就不说了。。。有很多小伙伴分享了，但我还是建议看官方文档 <a href="https://realm.io/docs/java/" target="_blank" rel="external">https://realm.io/docs/java/</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2016-05-08T08:01:19.000Z"><a href="/2016/05/08/Thinking-in-Java-Java-编程思想-PDF-ePub-Mobi格式电子书/">2016-05-08</a></time>
       
       
@@ -536,250 +693,6 @@ Repository Settings</code> ，把这个设置成为刚才导到<code>github</cod
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-04-23T10:56:22.000Z"><a href="/2016/04/23/10多年码代码经验腾讯管理谈职业规划/">2016-04-23</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/04/23/10多年码代码经验腾讯管理谈职业规划/">10多年码代码经验腾讯管理谈职业规划</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <ul>
-<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
-<li>转载请注明出处，谢谢</li>
-</ul>
-<blockquote>
-<p>此人是我眼中的大神，曾经任职EA高级技术，腾讯技术管理，在级别提升后因为厌恶政治斗争，毅然离开腾讯开始创业。</p>
-</blockquote>
-<h4 id="cto眼中的牛人是什么？">cto眼中的牛人是什么？</h4><ul>
-<li>有多种解决方案；</li>
-<li>有架构思维；</li>
-<li>一专多通；</li>
-<li>有预判能力；</li>
-<li>思维不单一；</li>
-<li>基础扎实；</li>
-<li>有一些高阶技能；</li>
-</ul>
-<h4 id="技术人员分工：">技术人员分工：</h4><ul>
-<li><p>前端：</p>
-<p>  多看别人的效果，别人做出来的模仿做出来，学习新技术，前端技术更新快，需要超级顺速的更新自己的技术</p>
-</li>
-<li><p>后端 （分为逻辑和服务）</p>
-<ul>
-<li><p>逻辑</p>
-<p>  像php,生命周期相对短，变化快，更加需要学习新技术。</p>
-</li>
-<li><p>服务</p>
-<p>  生命周期长，复用要求更加高，多考虑架构的问题</p>
-</li>
-</ul>
-</li>
-<li><p>运维</p>
-<p>  对于运营来说预判能力很重要</p>
-</li>
-<li><p>测试</p>
-<p>  一个强势的部门，如果不能强制那就不要做测试</p>
-</li>
-</ul>
-<h4 id="铁塔模型和故宫模型">铁塔模型和故宫模型</h4><p>对于中高级技术来说，有两条技术路可以走，第一条路是成为一个技术的专家，第二条路是成为解决方案的专家，第一条路就试我们所说的铁塔模型，技术很深，优点就是，立马能有回报，前期容易实现，最后能成为行业专家，很厉害，缺点就是容易倒，受环境影响大，需要有眼光和机缘，比如以前的塞班工程师牛逼哄哄的，但是塞班幕落的时候塞班工程师就抓狂了，第二种就是故宫模型，这种模型开始的时候看不到成效，不能立即变现，但是到后面会起来，可以在自己的故宫里建立各种东西，包括铁塔，不太受环境的影响。当然也可以组合成长，先一门技术能独当一面，其他技术也学习，这就是我们所说的一专多通，这就要看自己的选择了。</p>
-<h3 id="程序员高手养成：">程序员高手养成：</h3><ul>
-<li>第一：ide炉火纯青；</li>
-<li>第二：优先考虑有哪些解决方案，不轻易说我不能实现。；</li>
-<li>第三：熟悉新技术，比如java,可能现在用不到，但需要的时候能用好；</li>
-<li>第四：一定要形成自己的技术体系，心目中熟悉各种架构，提炼出自己的架构。</li>
-</ul>
-<h4 id="职业阶梯">职业阶梯</h4><p>1.代表初级</p>
-<p>初级表现为，能实现一些基本的功能，毕业实习期一般为初级，一般一年左右</p>
-<p>2.代表中级</p>
-<p>中级表现为，功能基本都能实现，有一点点的分装思维，工作效率一般。</p>
-<p>3.代表高级</p>
-<p>高级表现为，有分装思想，考虑复用，能写出高质量，可复用，可扩展的代码，会一些一些基本的工具提高工作效率，精通一门语言</p>
-<p>4.代表大牛</p>
-<p>在开始的时候就有表达</p>
-<p>5.行业精英</p>
-<p>推动行业进步，有一定知名度</p>
-<p>对于我们来说，每个人应该都要有成为行业精英的理想，但是我们生下来都是初级的，不论我们现在处于哪一位阶梯，都没有关系，这不一定是你自己的原因，有可能是没有遇到贵人，有可能是在为上上一个阶梯做准备，但是今天我们知道了，希望我们的人不要一直停留在自己阶梯。</p>
-<p>从初级开始，我们每次成长都特别有成就感，比如，写了一个“Hello word”，可以被浏览器渲染出来，再写一个表单，能提交处理信息等，都是一个很有成就感的时候，这时候我们就处于阶梯的平面上，但是我们走着走着，就发现，自己很无力，比如我想做一个类似utan.com这样的网站，就要学习更多的东西，比如数据库设计、数据库管理、后端处理，服务器部署等（当然utan应该是多人合作的产物），这时候感觉自己很难提高了，遇到各种问题，踩各种坑，加班、痛苦随之而来，其实这都是正常的，这都是爬到上一个阶梯的必经之路，当爬的次数多了，就会想用石头垫在脚下，爬到上一个阶梯，当然自身的能力也会成长，就这样上中级，高级，但是要成为 牛人（4），就没有那么简单了，因为可能会遇到各种阻力，或者太滑上不去，要通过我们的智慧上去，比如，如果太滑可以借助防滑手套等等，这个自己体会。</p>
-<p>还有一个层级都是行业精英，不是每个人都能成为行业精英的，要机缘，要看以前的路是否扎实，要看以前的选择是否符合发展等一系列因素都会影响我们成为行业精英。</p>
-<h4 id="反PMP">反PMP</h4><p>项目管理就是一群技术不好的人，又不想放弃技术，就选择做PM，是以前在项目过程中产出的畸形产物，真正的高手是不需要PM的，我们倡导敏捷。</p>
-<h4 id="最后是提问环节。">最后是提问环节。</h4><h5 id="像Android或者iOS开发这种不确定性的技术有必要转型吗？">像Android或者iOS开发这种不确定性的技术有必要转型吗？</h5><p>不一定转型，但是绝不要只关注一个技术，比如做android只做android，做iOS的值关注ios，那就悲剧了，要去学习HTML5等，不知道未来会是怎么样？开放的心态去学习新的东西是正道。</p>
-<h5 id="怎么掌握新技术？">怎么掌握新技术？</h5><p>有时候行业出现了很多优秀的技术，我们都是知道技术的成长最快的过程是在项目中成长，但是公司没有采取此技术，我们怎么办？</p>
-<p>先对技术有一个基本的了解，很清楚，新技术的优缺点，小规模的尝试性的在公司项目中用，最好是内部系统。</p>
-<p>来自内部培训，地铁用上手机形成此文，欢迎拍砖。</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-04-09T11:15:01.000Z"><a href="/2016/04/09/Vert-x-3-x版本callback-hell的解决/">2016-04-09</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/04/09/Vert-x-3-x版本callback-hell的解决/">Vert.x 3.x版本callback hell的解决</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <ul>
-<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
-<li>交流群：<code>231419585</code></li>
-<li>转载请注明出处，谢谢</li>
-</ul>
-<p><code>Vert.x</code>乃神器也，管玩管住还包饭，异步处理，很多人头疼的<code>callback hell</code>（回调地狱），也就是金字塔，不知不觉就走入了金字塔的陷阱里，一般<code>callback</code>都发生在异步处理期间，而异步处理，除了少数数据量极大的<code>cpu intense</code>的代码块以外（这部分主要通过降低算法时间复杂度来优化），绝大多数都集中在<code>io</code>上，将一个<code>io</code>操作包装成一个异步程序块来执行，是比较常见的优化方式，<code>vert.x</code>的<code>io</code>集中在以下几个部分。</p>
-<p>第一，<a href="http://vertx.io/docs/apidocs/io/vertx/core/eventbus/EventBus.html#send-java.lang.String-java.lang.Object-" target="_blank" rel="external">eventbus.send()</a>方法。</p>
-<p>第二，<code>jdbcclient.getconnection</code>以及<code>connection.update/query</code>等方法。</p>
-<p>第三，httpclient.get/post等方法，其中前两个都可以通过vert.x自带的Future来对付。</p>
-<p>首先我们要实例化一个<code>future</code>对象：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Future&#60;MyResult&#62; future = Future.future();</span><br></pre></td></tr></table></figure>
-<p>然后<code>future</code>有几个方法值得注意，其中一个是<code>setHandler</code>方法，这个方法就是设置后续处理的函数，另外一个，与之相对应的是<code>completer()</code>方法，这个方法返回的就是<code>setHandler</code>方法<code>set</code>的<code>handler</code>函数，通俗点说，就是<code>getHandler()</code>方法，在<code>callback</code>位置调用该方法，就可以在<code>callback</code>的时候执行<code>handler</code>方法/函数，比如原本是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vertx.eventBus().send(CommerceVerticle.class.getName(),myAsyncResult -&#62; &#123;...&#125;);</span><br></pre></td></tr></table></figure>
-<p>经过改写之后，就变成了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vertx.eventBus().send(CommerceVerticle.class.getName(),future.completer());&#10;future.setHandler(myAsyncResult -&#62; &#123;...&#125;);</span><br></pre></td></tr></table></figure>
-<p>这样通过拆分原来的内嵌<code>lambda</code>/匿名函数来达到扁平化的效果。<br><code>callback hell</code>一个典型特征就是金字塔，也就是经过多层回调<code>/callback</code>函数嵌套之后，程序会变成：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ar -&#62; &#123;&#10;    ar1 -&#62; &#123;&#10;         ar2 -&#62; &#123;&#10;             ...&#10;         &#125;&#10;    &#125;&#10;&#125;;</span><br></pre></td></tr></table></figure>
-<p>这种方式，或者<code>fp</code>里面常见的<code>(+ 1 (+ 1 (+ 1 1)))</code>;如果强行<code>format</code>的话，就会变成一个多层多次缩进的，向右凸起的金字塔，极为丑陋，但是如果不这么做，又无法保证顺序，所以为了保证顺序的同时，我们要扁平化该金字塔，那么如何保证顺序呢？<br>用<code>compose</code>方法，比如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Future fut1 = Future.future();&#10;Future fut2 = Future.future();&#10;fut1.compose(asyncMyResult -&#62; &#123;&#10;    ...&#10;    fut2.complete();&#10;    ...&#10;&#125;, fut2);&#10;&#10;fut2.setHandler(asyncMyResult2 -&#62; &#123;&#10;    ...&#10;&#125;);</span><br></pre></td></tr></table></figure>
-<p>那么当<code>fut1</code>被触发之后，如果成功，则执行<code>compose</code>方法里面的第一个参数，也就是那个回调函数<code>/handler</code>，如果失败，则直接传递给<code>compose</code>方法的第二个参数，也就是<code>fut2</code>，依次类推，便可以很轻松地组装出你想要的扁平化链条，使得多层缩进的噩梦不再。<br>利用这种方式，可以扁平化处理<code>vertx.eventBus()</code>，<code>jdbcClient.getConnection()</code>等包含有异步<code>callback</code>的代码块。<br>至于<code>Vert.x</code>自带的<code>httpclient</code>，这个稍微有些特殊，因为执行<code>get/post</code>等方法的时候，<code>response handler</code>并不能囊括全部情况，尤其是常见的超时/<code>timeout</code>，属于<code>exception</code>范畴，也就是说，要想囊括全部返回情况，至少需要<code>response</code>的<code>body handler</code>，同时也需要一个<code>exception handler</code>，最后还要调用end方法才能将全部常见的情况全部覆盖住，代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">client1.get(port, ip, url, response -&#62; &#123;&#10;    response.bodyHandler(respBody -&#62; &#123;&#10;    //&#36825;&#37324;&#22788;&#29702;&#27491;&#24120;&#36820;&#22238;&#10;    &#125;);&#10;&#125;).exceptionHandler(exception -&#62; &#123;&#10;    //&#36825;&#37324;&#22788;&#29702;&#36229;&#26102;&#10;&#125;).end();</span><br></pre></td></tr></table></figure>
-<p>如果要在这里面用<code>future</code>的话，需要显式处理标识成功<code>future.complete(...)</code>或者失败<code>future.fail(...)</code><br>另外，常见的<code>httpClient.getNow()</code>;等方法相当于：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">client1.get(port, ip, url, response -&#62; &#123;&#10;    response.bodyHandler(respBody -&#62; &#123;&#10;    //&#36825;&#37324;&#22788;&#29702;&#27491;&#24120;&#36820;&#22238;&#10;    &#125;);&#10;&#125;).end();</span><br></pre></td></tr></table></figure>
-<p>也就是没有<code>exception handler</code>的普通<code>get/post</code>等方法<code>＋end</code>方法，所以如果用<code>getNow</code>等方法发送请求，会无法捕捉处理<code>timeout</code>超时异常。</p>
-<p>通过这篇文章想必对Vertx如何避免callback hell有所了解。</p>
-<p><a href="http://dwz.cn/34QFDQ" target="_blank" rel="external">参考此文编辑</a> 非常感谢。</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-04-03T22:59:52.000Z"><a href="/2016/04/04/Vert-x配置项VertxOptions的使用/">2016-04-04</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/04/04/Vert-x配置项VertxOptions的使用/">Vert-x配置项VertxOptions的使用</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <ul>
-<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
-<li>交流群：<code>231419585</code></li>
-<li>转载请注明出处，谢谢</li>
-</ul>
-<p>今天清明节，一大早被孩子吵醒，起来撸一篇关于VertxOptions的文章，此文章诞生于洗手间，读此文章可能会闻到臭臭的味道。下面正式开始：</p>
-<p>在发布Vert.x实例时，需要传入一个<a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html" target="_blank" rel="external">VertxOptions</a>来实现针对Vert.x的配置项的管理，代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VertxOptions options = new VertxOptions();&#10;options.setWorkerPoolSize(40)//&#20030;&#20010;&#26647;&#23376;&#65292;&#35774;&#32622;&#25903;&#25345;&#30340;Worker&#32447;&#31243;&#30340;&#26368;&#22823;&#25968;&#37327;&#10;Vertx vertx = Vertx.vertx(options);</span><br></pre></td></tr></table></figure>
-<p>配置项的API说明：</p>
-<ul>
-<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setEventLoopPoolSize-int-" target="_blank" rel="external">setEventLoopPoolSize</a></p>
-<p>  设置Vert.x实例中使用的Event Loop线程的数量，默认值为：2 * Runtime.getRuntime().availableProcessors()（可用的处理器个数）；</p>
-</li>
-<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setWorkerPoolSize-int-" target="_blank" rel="external">setWorkerPoolSize</a></p>
-<p>  设置Vert.x实例中支持的Worker线程的最大数量，默认值为20；</p>
-</li>
-<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setInternalBlockingPoolSize-int-" target="_blank" rel="external">setInternalBlockingPoolSize</a></p>
-<p>  设置内部阻塞线程池最大线程数，这个参数主要被Vert.x的一些内部操作使用，默认值为20；</p>
-</li>
-<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setClustered-boolean-" target="_blank" rel="external">setClustered</a></p>
-<p>  是否开启Vert.x的Cluster集群模式，默认值为false；</p>
-</li>
-<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setClusterHost-java.lang.String-" target="_blank" rel="external">setClusterHost</a></p>
-<p>  【Cluster集群模式有效】设置集群运行的默认hostname，默认值为localhost；</p>
-</li>
-<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setClusterPort-int-" target="_blank" rel="external">setClusterPort</a></p>
-<p>  【Cluster集群模式有效】设置集群运行的端口号，可自定义固定端口号，默认值为0（随机分配）；</p>
-</li>
-<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setClusterPingInterval-long-" target="_blank" rel="external">setClusterPingInterval</a></p>
-<p>  【Cluster集群模式有效】使用ping命令检测Cluster的时间间隔，默认20000，单位毫秒ms，即20秒；</p>
-</li>
-<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setClusterPingReplyInterval-long-" target="_blank" rel="external">setClusterPingReplyInterval</a></p>
-<p>  【Cluster集群模式有效】集群响应ping命令的时间间隔，默认20000，单位毫秒ms，即20秒；</p>
-</li>
-<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setBlockedThreadCheckInterval-long-" target="_blank" rel="external">setBlockedThreadCheckInterval</a></p>
-<p>  阻塞线程检查的时间间隔，默认1000，单位ms，即1秒；</p>
-</li>
-<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setMaxEventLoopExecuteTime-long-" target="_blank" rel="external">setMaxEventLoopExecuteTime</a></p>
-<p>  Event Loop的最大执行时间，默认2l <em> 1000 </em> 1000000，单位ns，即2秒；</p>
-</li>
-<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setMaxWorkerExecuteTime-long-" target="_blank" rel="external">setMaxWorkerExecuteTime</a></p>
-<p>  Worker线程的最大执行时间，默认60l <em> 1000 </em> 1000000，单位ns，即60秒；</p>
-</li>
-<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setHAEnabled-boolean-" target="_blank" rel="external">setHAEnabled</a></p>
-<p>  是否支持HA架构，默认值false；（*：如果Vert.x启用了HA模式，其中一个Vert.x实例运行出现了异常或者死掉，那么这个Vert.x实例中运行的Verticle会执行重发布Redeploy的过程将运行在该实例中的Verticle实例重新发布到其他正常运行的Vert.x实例中【Verticle Fail-Over】。）</p>
-</li>
-<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setHAGroup-java.lang.String-" target="_blank" rel="external">setHAGroup</a></p>
-<p>  【HA模式有效】支持了HA模式过后，可根据不同的组名将Vert.x进行逻辑分组，此方法设置当前Vert.x的逻辑组名，默认<strong>DEFAULT</strong>；</p>
-</li>
-<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setQuorumSize-int-" target="_blank" rel="external">setQuorumSize</a></p>
-<p>  【HA模式有效】支持了HA模式过后，此方法设置冲裁节点的数量，默认值1；（*：这个值一旦设置过后，如果要发布Verticle组件，则需要运行环境中的节点数量达到这个值才可执行发布，比如quorum的值设置成3，如果仅仅运行了两个Vert.x实例，那么这种情况下Verticle不会被发布，必须要运行至少三个Vert.x实例，才会执行发布Deploy流程，Undeploy流程类似）</p>
-</li>
-<li><p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html#setWarningExceptionTime-long-" target="_blank" rel="external">setWarningExceptionTime</a></p>
-<p>  如果线程阻塞时间超过了这个阀值，那么就会打印警告的堆栈信息，默认为5l <em> 1000 </em> 1000000，单位ns，即5秒；</p>
-</li>
-</ul>
-<blockquote>
-<p>之后还有大招，请关注<a href="http://quanke.name/">http://quanke.name/</a> ，马化腾群：231419585</p>
-</blockquote>
-<p>此文参考： <a href="http://dwz.cn/32dhMF" target="_blank" rel="external">http://dwz.cn/32dhMF</a>    感谢戒子猪</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -809,7 +722,7 @@ Repository Settings</code> ，把这个设置成为刚才导到<code>github</cod
   
     <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>10</small></li>
   
-    <li><a href="/categories/android开发/">android开发</a><small>51</small></li>
+    <li><a href="/categories/android开发/">android开发</a><small>54</small></li>
   
     <li><a href="/categories/git/">git</a><small>3</small></li>
   
@@ -852,7 +765,7 @@ Repository Settings</code> ，把这个设置成为刚才导到<code>github</cod
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   
-    <li><a href="/tags/android/">android</a><small>2</small></li>
+    <li><a href="/tags/android/">android</a><small>5</small></li>
   
     <li><a href="/tags/android动画/">android动画</a><small>1</small></li>
   

@@ -66,6 +66,272 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2012-11-07T20:13:24.000Z"><a href="/2012/11/08/e9-9f-b3-e9-a2-91-e5-8e-8b-e7-bc-a9-e5-b7-a5-e5-85-b7-e2-80-94-e2-80-94speex-e7-9a-84-e4-bd-bf-e7-94-a8/">2012-11-08</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/08/e9-9f-b3-e9-a2-91-e5-8e-8b-e7-bc-a9-e5-b7-a5-e5-85-b7-e2-80-94-e2-80-94speex-e7-9a-84-e4-bd-bf-e7-94-a8/">音频压缩工具——Speex的使用</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>在Android开发中，需要录音并发送到对方设备上。这时问题来了，手机常会是GPRS、3G等方式上网，所以节省流量是非常关键的，使用Speex来压缩音频文件，可以将音频压文件小数倍。</p>
+<p>1.去Speex官网下载最新Speex源码。</p>
+<p>2.创建一个新的应用（我创建的应用名为Audio），并创建一个jni目录（$project/jni）。</p>
+<p>3.把speex源码目录下的libspeex和include目录及其子目录文件全部拷贝到$project/jni目录下</p>
+<p>[code lang=”java”]（$project/jni/libspeex and $project/jni/include）。<br>[/code]</p>
+<p>4.在jni目录下新增Android.mk文件，编辑内容如下</p>
+<p>[code lang=”java”]LOCAL_PATH := $(call my-dir)</p>
+<p>include $(CLEAR_VARS)<br>&amp;nbsp;<br>LOCAL_MODULE &amp;nbsp; &amp;nbsp;:= libspeex<br>LOCAL_CFLAGS = -DFIXED_POINT -DUSE_KISS_FFT -DEXPORT=&quot;&quot; -UHAVE_CONFIG_H<br>LOCAL_C_INCLUDES := $(LOCAL_PATH)/include<br>&amp;nbsp;<br>LOCAL_SRC_FILES := &amp;nbsp;\<br>./speex_jni.cpp \<br>./libspeex/bits.c \<br>./libspeex/buffer.c \<br>./libspeex/cb_search.c \<br>./libspeex/exc_10_16_table.c \<br>./libspeex/exc_10_32_table.c \<br>./libspeex/exc_20_32_table.c \<br>./libspeex/exc_5_256_table.c \<br>./libspeex/exc_5_64_table.c \<br>./libspeex/exc_8_128_table.c \<br>./libspeex/fftwrap.c \<br>./libspeex/filterbank.c \<br>./libspeex/filters.c \<br>./libspeex/gain_table.c \<br>./libspeex/gain_table_lbr.c \<br>./libspeex/hexc_10_32_table.c \<br>./libspeex/hexc_table.c \<br>./libspeex/high_lsp_tables.c \<br>./libspeex/jitter.c \<br>./libspeex/kiss_fft.c \<br>./libspeex/kiss_fftr.c \<br>./libspeex/lpc.c \<br>./libspeex/lsp.c \<br>./libspeex/lsp_tables_nb.c \<br>./libspeex/ltp.c \<br>./libspeex/mdf.c \<br>./libspeex/modes.c \<br>./libspeex/modes_wb.c \<br>./libspeex/nb_celp.c \<br>./libspeex/preprocess.c \<br>./libspeex/quant_lsp.c \<br>./libspeex/resample.c \<br>./libspeex/sb_celp.c \<br>./libspeex/scal.c \<br>./libspeex/smallft.c \<br>./libspeex/speex.c \<br>./libspeex/speex_callbacks.c \<br>./libspeex/speex_header.c \<br>./libspeex/stereo.c \<br>./libspeex/vbr.c \<br>./libspeex/vq.c \<br>./libspeex/window.c<br>&amp;nbsp;<br>include $(BUILD_SHARED_LIBRARY)<br>[/code]</p>
+<p>5.在jni目录下新增Application.mk文件，编辑内容如下</p>
+<p>[code lang=”java”]<br>APP_ABI := armeabi armeabi-v7a<br>[/code]</p>
+<p>6.在$project/jni/include/speex/目录下新增speex_config_types.h文件，编辑内容如下</p>
+<p>[code lang=”java”]</p>
+<h1 id="ifndef_SPEEX_TYPES_H">ifndef <strong>SPEEX_TYPES_H</strong></h1><h1 id="define_SPEEX_TYPES_H">define <strong>SPEEX_TYPES_H</strong></h1><p>typedef short spx_int16_t;<br>typedef unsigned short spx_uint16_t;<br>typedef int spx_int32_t;<br>typedef unsigned int spx_uint32_t;</p>
+<h1 id="endif">endif</h1><p>[/code]</p>
+<p>7.创建JNI包装类speex_jni.cpp，用来调用Speex中的C代码函数，编辑内容如下</p>
+<p>[code lang=”c”]#include &lt;jni.h&gt;</p>
+<h1 id="include_&lt;string-h&gt;">include &lt;string.h&gt;</h1><h1 id="include_&lt;unistd-h&gt;">include &lt;unistd.h&gt;</h1><h1 id="include_&lt;speex/speex-h&gt;">include &lt;speex/speex.h&gt;</h1><p>static int codec_open = 0;</p>
+<p>static int dec_frame_size;<br>static int enc_frame_size;</p>
+<p>static SpeexBits ebits, dbits;<br>void <em>enc_state;<br>void </em>dec_state;</p>
+<p>static JavaVM *gJavaVM;</p>
+<p>extern &quot;C&quot;<br>JNIEXPORT jint JNICALL Java_com_audio_Speex_open<br>  (JNIEnv *env, jobject obj, jint compression) {<br>    int tmp;</p>
+<pre><code>if <span class="list">(<span class="keyword">codec_open++</span> != <span class="number">0</span>)</span>
+    return <span class="list">(<span class="keyword">jint</span>)</span><span class="number">0</span><span class="comment">;</span>
+
+speex_bits_init<span class="list">(<span class="keyword">&amp;amp</span><span class="comment">;ebits);</span>
+speex_bits_init<span class="list">(<span class="keyword">&amp;amp</span><span class="comment">;dbits);</span>
+
+enc_state = speex_encoder_init<span class="list">(<span class="keyword">&amp;amp</span><span class="comment">;speex_nb_mode);</span>
+dec_state = speex_decoder_init<span class="list">(<span class="keyword">&amp;amp</span><span class="comment">;speex_nb_mode);</span>
+tmp = compression<span class="comment">;</span>
+speex_encoder_ctl<span class="list">(<span class="keyword">enc_state</span>, SPEEX_SET_QUALITY, <span class="keyword">&amp;amp</span><span class="comment">;tmp);</span>
+speex_encoder_ctl<span class="list">(<span class="keyword">enc_state</span>, SPEEX_GET_FRAME_SIZE, <span class="keyword">&amp;amp</span><span class="comment">;enc_frame_size);</span>
+speex_decoder_ctl<span class="list">(<span class="keyword">dec_state</span>, SPEEX_GET_FRAME_SIZE, <span class="keyword">&amp;amp</span><span class="comment">;dec_frame_size);</span>
+
+return <span class="list">(<span class="keyword">jint</span>)</span><span class="number">0</span><span class="comment">;</span></span></span></span></span></span></span></span>
+</code></pre><p>}</p>
+<p>extern &quot;C&quot;<br>JNIEXPORT jint Java_com_audio_Speex_encode<br>    (JNIEnv *env, jobject obj, jshortArray lin, jint offset, jbyteArray encoded, jint size) {</p>
+<pre><code>    jshort buffer[enc_frame_size]<span class="comment">;</span>
+    jbyte output_buffer[enc_frame_size]<span class="comment">;</span>
+int nsamples = (size-1)/enc_frame_size + 1<span class="comment">;</span>
+int i, tot_bytes = 0<span class="comment">;</span>
+
+if (!codec_open)
+    return 0<span class="comment">;</span>
+
+speex_bits_reset(&amp;amp<span class="comment">;ebits);</span>
+
+for (i = 0<span class="comment">; i &amp;lt; nsamples; i++) {</span>
+    env-&amp;gt<span class="comment">;GetShortArrayRegion(lin, offset + i*enc_frame_size, enc_frame_size, buffer);</span>
+    speex_encode_int(enc_state, buffer, &amp;amp<span class="comment">;ebits);</span>
+}
+//env-&amp;gt<span class="comment">;GetShortArrayRegion(lin, offset, enc_frame_size, buffer);</span>
+//speex_encode_int(enc_state, buffer, &amp;amp<span class="comment">;ebits);</span>
+
+tot_bytes = speex_bits_write(&amp;amp<span class="comment">;ebits, (char *)output_buffer,</span>
+                 enc_frame_size)<span class="comment">;</span>
+env-&amp;gt<span class="comment">;SetByteArrayRegion(encoded, 0, tot_bytes,</span>
+            output_buffer)<span class="comment">;</span>
+
+    return (jint)tot_bytes<span class="comment">;</span>
+</code></pre><p>}</p>
+<p>extern &quot;C&quot;<br>JNIEXPORT jint JNICALL Java_com_audio_Speex_decode<br>    (JNIEnv *env, jobject obj, jbyteArray encoded, jshortArray lin, jint size) {</p>
+<pre><code>    jbyte buffer[dec_frame_size]<span class="comment">;</span>
+    jshort output_buffer[dec_frame_size]<span class="comment">;</span>
+    jsize encoded_length = size<span class="comment">;</span>
+
+if (!codec_open)
+    return 0<span class="comment">;</span>
+
+env-&amp;gt<span class="comment">;GetByteArrayRegion(encoded, 0, encoded_length, buffer);</span>
+speex_bits_read_from(&amp;amp<span class="comment">;dbits, (char *)buffer, encoded_length);</span>
+speex_decode_int(dec_state, &amp;amp<span class="comment">;dbits, output_buffer);</span>
+env-&amp;gt<span class="comment">;SetShortArrayRegion(lin, 0, dec_frame_size,</span>
+             output_buffer)<span class="comment">;</span>
+
+return (jint)dec_frame_size<span class="comment">;</span>
+</code></pre><p>}</p>
+<p>extern &quot;C&quot;<br>JNIEXPORT jint JNICALL Java_com_audio_getFrameSize<br>    (JNIEnv *env, jobject obj) {</p>
+<pre><code><span class="keyword">if</span> (!codec_open)
+    <span class="keyword">return</span> <span class="number">0</span>;
+<span class="keyword">return</span> (jint)enc_frame_size;
+</code></pre><p>}</p>
+<p>extern &quot;C&quot;<br>JNIEXPORT void JNICALL Java_com_audio_Speex_close<br>    (JNIEnv *env, jobject obj) {</p>
+<pre><code>if <span class="list">(<span class="keyword">--codec_open</span> != <span class="number">0</span>)</span>
+    return<span class="comment">;</span>
+
+speex_bits_destroy<span class="list">(<span class="keyword">&amp;amp</span><span class="comment">;ebits);</span>
+speex_bits_destroy<span class="list">(<span class="keyword">&amp;amp</span><span class="comment">;dbits);</span>
+speex_decoder_destroy<span class="list">(<span class="keyword">dec_state</span>)</span><span class="comment">;</span>
+speex_encoder_destroy<span class="list">(<span class="keyword">enc_state</span>)</span><span class="comment">;</span></span></span>
+</code></pre><p>}<br>[/code]</p>
+<p>8.在Java层创建Speex工具类，内容如下</p>
+<p>[code lang=”java”]package com.audio;</p>
+<p>class Speex  {</p>
+<pre><code><span class="comment">/* quality
+ * 1 : 4kbps (very noticeable artifacts, usually intelligible)
+ * 2 : 6kbps (very noticeable artifacts, good intelligibility)
+ * 4 : 8kbps (noticeable artifacts sometimes)
+ * 6 : 11kpbs (artifacts usually only noticeable with headphones)
+ * 8 : 15kbps (artifacts not usually noticeable)
+ */</span>
+<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_COMPRESSION = <span class="number">8</span>;
+
+Speex() {
+}
+
+<span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>{
+    load();    
+    open(DEFAULT_COMPRESSION);
+}
+
+<span class="keyword">private</span> <span class="function"><span class="keyword">void</span> <span class="title">load</span><span class="params">()</span> </span>{
+    <span class="keyword">try</span> {
+        System.loadLibrary(&amp;quot;speex&amp;quot;);
+    } <span class="keyword">catch</span> (Throwable e) {
+        e.printStackTrace();
+    }
+
+}
+
+<span class="keyword">public</span> <span class="keyword">native</span> <span class="function"><span class="keyword">int</span> <span class="title">open</span><span class="params">(<span class="keyword">int</span> compression)</span></span>;
+<span class="keyword">public</span> <span class="keyword">native</span> <span class="function"><span class="keyword">int</span> <span class="title">getFrameSize</span><span class="params">()</span></span>;
+<span class="keyword">public</span> <span class="keyword">native</span> <span class="function"><span class="keyword">int</span> <span class="title">decode</span><span class="params">(<span class="keyword">byte</span> encoded[], <span class="keyword">short</span> lin[], <span class="keyword">int</span> size)</span></span>;
+<span class="keyword">public</span> <span class="keyword">native</span> <span class="function"><span class="keyword">int</span> <span class="title">encode</span><span class="params">(<span class="keyword">short</span> lin[], <span class="keyword">int</span> offset, <span class="keyword">byte</span> encoded[], <span class="keyword">int</span> size)</span></span>;
+<span class="keyword">public</span> <span class="keyword">native</span> <span class="function"><span class="keyword">void</span> <span class="title">close</span><span class="params">()</span></span>;
+</code></pre><p>}<br>[/code]</p>
+<p>9.打开cygwin工具，切换到项目目录（我项目是在F:\workspace\Audio），输入$NDK/ndk-build</p>
+<p>cygwin工具的安装与配置，可以看这篇文章——<a href="http://blog.csdn.net/chenfeng0104/article/details/7090850" target="_blank" rel="external">使用NDK与环境搭建</a></p>
+<p><img src="http://hi.csdn.net/attachment/201112/20/0_1324370946pF9v.gif" alt=""></p>
+<p><img src="http://hi.csdn.net/attachment/201112/20/0_1324370960cCla.gif" alt=""></p>
+<p>会在项目中生成libs目录和libspeex.so文件，这就是Speex类中System.loadLibrary(“speex”);代码引用的，系统会根据操作系统由”speex”找到对应的动态库libspeex.so，Windows下是.dll文件，linux下是.so文件。</p>
+<p>当前，我的项目结构如下图</p>
+<p><img src="http://hi.csdn.net/attachment/201112/20/0_1324371398RYMW.gif" alt=""></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-07T20:02:00.000Z"><a href="/2012/11/08/android/android-e4-bd-bf-e7-94-a8ndk-e4-b8-8e-e7-8e-af-e5-a2-83-e6-90-ad-e5-bb-ba/">2012-11-08</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/08/android/android-e4-bd-bf-e7-94-a8ndk-e4-b8-8e-e7-8e-af-e5-a2-83-e6-90-ad-e5-bb-ba/">android 使用NDK与环境搭建</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>一、NDK介绍</p>
+<p>使用NDK，并不会给我们程序提高执行性能，反而会使程序复杂化。因此，尽量避免使用NDK，除非你真的需要使用本地库（通常是C/C++库），不要因为擅长使用C/C++编程而使用NDK。</p>
+<p>Android提供了两种使用本地代码的方式<br>1.通过JNI调用本地代码</p>
+<p>2.通过<a href="http://developer.android.com/reference/android/app/NativeActivity.html" target="_blank" rel="external">NativeActivity类</a>调用本地代码（从2.3版本开始支持）</p>
+<p>NDK 提供了一系列的工具，帮助开发者快速开发 C （或 C++ ）的动态库，并能自动将 so 和java 应用一起打包成 apk 。这些工具对开发者的帮助是巨大的。<br>NDK 集成了交叉编译器，并提供了相应的 mk 文件隔离 CPU 、平台、 ABI 等差异，开发人员只需要简单修改 mk 文件（指出 “ 哪些文件需要编译 ” 、 “ 编译特性要求 ” 等），就可以创建出 so 。 NDK 可以自动地将 so 和 Java 应用一起打包，极大地减轻了开发人员的打包工作 。 比较简单的说， NDK 是一套交叉编译工具，它可以帮你把你用 C 或 C++ 书写的代码，编译为 .so （类似与 win 下的 .dll ）格式的文件，使你可以在你的 Android 程序当中用 Java 语言（ JNI ）调用这些代码。</p>
+<p>二：Windows平台安装cygwin<br>由于 NDK 编译代码时必须要用到 make 和 gcc ，所以你必须先搭建一个 linux 环境， cygwin 是一个在 windows 平台上运行的 unix 模拟环境 , 它对于学习 unix/linux 操作环境，或者从 unix 到 windows 的应用程序移植，非常有用。通过它，你就可以在不安装 linux 的情况下使用 NDK 来编译 C 、 C++ 代码了。下面我们一步一步的安装 cygwin 吧。<br>1.在cygwin主页<a href="http://www.cygwin.com/" target="_blank" rel="external">下载setup.exe</a></p>
+<p>2.双击安装setup.exe</p>
+<p><img src="http://hi.csdn.net/attachment/201112/21/0_1324443486CEEE.gif" alt=""></p>
+<p>3.选择安装目录</p>
+<p><img src="http://hi.csdn.net/attachment/201112/21/0_1324443511RQ1d.gif" alt=""></p>
+<p>4.选择下载网址，<a href="http://mirrors.163.com比较快" target="_blank" rel="external">http://mirrors.163.com比较快</a></p>
+<p><img src="http://hi.csdn.net/attachment/201112/21/0_1324443536h1Ne.gif" alt=""></p>
+<p>5.安装向导提示是第一次安装，这个不用管它，直接点“确定”</p>
+<p><img src="http://hi.csdn.net/attachment/201112/21/0_132444360233tN.gif" alt=""></p>
+<p>6.选择安装包，这里要把Devel包由Default改成Install</p>
+<p><img src="http://hi.csdn.net/attachment/201112/21/0_1324443866rmRZ.gif" alt=""></p>
+<p>7.正在安装，时间有点长，估计要2个小时左右（根据网络而定）</p>
+<p><img src="http://hi.csdn.net/attachment/201112/21/0_1324443894UVMV.gif" alt=""></p>
+<p>&nbsp;</p>
+<p>8.测试cygwin是否安装好了<br>运行cygwin，在弹出的命令行窗口输入：cygcheck -c cygwin命令</p>
+<p><img src="http://hi.csdn.net/attachment/201112/21/0_1324443951xWCu.gif" alt=""></p>
+<p>&nbsp;</p>
+<p>三、配置NDK环境变量<br>1.在cygwin的安装目录，找到home\&lt;PC用户名&gt;.bash_profile文件（我是在C:\cygwin\home\user.bash_profile），有时候安装home目录下是空的，可以自行创建&lt;PC用户名&gt;目录，并将cygwin\etc\skel.bash_profile文件拷贝过来。<br>2.打开bash_profile文件，添加如下两行，例如：<br>NDK=/cygdrive/h/android-ndk-r7<br>export NDK</p>
+<p>NDK这个名字可以随便取，路径格式为/cygdrive/&lt;你的盘符&gt;/&lt;android ndk 目录&gt;<br>注意：用某些编辑器编辑bash_profile文件，会导致问题，如用写字板、VC++6。可以用Uedit、UltraEdit的dos格式编辑</p>
+<p>3.测试环境是否配置好了，打开cygwin，输入cd $NDK，出现/cygdrive/h/android-ndk-r7信息表示配置好了。如下图</p>
+<p><img src="http://hi.csdn.net/attachment/201112/21/0_1324444004BTXm.gif" alt=""></p>
+<p>注意：如果第2步用写字板打开编辑bash_profile文件，输入cd $NDK时会显示no such file or directory，说明配置不成功<br>四、用NDK来编译程序<br>1.现在我们用安装好的NDK来编译一个简单的程序，我们选择ndk自带的例子hello-jni，我的位于H:\android-ndk-r7\samples\hello-jni(根据你具体的安装位置而定)，<br>2.运行cygwin，输入命令cd /cygdrive/h/android-ndk-r7/samples/hello-jni，进入到H:\android-ndk-r7\samples\hello-jni目录。<br>3.输入$NDK/ndk-build，执行成功后，它会自动生成一个libs目录，把编译生成的.so文件放在里面。($NDK是调用我们之前配置好的环境变量，ndk-build是调用ndk的编译程序)<br>4.此时去hello-jni的libs目录下看有没有生成的.so文件，如果有，你的ndk就运行正常了</p>
+<p>五、在eclipse中集成c/c++开发环境<br>1.装Eclipse的C/C++环境插件：CDT，这里选择在线安装。<br>首先登录<a href="http://www.eclipse.org/cdt/downloads.php，找到对应你Eclipse版本的CDT插件的在线安装地址。" target="_blank" rel="external">http://www.eclipse.org/cdt/downloads.php，找到对应你Eclipse版本的CDT插件的在线安装地址。</a><br>2.然后点Help菜单，找到Install New Software菜单<br>3.点击Add按钮，把取的地址填进去，出来插件列表后，选Select All，然后选择下一步即可完成安装<br>4.安装完成后，在eclispe中右击新建一个项目，如果出现了c/c++项目，则表明你的CDT插件安装成功了</p>
+<p>&nbsp;</p>
+<p>六、配置C/C++的编译器<br>1.打开eclipse，导入ndk自带的hello-jni例子，右键单击项目名称，点击Properties，弹出配置界面，之后再点击Builders，弹出项目的编译工具列表，之后点击New，新添加一个编译器，点击后出现添加界面，选择Program，点击OK<br>2.出现了添加界面，首先给编译配置起个名字，如：C_Builder<br>设置Location为&lt;你cygwin安装路径&gt;\bin\bash.exe程序，例如：C:\cygwin\bin\bash.exe<br>设置Working Directory为&lt;你cygwin安装路径&gt;\bin目录，例如：C:\cygwin\bin<br>设置Arguments为  —login -c “cd /cygdrive/F/workspace/hello-jni &amp;&amp; $NDK/ndk-build”</p>
+<p><img src="http://hi.csdn.net/attachment/201112/21/0_1324444100zLFY.gif" alt=""></p>
+<p>上面的配置中 /cygdrive/F/workspace/hello-jni是你当前要编译的程序的目录，$NDK是之前配置的ndk的环境变量，这两个根据你具体的安装目录进行配置，其他的不用变，Arguments这串参数实际是  给bash.exe命令行程序传参数，进入要编译的程序目录，然后运行ndk-build编译程序</p>
+<p>3.接着切换到Refresh选项卡，给Refresh resources upon completion打上钩<br><img src="http://hi.csdn.net/attachment/201112/21/0_132444416374Ge.gif" alt=""><br>4.然后切换到Build Options选项卡，勾选上最后三项<br><img src="http://hi.csdn.net/attachment/201112/21/0_1324444176sQGE.gif" alt=""><br>5.之后点击Specify Resources按钮，选择资源目录，勾选你的项目目录即可<br><img src="http://hi.csdn.net/attachment/201112/21/0_1324444191ey9E.gif" alt=""><br>6.最后点击Finish，点击OK一路把刚才的配置都保存下来，注意：如果你配置的编译器在其它编译器下边，记得一定要点Up按钮，把它排到第一位，否则C代码的编译晚于Java代码的编译，会造成你的C代码要编译两次才能看到最新的修改</p>
+<p><img src="http://hi.csdn.net/attachment/201112/21/0_1324444229KpRM.gif" alt=""><br>7.编译配置完成，现在来测试一下是否可以自动编译，打开项目jni目录里的hello-jni.c文件把提示Hello from JNI!改成其他的文字：如：Hello，Automatic Compile.，然后再模拟器中运行你的程序，如果模拟器中显示了你最新修改的文字，说明环境搭建完成！</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-07T19:31:49.000Z"><a href="/2012/11/08/e5-a3-b0-e9-9f-b3-e5-8e-8b-e7-bc-a9-e5-ba-93-speex/">2012-11-08</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/08/e5-a3-b0-e9-9f-b3-e5-8e-8b-e7-bc-a9-e5-ba-93-speex/">声音压缩库 Speex </a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><img src="http://www.oschina.net/uploads/img/200906/18121058_90zB.png" alt=""></p>
+<p>Speex是一套专门用于压缩声音的库,由于其专门针对声音,所以压缩声音的性能非常高.Speex由于其压缩性能,及0.80版后的跨平台的性能,所以在网络声音的传输中有很大的价值.但是需要注意的是speex只能对声音进行压缩,不支持音乐的压缩,如果你需要音乐的压缩你或许需要用vorbis库.</p>
+<p>支持包括Linux、BSD、MacOS 以及 Symbian 系统。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-11-07T19:24:41.000Z"><a href="/2012/11/08/android/android-e5-bd-95-e5-88-b6-e5-a3-b0-e9-9f-b3-e5-bd-95-e9-9f-b3-e8-be-93-e8-be-93-e5-87-ba-e6-a0-bc-e5-bc-8f/">2012-11-08</a></time>
       
       
@@ -475,332 +741,6 @@ var _hmt = _hmt || [];
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-11-06T17:54:34.000Z"><a href="/2012/11/07/android/android-monkey-e6-b5-8b-e8-af-95-e5-b7-a5-e5-85-b7-e7-ae-80-e4-bb-8b-e4-b8-8e-e5-ae-9e-e4-be-8b/">2012-11-07</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/11/07/android/android-monkey-e6-b5-8b-e8-af-95-e5-b7-a5-e5-85-b7-e7-ae-80-e4-bb-8b-e4-b8-8e-e5-ae-9e-e4-be-8b/">android monkey测试工具简介与实例</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h2 id="Monkey测试简介">Monkey测试简介</h2><p>当Monkey程序在模拟器或设备运行的时候，如果用户出发了比如点击，触摸，手势或一些系统级别的事件的时候，它就会</p>
-<p>产生随机脉冲，所以可以用Monkey用随机重复的方法去负荷测试你开发的软件.</p>
-<p>最简单的方法就是用用下面的命令来使用Monkey，这个命令将会启动你的软件并且触发500个事件.</p>
-<p><code>$ adb shell monkey -v -p your.package.name 500</code><br>更多的关于命令Monkey的命令的信息，可以查看UI/Application<br><code>Exerciser Monkey documentation page.
-com.android.stk
-com.android.htmlviewer
-com.android.globalsearch
-com.android.gpstest
-com.android.googlesearch
-wnc.w88.engineermode
-com.android.calculator2
-com.android.inputmethod.latin
-com.svox.pico
-com.android.soundrecorder
-com.android.packageinstaller
-android.tts
-com.android.spare_parts
-com.android.globaltime
-com.android.sdksetup
-com.quicinc.bluetooth
-com.android.email
-com.qualcomm.qx.neocore
-com.android.development
-com.android.term
-com.android.server.vpn
-com.android.contacts
-com.android.camera
-wnc.w88.factorymode
-com.android.providers.applicati
-com.android.providers.settings
-com.android.voicedialer
-com.android.phone
-com.android.providers.contacts
-com.android.launcher
-com.android.mms
-com.android.providers.telephony
-com.android.providers.userdicti
-com.android.providers.media
-com.android.providers.calendar
-com.android.calendar
-com.android.providers.drm
-com.android.providers.downloads
-com.android.alarmclock
-com.android.settings
-com.android.qualcomm
-com.android.browser
-com.android.music</code><br>Monkey是一个命令行工具，可以运行在模拟器里或实际设备中。它向系统发送伪随机的用户事件流，实现对正在开发的应</p>
-<p>用程序进行压力测试。Monkey包括许多选项，它们大致分为四大类：<br>· 基本配置选项，如设置尝试的事件数量。</p>
-<p>· 运行约束选项，如设置只对单独的一个包进行测试。</p>
-<p>· 事件类型和频率。</p>
-<p>· 调试选项。<br>在Monkey运行的时候，它生成事件，并把它们发给系统。同时，Monkey还对测试中的系统进行监测，对下列三种情况进</p>
-<p>行特殊处理：</p>
-<p>· 如果限定了Monkey运行在一个或几个特定的包上，那么它会监测试图转到其它包的操作，并对其进行阻止。</p>
-<p>· 如果应用程序崩溃或接收到任何失控异常，Monkey将停止并报错。</p>
-<p>· 如果应用程序产生了应用程序不响应(application not responding)的错误，Monkey将会停止并报错。</p>
-<p>按照选定的不同级别的反馈信息，在Monkey中还可以看到其执行过程报告和生成的事件。<br>Monkey基本用法</p>
-<p>可以通过开发机器上的命令行或脚本来启动Monkey。由于Monkey运行在模拟器/设备环境中，所以必须用其环境中的shell</p>
-<p>来进行启动。可以通过在每条命令前加上adb shell来达到目的，也可以进入Shell后直接输入Monkey命令。基本语法如下：</p>
-<p><code>$ adb shell monkey [options]</code></p>
-<p>如果不指定options，Monkey将以无反馈模式启动，并把事件任意发送到安装在目标环境中的全部包。下面是一个更为典</p>
-<p>型的命令行示例，它启动指定的应用程序，并向其发送500个伪随机事件：</p>
-<p><code>$ adb shell monkey -p your.package.name -v 500</code></p>
-<p>命令选项参考</p>
-<p>下表中列出了Monkey命令行可用的全部选项。</p>
-<p>类别<br>选项<br>说明</p>
-<p>常规<br><code>--help</code><br>列出简单的用法。</p>
-<p>-v<br>命令行的每一个-v将增加反馈信息的级别。Level 0(缺省值)除启动提示、测试完成和最终结果之外，提供较少信息。Level</p>
-<p>1提供较为详细的测试信息，如逐个发送到Activity的事件。Level 2提供更加详细的设置信息，如测试中被选中的或未被选</p>
-<p>中的Activity。</p>
-<p>事件<br>-s &lt;seed&gt;<br>伪随机数生成器的seed值。如果用相同的seed值再次运行Monkey，它将生成相同的事件序列。</p>
-<p>—throttle &lt;milliseconds&gt;<br>在事件之间插入固定延迟。通过这个选项可以减缓Monkey的执行速度。如果不指定该选项，Monkey将不会被延迟，事件</p>
-<p>将尽可能快地被产成。</p>
-<p>—pct-touch &lt;percent&gt;<br>调整触摸事件的百分比(触摸事件是一个down-up事件，它发生在屏幕上的某单一位置)。</p>
-<p>—pct-motion &lt;percent&gt;<br>调整动作事件的百分比(动作事件由屏幕上某处的一个down事件、一系列的伪随机事件和一个up事件组成)。</p>
-<p>—pct-trackball &lt;percent&gt;<br>调整轨迹事件的百分比(轨迹事件由一个或几个随机的移动组成，有时还伴随有点击)。</p>
-<p>—pct-nav &lt;percent&gt;<br>调整“基本”导航事件的百分比(导航事件由来自方向输入设备的up/down/left/right组成)。</p>
-<p>—pct-majornav &lt;percent&gt;<br>调整“主要”导航事件的百分比(这些导航事件通常引发图形界面中的动作，如：5-way键盘的中间按键、回退按键、菜单按</p>
-<p>键)</p>
-<p>—pct-syskeys &lt;percent&gt;<br>调整“系统”按键事件的百分比(这些按键通常被保留，由系统使用，如Home、Back、Start Call、End Call及音量控制键)。</p>
-<p>—pct-appswitch &lt;percent&gt;<br>调整启动Activity的百分比。在随机间隔里，Monkey将执行一个startActivity()调用，作为最大程度覆盖包中全部Activity的</p>
-<p>一种方法。</p>
-<p>—pct-anyevent &lt;percent&gt;<br>调整其它类型事件的百分比。它包罗了所有其它类型的事件，如：按键、其它不常用的设备按钮、等等。</p>
-<p>约束限制<br>-p &lt;allowed-package-name&gt;<br>如果用此参数指定了一个或几个包，Monkey将只允许系统启动这些包里的Activity。如果你的应用程序还需要访问其它包</p>
-<p>里的Activity(如选择取一个联系人)，那些包也需要在此同时指定。如果不指定任何包，Monkey将允许系统启动全部包里</p>
-<p>的Activity。要指定多个包，需要使用多个 -p选项，每个-p选项只能用于一个包。</p>
-<p>-c &lt;main-category&gt;<br>如果用此参数指定了一个或几个类别，Monkey将只允许系统启动被这些类别中的某个类别列出的Activity。如果不指定任</p>
-<p>何类别，Monkey将选 择下列类别中列出的Activity： Intent.CATEGORY_LAUNCHER或Intent.CATEGORY_MONKEY。要</p>
-<p>指定多个类别，需要使用多个-c选项，每个-c选 项只能用于一个类别。</p>
-<p>调试<br>—dbg-no-events<br>设置此选项，Monkey将执行初始启动，进入到一个测试Activity，然后不会再进一步生成事件。为了得到最佳结果，把它</p>
-<p>与-v、一个或几个包约 束、以及一个保持Monkey运行30秒或更长时间的非零值联合起来，从而提供一个环境，可以监视</p>
-<p>应用程序所调用的包之间的转换。</p>
-<p>—hprof<br>设置此选项，将在Monkey事件序列之前和之后立即生成profiling报告。这将会在data/misc中生成大文件(~5Mb)，所以要</p>
-<p>小心使用它。</p>
-<p>—ignore-crashes<br>通常，当应用程序崩溃或发生任何失控异常时，Monkey将停止运行。如果设置此选项，Monkey将继续向系统发送事件，</p>
-<p>直到计数完成。</p>
-<p>—ignore-timeouts<br>通常，当应用程序发生任何超时错误(如“Application Not Responding”对话框)时，Monkey将停止运行。如果设置此选项</p>
-<p>，Monkey将继续向系统发送事件，直到计数完成。</p>
-<p>—ignore-security-exceptions<br>通常，当应用程序发生许可错误(如启动一个需要某些许可的Activity)时，Monkey将停止运行。如果设置了此选项，</p>
-<p>Monkey将继续向系统发送事件，直到计数完成。</p>
-<p>—kill-process-after-error<br>通常，当Monkey由于一个错误而停止时，出错的应用程序将继续处于运行状态。当设置了此选项时，将会通知系统停止发</p>
-<p>生错误的进程。注意，正常的(成功的)结束，并没有停止启动的进程，设备只是在结束事件之后，简单地保持在最后的状</p>
-<p>态。</p>
-<p>—monitor-native-crashes<br>监视并报告Android系统中本地代码的崩溃事件。如果设置了—kill-process-after-error，系统将停止运行。</p>
-<p>—wait-dbg<br>停止执行中的Monkey，直到有调试器和它相连接。<br>monkey [-p ALLOWED_PACKAGE [-p ALLOWED_PACKAGE] …]<br>[-c MAIN_CATEGORY [-c MAIN_CATEGORY] …]<br>[—ignore-crashes] [—ignore-timeouts]<br>[—ignore-security-exceptions] [—monitor-native-crashes]<br>[—kill-process-after-error] [—hprof]<br>[—pct-touch PERCENT] [—pct-motion PERCENT]<br>[—pct-trackball PERCENT] [—pct-syskeys PERCENT]<br>[—pct-nav PERCENT] [—pct-majornav PERCENT]<br>[—pct-appswitch PERCENT] [—pct-flip PERCENT]<br>[—pct-anyevent PERCENT]<br>[—wait-dbg] [—dbg-no-events] [-f scriptfile]<br>[—port port]<br>[-s SEED] [-v [-v] …] [—throttle MILLISEC]<br>COUNT<br>讲了这么多，好像很枯燥，很难懂，即使看完了选项也不知道如何使用<br>首先我们应该明白我们不可能使用monkey来制定做一样测试，重复做很多次，因为monkey是伪随机的，就是说虽然有一</p>
-<p>定规律可循，但是并不是我们就可以指定动作，但是我们可以通过添加命令选项来将操作限制在一定的范围内。<br>monkey -v -p com.android.camera —throttle 5000 —pct-anyevent 100 500<br>这条命令的解释是：-v显示默认程度的信息；-p com.android.camera是指定测试的程序，<br>// Allowing start of Intent { act=android.intent.action.MAIN cat=[android.in<br>tent.category.LAUNCHER] cmp=com.android.camera/.Camera } in package com.android.<br>camera<br>这是开始测试的camera的内容<br>—throttle 5000 设定延时<br>—pct-anyevent 100设定启动activity的百分比为100%<br>如果没有指定，我们可以看到在开始执行的时候8个事件（上面的选项中有介绍）的百分比如下：</p>
-<h1 id="monkey_-v_-p_com-android-camera_—throttle_5000_500">monkey -v -p com.android.camera —throttle 5000 500</h1><p>monkey -v -p com.android.camera —throttle 5000 500<br>:Monkey: seed=0 count=500<br>:AllowPackage: com.android.camera<br>:IncludeCategory: android.intent.category.LAUNCHER<br>:IncludeCategory: android.intent.category.MONKEY<br>// Event percentages:<br>//   0: 15.0%<br>//   1: 10.0%<br>//   2: 15.0%<br>//   3: 25.0%<br>//   4: 15.0%<br>//   5: 2.0%<br>//   6: 2.0%<br>//   7: 1.0%<br>//   8: 15.0%</p>
-<p>指定事件之后</p>
-<h1 id="monkey_-v_-p_com-android-camera_—throttle_5000_—pct-anyevent_100_500">monkey -v -p com.android.camera —throttle 5000 —pct-anyevent 100 500</h1><p>monkey -v -p com.android.camera —throttle 5000 —pct-anyevent 100 500<br>:Monkey: seed=0 count=500<br>:AllowPackage: com.android.camera<br>:IncludeCategory: android.intent.category.LAUNCHER<br>:IncludeCategory: android.intent.category.MONKEY<br>// Event percentages:<br>//   0: 0.0%<br>//   1: 0.0%<br>//   2: 0.0%<br>//   3: 0.0%<br>//   4: 0.0%<br>//   5: 0.0%<br>//   6: 0.0%<br>//   7: 0.0%<br>//   8: 100.0%</p>
-<p>最后count就是事件数设定为500</p>
-<h2 id="MONKEY_测试实例">MONKEY 测试实例</h2><p>接下来看一个实例</p>
-<p>Monkey 的用法是$ adb shell monkey -p your.package.name -v 500 ，首先，我们要找到应用程序在Emulator中所对应的包名，我一开始是一个个目录找得，前7步完成了这项工作，最终发现应用程序包都在 data/data下，你可以在shell中cd data/data，然后ls查看当前Emulator中的所有应用程序包。</p>
-<p>假如我们想对SDK中的APIDemos做压力测试，</p>
-<p>1.在Eclipse中新建工程，将</p>
-<p>F:\android-sdk-windows \platforms\android-2.0\samples\ApiDemos添加到工程中点击运行，此时，他的APK应该加载到了Emulator 上</p>
-<p>2.在命令行输入adb shell</p>
-<p>3.输入ls查看当前文件夹下的目录，执行结果如下</p>
-<p>C:\Documents and Settings\Administrator&gt;adb shell</p>
-<h1 id="ls">ls</h1><p>ls<br>sqlite_stmt_journals<br>config<br>cache<br>sdcard<br>d<br>etc<br>system<br>sys<br>sbin<br>proc<br>init.rc<br>init.goldfish.rc<br>init<br>default.prop<br>data<br>root<br>dev</p>
-<p>4.应用程序包都在data下，我们输入cd data进入data文件夹，如下</p>
-<h1 id="cd_data">cd data</h1><p>cd data</p>
-<p>5.输入ls查看文件夹下的内容，如下所示：</p>
-<h1 id="ls-1">ls</h1><p>ls<br>misc<br>local<br>data<br>app-private<br>app<br>property<br>anr<br>backup<br>dontpanic<br>dalvik-cache<br>system<br>lost+found</p>
-<p>6.还有个data，所有的应用程序就在这个data下了， 进入这个data，然后输入ls如下：</p>
-<h1 id="cd_data-1">cd data</h1><p>cd data</p>
-<h1 id="ls-2">ls</h1><p>ls<br>com.android.mms<br>com.android.providers.applications<br>com.android.globalsearch<br>com.android.calculator2<br>com.android.spare_parts<br>com.android.gesture.builder<br>com.android.music<br>com.android.sdksetup<br>com.android.packageinstaller<br>com.android.fallback<br>com.android.providers.settings<br>com.android.providers.drm<br>com.android.development<br>com.android.providers.telephony<br>com.android.inputmethod.pinyin<br>com.android.htmlviewer<br>com.android.settings<br>com.android.netspeed<br>com.android.providers.userdictionary<br>com.android.browser<br>com.android.contacts<br>com.android.alarmclock<br>com.android.camera<br>com.android.providers.contacts<br>jp.co.omronsoft.openwnn<br>com.android.launcher<br>com.android.phone<br>com.android.soundrecorder<br>com.google.android.providers.enhancedgooglesearch<br>com.svox.pico<br>com.android.customlocale<br>com.android.term<br>com.android.providers.downloads<br>com.android.providers.media<br>com.android.email<br>android.tts<br>com.android.inputmethod.latin<br>com.android.server.vpn<br>com.example.android.apis</p>
-<p>7.最后一个就是我们刚才加载的APIDemo的应用程序包</p>
-<p>8.可以直接输入monkey -p com.example.android.apis -v 50，结果如下，也可以退出shell，在命令行输入，adb shell monkey -p com.example.android.apis -v 500 ，运行过程中，Emulator中的应用程序在不断地切换画面，可以看一下，呵呵：）</p>
-<h1 id="monkey_-p_com-example-android-apis_-v_50">monkey -p com.example.android.apis -v 50</h1><p>monkey -p com.example.android.apis -v 50<br>:Monkey: seed=0 count=50<br>:AllowPackage: com.example.android.apis<br>:IncludeCategory: android.intent.category.LAUNCHER<br>:IncludeCategory: android.intent.category.MONKEY<br>// Event percentages:<br>//   0: 15.0%<br>//   1: 10.0%<br>//   2: 15.0%<br>//   3: 25.0%<br>//   4: 15.0%<br>//   5: 2.0%<br>//   6: 2.0%<br>//   7: 1.0%<br>//   8: 15.0%<br>:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.categ<br>ory.LAUNCHER;launchFlags=0x10000000;component=com.example.android.apis/.ApiDemos<br>;end<br>// Allowing start of Intent { act=android.intent.action.MAIN cat=[android.in<br>tent.category.LAUNCHER] cmp=com.example.android.apis/.ApiDemos } in package com.<br>example.android.apis<br>:Sending Pointer ACTION_MOVE x=-4.0 y=2.0<br>:Sending Pointer ACTION_UP x=0.0 y=0.0<br>// Allowing start of Intent { cmp=com.example.android.apis/.ApiDemos } in pa<br>ckage com.example.android.apis<br>:Sending Pointer ACTION_DOWN x=207.0 y=282.0<br>:Sending Pointer ACTION_UP x=189.0 y=289.0<br>// Allowing start of Intent { cmp=com.example.android.apis/.app.Intents } in<br>package com.example.android.apis<br>:Sending Pointer ACTION_DOWN x=95.0 y=259.0<br>:Sending Pointer ACTION_UP x=95.0 y=259.0<br>:Sending Pointer ACTION_DOWN x=295.0 y=223.0<br>:Sending Pointer ACTION_UP x=290.0 y=213.0<br>:Sending Pointer ACTION_MOVE x=-5.0 y=3.0<br><img src="http://bbs.51testing.com/images/smilies/default/biggrin.gif" alt="">ropped: keys=0 pointers=0 trackballs=0 flips=0</p>
-<h2 id="Network_stats:_elapsed_time=3799ms_(3799ms_mobile,_0ms_wifi,_0ms_not_connecte">Network stats: elapsed time=3799ms (3799ms mobile, 0ms wifi, 0ms not connecte</h2><p>d)<br>// Monkey finished</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-11-05T07:02:48.000Z"><a href="/2012/11/05/spannablestring-e8-ae-b0-e5-bd-95/">2012-11-05</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/11/05/spannablestring-e8-ae-b0-e5-bd-95/">android中的spannable String 使用记录</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>SpannableString<br>TextView是用来显示文本的，有时需要给TextView中的个别字设置为超链接，或者设置个别字的颜色、字体等，那就需要用到Spannable对象，可以借助Spannable对象实现以上设置<br>[code lang=”java”]<br>myTextView = (TextView) this.findViewById(R.id.myTextView);</p>
-<p>//创建一个 SpannableString对象<br>SpannableString sp = new SpannableString(&quot;这句话中有百度超链接,有高亮显示，这样，或者这样，还有斜体.&quot;);<br>//设置超链接<br>sp.setSpan(new URLSpan(&quot;<a href="http://www.baidu.com&amp;quot" target="_blank" rel="external">http://www.baidu.com&amp;quot</a>;), 5, 7,<br>Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);<br>//设置高亮样式一<br>sp.setSpan(new BackgroundColorSpan(Color.RED), 17 ,19,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);<br>//设置高亮样式二<br>sp.setSpan(new ForegroundColorSpan(Color.YELLOW),20,24,Spannable.SPAN_EXCLUSIVE_INCLUSIVE);<br>//设置斜体<br>sp.setSpan(new StyleSpan(android.graphics.Typeface.BOLD_ITALIC), 27, 29, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);<br>//SpannableString对象设置给TextView<br>myTextView.setText(sp);<br>//设置TextView可点击<br>myTextView.setMovementMethod(LinkMovementMethod.getInstance());<br>[/code]<br>textview显示不同的颜色、样式来表示，需要用到SpannableString对象来处理<br>下面是从网上找的一段代码，已验证过：<br>[code lang=”java”]<br>mTextView = (TextView)findViewById(R.id.test);<br>SpannableString tSS = new SpannableString(“SpannableString学习中”);<br>tSS.setSpan(new BackgroundColorSpan(Color.RED), 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); //红色高亮<br>tSS.setSpan(new UnderlineSpan(), 15, 18,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); //下划线<br>tSS.setSpan(new StyleSpan(android.graphics.Typeface.BOLD_ITALIC), 2, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); //斜体<br>mTextView.setText(tSS);<br>[/code]<br>关键方法：<br>[code lang=”java”]<br>public void setSpan (Object what, int start, int end, int flags)<br>[/code]<br>主要是start跟end<br>start是起始位置,无论中英文，都算一个。从0开始计算起。end是结束位置，所以处理的文字，包含开始位置，但不包含结束位置。</p>
-<p>下面解决点击不同文字跳转到不同activity的问题：<br>直接贴代码：<br>[code lang=”java”]<br>import android.app.Activity;<br>import android.os.Bundle;<br>import android.text.SpannableString;<br>import android.text.Spanned;<br>import android.text.method.LinkMovementMethod;<br>import android.text.style.ClickableSpan;<br>import android.view.View;<br>import android.view.View.OnClickListener;<br>import android.widget.LinearLayout;<br>import android.widget.TextView;<br>import android.widget.Toast;<br>public class TextViewJump2Activity extends Activity {<br>/<em>* Called when the activity is first created. </em>/<br>private TextView mClickableText;<br>@Override<br>public void onCreate(Bundle savedInstanceState) {<br>super.onCreate(savedInstanceState);<br>LinearLayout layout = new LinearLayout(this);<br>mClickableText = new TextView(this);<br>mClickableText.setClickable(true);<br>mClickableText.setTextSize(20);</p>
-<p>layout.addView(mClickableText);<br>setContentView(layout);<br>mClickableText.setText(getClickableSpan());<br>mClickableText.setMovementMethod(LinkMovementMethod.getInstance());<br>}<br>private SpannableString getClickableSpan() {<br>View.OnClickListener l = new View.OnClickListener() {<br>//如下定义自己的动作<br>public void onClick(View v) {<br>Toast.makeText(TextViewJump2Activity.this, &quot;Click Success&quot;, Toast.LENGTH_SHORT).show();<br>//在这里就可以做跳转到activity或者弹出对话框的操作了<br>}<br>};<br>SpannableString spanableInfo = new SpannableString(&quot;This is a test, Click Here!&quot;);<br>int start = 16;<br>int end = spanableInfo.length();<br>spanableInfo.setSpan(new Clickable(l), start, end,<br>Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);<br>return spanableInfo;<br>}<br>}<br>class Clickable extends ClickableSpan implements OnClickListener {<br>private final View.OnClickListener mListener;<br>public Clickable(View.OnClickListener l) {<br>mListener = l;<br>}<br>@Override<br>public void onClick(View v) {<br>mListener.onClick(v);<br>}<br>}<br>[/code]<br>转自：<a href="http://blog.csdn.net/rockcoding/article/details/7231756" target="_blank" rel="external">http://blog.csdn.net/rockcoding/article/details/7231756</a></p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-11-04T19:13:31.000Z"><a href="/2012/11/05/relativelayout/">2012-11-05</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/11/05/relativelayout/">RelativeLayout的基本属性用法以及代码实现</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>RelativeLayout，顾名思义，就是以“相对”位置/对齐 为基础的布局方式。android.widget.RelativeLayout 有个 继承自android.view.ViewGroup.LayoutParams 的内嵌类 LayoutParams，使用这个类的实例调用 RelativeLayout.addView 就可以实现“相对布局”。他比LinearLyout更灵活的为控件布置位置.</p>
-<p><span style="color: #ff0000;">在新版本中属性的设置可能有变化，具体请看官方api</span></p>
-<p>RelativeLayout 的属性：<br>// 相对于给定ID控件</p>
-<p>android:layout_above 将该控件的底部置于给定ID的控件之上;</p>
-<p>android:layout_below 将该控件的底部置于给定ID的控件之下;</p>
-<p>android:layout_toLeftOf 将该控件的右边缘与给定ID的控件左边缘对齐;</p>
-<p>android:layout_toRightOf 将该控件的左边缘与给定ID的控件右边缘对齐;</p>
-<p>android:layout_alignBaseline 将该控件的baseline与给定ID的baseline对齐;</p>
-<p>android:layout_alignTop 将该控件的顶部边缘与给定ID的顶部边缘对齐;</p>
-<p>android:layout_alignBottom 将该控件的底部边缘与给定ID的底部边缘对齐;</p>
-<p>android:layout_alignLeft 将该控件的左边缘与给定ID的左边缘对齐;</p>
-<p>android:layout_alignRight 将该控件的右边缘与给定ID的右边缘对齐;</p>
-<p>// 相对于父组件</p>
-<p>android:layout_alignParentTop 如果为true,将该控件的顶部与其父控件的顶部对齐;</p>
-<p>android:layout_alignParentBottom 如果为true,将该控件的底部与其父控件的底部对齐;</p>
-<p>android:layout_alignParentLeft 如果为true,将该控件的左部与其父控件的左部对齐;</p>
-<p>android:layout_alignParentRight 如果为true,将该控件的右部与其父控件的右部对齐;</p>
-<p>// 居中</p>
-<p>android:layout_centerHorizontal 如果为true,将该控件的置于水平居中;</p>
-<p>android:layout_centerVertical 如果为true,将该控件的置于垂直居中;</p>
-<p>android:layout_centerInParent 如果为true,将该控件的置于父控件的中央;</p>
-<p>// 指定移动像素</p>
-<p>android:layout_marginTop 上偏移的值;</p>
-<p>android:layout_marginBottom 下偏移的值;</p>
-<p>android:layout_marginLeft 　　左偏移的值;</p>
-<p>android:layout_marginRight 　 右偏移的值;</p>
-<p>example:</p>
-<p>android:layout_below = “@id/<em>*</em>“</p>
-<p>android:layout_alignBaseline = “@id/<em>*</em>“</p>
-<p>android:layout_alignParentTop = true</p>
-<p>android:layout_marginLeft = “10px”</p>
-<p>以下是代码中的用法：</p>
-<p>[code lang=”java”]<br>import android.app.Activity;<br>import android.os.Bundle;<br>import android.widget.<em>;<br>import android.view.</em>;</p>
-<p>public class RLTest extends Activity {</p>
-<pre><code><span class="label">private</span> RelativeLayout rl<span class="comment">;</span>
-
-<span class="label">private</span> <span class="keyword">Button </span><span class="keyword">btn1;
-</span><span class="label">private</span> <span class="keyword">Button </span><span class="keyword">btn2;
-</span><span class="label">private</span> <span class="keyword">Button </span><span class="keyword">btn3;
-</span><span class="label">private</span> <span class="keyword">Button </span><span class="keyword">btn4;
-</span>
-<span class="label">private</span> static final int ID_BTN1 = <span class="number">1</span><span class="comment">;</span>
-<span class="label">private</span> static final int ID_BTN2 = <span class="number">2</span><span class="comment">;</span>
-<span class="label">private</span> static final int ID_BTN3 = <span class="number">3</span><span class="comment">;</span>
-<span class="label">private</span> static final int ID_BTN4 = <span class="number">4</span><span class="comment">;</span>
-
-<span class="comment">/** Called when the activity is first created. */</span>
-<span class="comment">@Override</span>
-<span class="label">public</span> void onCreate(<span class="keyword">Bundle </span>icicle) {
-    super.onCreate(icicle)<span class="comment">;</span>
-
-    rl = new RelativeLayout(this)<span class="comment">;</span>
-
-    <span class="keyword">btn1 </span>= new <span class="keyword">Button(this);
-</span>    <span class="keyword">btn1.setText(&amp;quot;----------------------&amp;quot;);
-</span>    <span class="keyword">btn1.setId(ID_BTN1);
-</span>
-    RelativeLayout.LayoutParams lp1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)<span class="comment">;</span>
-    lp1.<span class="keyword">addRule(RelativeLayout.ALIGN_WITH_PARENT_TOP);
-</span>    lp1.<span class="keyword">addRule(RelativeLayout.CENTER_HORIZONTAL, </span>RelativeLayout.TRUE)<span class="comment">;</span>
-    // <span class="keyword">btn1 </span>位于父 View 的顶部，在父 View 中水平居中
-    rl.<span class="keyword">addView(btn1, </span>lp1 )<span class="comment">;</span>
-
-    <span class="keyword">btn2 </span>= new <span class="keyword">Button(this);
-</span>    <span class="keyword">btn2.setText(&amp;quot;|\n|\n|\n|\n|\n|&amp;quot;);
-</span>    <span class="keyword">btn2.setId(ID_BTN2);
-</span>
-    RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)<span class="comment">;</span>
-    lp2.<span class="keyword">addRule(RelativeLayout.POSITION_BELOW, </span>ID_BTN1)<span class="comment">;</span>
-    lp2.<span class="keyword">addRule(RelativeLayout.ALIGN_LEFT, </span>ID_BTN1)<span class="comment">;</span>
-    // <span class="keyword">btn2 </span>位于 <span class="keyword">btn1 </span>的下方、其左边和 <span class="keyword">btn1 </span>的左边对齐
-    rl.<span class="keyword">addView(btn2, </span>lp2)<span class="comment">;</span>
-
-    <span class="keyword">btn3 </span>= new <span class="keyword">Button(this);
-</span>    <span class="keyword">btn3.setText(&amp;quot;|\n|\n|\n|\n|\n|&amp;quot;);
-</span>    <span class="keyword">btn3.setId(ID_BTN3);
-</span>
-    RelativeLayout.LayoutParams lp3 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)<span class="comment">;</span>
-   lp3.<span class="keyword">addRule(RelativeLayout.POSITION_BELOW, </span>ID_BTN1)<span class="comment">;</span>
-    lp3.<span class="keyword">addRule(RelativeLayout.POSITION_TO_RIGHT, </span>ID_BTN2)<span class="comment">;</span>
-    lp3.<span class="keyword">addRule(RelativeLayout.ALIGN_RIGHT, </span>ID_BTN1)<span class="comment">;</span>
-    // <span class="keyword">btn3 </span>位于 <span class="keyword">btn1 </span>的下方、<span class="keyword">btn2 </span>的右方且其右边和 <span class="keyword">btn1 </span>的右边对齐（要扩充）
-    rl.<span class="keyword">addView(btn3,lp3);
-</span>
-    <span class="keyword">btn4 </span>= new <span class="keyword">Button(this);
-</span>    <span class="keyword">btn4.setText(&amp;quot;--------------------------------------------&amp;quot;);
-</span>    <span class="keyword">btn4.setId(ID_BTN4);
-</span>
-    RelativeLayout.LayoutParams lp4 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)<span class="comment">;</span>
-    lp4.<span class="keyword">addRule(RelativeLayout.POSITION_BELOW, </span>ID_BTN2)<span class="comment">;</span>
-    lp4.<span class="keyword">addRule(RelativeLayout.CENTER_HORIZONTAL, </span>RelativeLayout.TRUE)<span class="comment">;</span>
-    // <span class="keyword">btn4 </span>位于 <span class="keyword">btn2 </span>的下方，在父 Veiw 中水平居中
-    rl.<span class="keyword">addView(btn4,lp4);
-</span>
-    setContentView(rl)<span class="comment">;</span>
-}
-</code></pre><p>}<br>[/code] </p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -832,7 +772,7 @@ com.android.music</code><br>Monkey是一个命令行工具，可以运行在模�
   
     <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>10</small></li>
   
-    <li><a href="/categories/android开发/">android开发</a><small>51</small></li>
+    <li><a href="/categories/android开发/">android开发</a><small>54</small></li>
   
     <li><a href="/categories/git/">git</a><small>3</small></li>
   
@@ -875,7 +815,7 @@ com.android.music</code><br>Monkey是一个命令行工具，可以运行在模�
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   
-    <li><a href="/tags/android/">android</a><small>2</small></li>
+    <li><a href="/tags/android/">android</a><small>5</small></li>
   
     <li><a href="/tags/android动画/">android动画</a><small>1</small></li>
   

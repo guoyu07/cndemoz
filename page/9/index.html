@@ -66,6 +66,239 @@ var _hmt = _hmt || [];
     <header>
       
         <div class="icon"></div>
+        <time datetime="2012-10-30T00:05:53.000Z"><a href="/2012/10/30/ios-e5-bc-80-e5-8f-91-e8-80-85-e8-ae-ba-e5-9d-9b-iphone-e5-bc-80-e5-8f-91-ef-bc-8cipad-e5-bc-80-e5-8f-91-ef-bc-8cios-e5-bc-80-e5-8f-91-e4-ba-a4-e6-b5-81-ef-bc-8cios-e4-bb-a3-e7-a0-81-e5-ae-9e-e4-be-8b/">2012-10-30</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/30/ios-e5-bc-80-e5-8f-91-e8-80-85-e8-ae-ba-e5-9d-9b-iphone-e5-bc-80-e5-8f-91-ef-bc-8cipad-e5-bc-80-e5-8f-91-ef-bc-8cios-e5-bc-80-e5-8f-91-e4-ba-a4-e6-b5-81-ef-bc-8cios-e4-bb-a3-e7-a0-81-e5-ae-9e-e4-be-8b/">iOS开发者论坛-iPhone开发，iPad开发，iOS开发交流，iOS代码实例，应用分享，业界新闻！</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>iOS开发者社区致力于打造iPhone开发 / iPad开发社区，希望更多的开发者能找到交流的地方，在这里能找到很多代码实例，项目案例，开发书籍，教程以及视频教程等内容，保证让开发者能找到想要的东西！</p>
+<p>www.codeios.com</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-10-30T00:04:04.000Z"><a href="/2012/10/30/xcode-4-x-e5-85-8d-e8-af-81-e4-b9-a6-e7-9c-9f-e6-9c-ba-e5-8f-91-e5-b8-83-e5-8f-8a-e8-b0-83-e8-af-95/">2012-10-30</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/30/xcode-4-x-e5-85-8d-e8-af-81-e4-b9-a6-e7-9c-9f-e6-9c-ba-e5-8f-91-e5-b8-83-e5-8f-8a-e8-b0-83-e8-af-95/">xCode 4.X 免证书真机发布及调试</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>由于没有购买苹果的开发者证书，所以目前大多数开发环境都是使用以下的方式实现开发与真机测试（本文部分摘自网络）</p>
+<p>【2012年3月15日更新】：目前我使用的是Xcode4.3.1 mac os 10.7.3</p>
+<p>最简单的办法就是让xcode不检查签名，直接编译发布。</p>
+<p>1、 修改SDKSettings.plist文件：<br>进入SDK目录：xcode4.3版本以前是：/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3（可能是5.0/4.2等）.sdk/<br>xcode4.3及以上版本的目录是：/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk</p>
+<p>打开该目录下的SDKSettings.plist文件，把其中所有的包含REQUIRED的项的值改成NO（在实际就是有2项值需要修改：CODE_SIGNING_REQUIRED和ENTITLEMENTS_REQUIRED）。</p>
+<p>2、工程的配置修改：<br>对每个工程进行修改，把所有的Code Signing Identity 全部改为 Don’t Code Sign</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>旧的方法可以参考：</p>
+<p>&nbsp;</p>
+<p>使用环境：越狱过的iPhone 机器 Mac OS 10.6.8 xCode 4.0.1 及Xcode4.0.2</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>操作步骤过程：</p>
+<p>（一）制作证书</p>
+<p>1、 打开   Finder－&gt;应用程序－&gt;实用工具 -&gt;  钥匙串访问</p>
+<p>2、单击：”钥匙串访问”选择  “证书” 再选择”创建证书”过程如下图：</p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354057979.png" alt=""></a></p>
+<p>3、证书名称必须填写为：”iPhone Developer” ，（不能随便填写）然后点击”创建”。(如图）</p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354068012.png" alt=""></a></p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354069997.png" alt=""></a></p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354068394.png" alt=""></a></p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354071525.png" alt=""></a></p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354073194.png" alt=""></a></p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354089083.png" alt=""></a></p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354082180.png" alt=""></a></p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354086117.png" alt=""></a></p>
+<p><a href="http://photo.blog.sina.com.cn/showpic.html" target="_blank" rel="external"><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354095278.png" alt=""></a></p>
+<p>(二)修改xcode配置文件</p>
+<p>注意：由于这些配置文件是系统文件，修改系统文件需要管理员权限才可以进行操作，所以保存的时候不能直接保存，会遇到系统提示”你没有修改此文件得权限”，但可以保存一个副本。可以先修改这个副本，然后再复制到原先的目录，系统会提示你是否修改替换，选择”替换”，这时候是需要管理员密码才可以覆盖原来的文件，输入密码后，修改完成。</p>
+<p>1.修改SDKsettings.plist文件。</p>
+<p>找到 “  /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk “下得  SDKSettings.plist  文件，修改”Default Properties “项下面得 “CODE_SIGNING_REQUIRED “得值为：NO。</p>
+<p>2.修改”/Developer/Platforms/iPhoneOS.platform/Info.plist”文件（用文本编辑器或者Xcode打开）：</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354098343.png" alt=""></p>
+<p>增加两项：</p>
+<p>PROVISIONING_PROFILE_ALLOWED = NO</p>
+<p>PROVISIONING_PROFILE_REQUIRED = NO</p>
+<p>效果如下图所示：</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354092279.png" alt=""></p>
+<p>然后将所有”XCiPhoneOSCodeSignContext”替换为”XCCodeSignContext”。</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354096772.png" alt=""></p>
+<p>3.修改好配置文件后重启xcode，修改项目的属性</p>
+<p>1）点击  项目图标，找到”Build Settings”  找到  “Code Sign Identity”</p>
+<p>按照下面得方式设置一下就可以 了。</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354108442.png" alt=""></p>
+<p>2） 设置工程属性：</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354105476.png" alt=""></p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354119413.png" alt=""></p>
+<p>3）然后点击  “Run” 我们会看到工程正在编译，然后弹出如图提示（两次）：我们选择 “总是允许”</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354111398.png" alt=""></p>
+<p>4）在项目中添加一个Entitlement.plist文件，设置允许调试。</p>
+<p>注：若不操作该步可能连接真机调试的时候还会出现一个错误：Error launching remote program: failed to get the task for process xxx</p>
+<p>操作步骤：在Xcode4.X  中这样做：</p>
+<p>a.在工程中按照这个执行创建一个名为：Entitlement.plist 文件In the File Menu, select New File -&gt; iPhone OS -&gt; Code Signing -&gt; Entitlements. Name the file “Entitlements.plist” and click ‘Finish’.</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354113067.png" alt=""></p>
+<p>b.打开  这个  “Entitlement.plist”文件，将 “Can be debugged”属性值改为 “YES”。</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354122544.png" alt=""></p>
+<p>c.将Code Signing Entitlements 那项得值改为刚刚新建得”Entitlements.plist”.</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354126513.png" alt=""></p>
+<p>4。提示选择完后：可以看到</p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/liubiqu/201110/201110261354122086.png" alt=""></p>
+<p>我们就可以看到 程序可以出现在 你得iphone上了。</p>
+<p>当你运行程序时，可以通过 organizer 看到你得iphone 运行时打印出来得Log。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-10-29T22:44:57.000Z"><a href="/2012/10/30/e8-87-aa-e7-94-b1-e6-a2-a6/">2012-10-30</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/30/e8-87-aa-e7-94-b1-e6-a2-a6/">自由梦</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>夜的微光里有着无限的迷茫</p>
+<p> 萤火虫在黑暗里漫无目的的舞动着</p>
+<p> 即使恶魔也无法掩饰</p>
+<p> 那来自自己眼中的两束绿光</p>
+<p> 绝望的人们感到了暗夜里滋生着希望</p>
+<p> 封存的太久了</p>
+<p> 光明将厚厚的壁障膨胀</p>
+<p> 纵然是铁壁铜墙</p>
+<p> 那供魔鬼进出的门也会在开合时</p>
+<p> 仍然有光亮的泄出</p>
+<p> 整个世界颠倒了</p>
+<p> 在恐惧颤栗中</p>
+<p> 人们忍受着寒冷、寂寞、惊悚</p>
+<p> 时刻让神经紧张着</p>
+<p> 肉体上的痛苦是不安情绪的释放</p>
+<p> 精神上的折磨如同在炼狱中生活</p>
+<p> 内心的阴冷让更多的人</p>
+<p> 化作了为虎作伥的厉鬼</p>
+<p> 他们比魔鬼更让人刻骨铭心的恐惧</p>
+<p> 魔鬼锁起了光明</p>
+<p> 光明带走了自由</p>
+<p> 恶魔们活动在阳光下</p>
+<p> 体面的装扮让他们看上去更象人类</p>
+<p> 道貌岸然里过着人一样的生活</p>
+<p> 它们时刻担心着光明的泄露</p>
+<p> 睡觉时都睁着一只圆眼</p>
+<p> 他们害怕所有的人</p>
+<p> 更让他们害怕的是来自同类中的枭雄</p>
+<p> 只有魔鬼才可以轻意的制服魔鬼</p>
+<p> 活着的钟馗让鬼们害怕</p>
+<p> 死去的钟馗才是鬼们真正的克星</p>
+<p> 觉醒的过程需要经历一段漫长的艰辛</p>
+<p> 摸索着前进会有更多的鲜血</p>
+<p> 将这牢狱般的生活浸泡</p>
+<p> 房顶不破   墙壁不坏</p>
+<p> 鲜血也会让这牢狱的地面下沉</p>
+<p> 最后将这黑暗之屋葬送</p>
+<p> 殉难者中挺起的是</p>
+<p> 一个个追寻着光明脖颈</p>
+<p> 那些来自魔鬼阵营中的魔鬼们的鲜血</p>
+<p> 与抗争者们是一样的殷红</p>
+<p> 也是同样汇成浸塌这屋子的一份力量</p>
+<p> 没有不倒塌的房子</p>
+<p> 只有倒塌了再重建起来</p>
+<p> 灾难中的人们在麻木中缓慢地觉醒着</p>
+<p> 当光明降临时的喜悦还没有平静</p>
+<p> 新的房子又在人们的诧异中重新建了起来</p>
+<p> 不要相信别人会给你带来什么</p>
+<p> 号召你起来推翻魔鬼的</p>
+<p> 更多的时候也是魔鬼</p>
+<p> 魔鬼和基督的区别就是</p>
+<p> 基督把自己送上了祭坛</p>
+<p> 而魔鬼是鼓惑别人为他上祭坛</p>
+<p> 善良的人们啊</p>
+<p> 总是被利用</p>
+<p> 光明迟迟地难以等到</p>
+<p> 总是在一出现就被遮盖</p>
+<p> 人们生活在被欺骗中</p>
+<p> 沉默中不再相信任何的许诺</p>
+<p> 冷眼注视着一出出闹剧的表演</p>
+<p> 华丽中无法掩饰丑陋与拙劣</p>
+<p> 等待着技穷之后将骷髅现出</p>
+<p> 无声的抗议将深藏着的愤怒堆积</p>
+<p> 暴发时化作震动天地的怒吼</p>
+<p> 在这声音里</p>
+<p> 无论这黑屋是如何的坚固</p>
+<p> 爆碎声中还世界一个朗朗乾坤</p>
+<p> 光明会将自由带来</p>
+<p> 世界因魔鬼再无法变回魔鬼</p>
+<p> 迎来期盼已久的梦想</p>
+<p> 长久的等待   长久的等待</p>
+<p> 等来的是真实的自由</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-10-29T21:50:00.000Z"><a href="/2012/10/30/e8-ae-a4-e8-af-86html5-e7-9a-84websocket/">2012-10-30</a></time>
       
       
@@ -469,161 +702,6 @@ public class HomeActivity extends Activity {
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-10-25T22:49:54.000Z"><a href="/2012/10/26/e8-bd-ac-e7-a8-8b-e5-ba-8f-e5-91-98-e5-8a-a0-e6-b2-b9-e7-ab-99-ef-bc-8c-e4-b8-8d-e6-98-af-e4-ba-ba-e4-ba-ba-e9-83-bd-e6-87-82-e7-9a-84-e5-ad-a6-e4-b9-a0-e8-a6-81-e7-82-b9/">2012-10-26</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/10/26/e8-bd-ac-e7-a8-8b-e5-ba-8f-e5-91-98-e5-8a-a0-e6-b2-b9-e7-ab-99-ef-bc-8c-e4-b8-8d-e6-98-af-e4-ba-ba-e4-ba-ba-e9-83-bd-e6-87-82-e7-9a-84-e5-ad-a6-e4-b9-a0-e8-a6-81-e7-82-b9/">[转]程序员加油站，不是人人都懂的学习要点</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p><span style="color: #888888;">学习是一种基础性的能力。然而，“吾生也有涯，而知也无涯。”，如果学习不注意方法，则会“以有涯随无涯，殆矣”。</span></p>
-<p><span style="color: #888888;"><br>一.学习也是一种能力</span><br><span style="color: #888888;"> 看到这个标题，有人会说：“学习，谁不会?”的确，学习就像吃饭睡觉一样，是人的一种本能，人人都有学习的能力。我们在刚出生的时候，什么也不知道，是一张真正的白纸，我们靠学习的本能，学会了走路、说话、穿衣服…后来，我们上学了，老师把书本上的知识一点一点灌输到我们的脑子里，我们掌握的知识越来越多，与此同时，我们学习能力却好像越来越差了，习惯了被别人喂饱，似乎忘记了怎么来喂自己了。</span><br><span style="color: #888888;"> 学习本来只是一种本能，算不上什么能力，然而，经过二十多年的不断学习，学习反而成为了一种真正的能力，因为我们慢慢失去了它，它就更显得珍贵。</span><br><span style="color: #888888;"> 在学校里我们基本上被动式学习，然而走出了象牙塔之后，不会再有人对你负责，不会有人主动教你，我们需要主动的学习。所谓的学习能力，其实就是自主学习的能力。</span><br><span style="color: #888888;"> 几年前，曾有一本风靡管理界的书，叫《第五项修炼》，这本书倡导建立学习型组织，因为从长远来看，一个组织唯一可持续的竞争优秀，就是比竞争对手更快更好的学习能力。</span><br><span style="color: #888888;"> 一个公司如此，一个人又何尝不是如此?众所周知现在是一个知识爆炸的时候代，知识更新非常快。据说，一个大学毕业生所学习到的知识，在毕业之后的2年内，有效的不过剩下5%，更何况我们的学校与社会需要严重脱轨。我们赖以立足的，不在于我们现在掌握了多少知识，而是我们有多强的学习能力!</span><br><span style="color: #888888;"> 学习不但是一种能力，而且是一种至关重要的能力，而这种能力的核心，就是学习的方法和心态。</span></p>
-<p><span style="color: #888888;">　　二.买书是最划算的投资</span><br><span style="color: #888888;"> 古人云：“书中自有黄金屋，书中自的颜如玉。”这说明先贤们早就认识到，买书是最划算的投资了。</span><br><span style="color: #888888;"> 当我刚出道的时候，拿着非常微薄的工资，有一次我向主管抱怨道：“现在的书真贵啊，这点工资连饭都吃不起，更别说买书了!”主管对我说：“不要吝惜买书的钱，宁可忍着不吃饭，也不要忍着不买书，因为买书是回报率的最高的投资了。”</span><br><span style="color: #888888;"> 主管的话让我非常震动。后来，我看到喜欢的书时，再有没有手软过。我不断的学习，开发能力也不断的提高，工资水平也获得了大幅度的提高。一年后，我一个月工资的涨幅，就足够买两年的书了。你说，还有比这更划算的投资吗?</span><br><span style="color: #888888;"> 一本书，哪怕只有一页纸是有用的，它将所产生的潜在价值，也会远远超过书本身的价格。当然，书不在多，能踏踏实实消化掉一本好书，可能比泛泛而读10本普通书，要更有价值得多。</span></p>
-<p><span style="color: #888888;"><strong>　　三.多读经典书</strong></span><br><span style="color: #888888;"> 十年前，我刚进入IT行业的时候，真是求知渴，每星期都要往购书中心跑，可惜的是，那时给程序员看的书不像现在这么多，高质量的书就更少了。当时我印象中比较经典的书籍就是《Windows程序设计》、《COM本质论》、《Java编程思想》，还有就是谭浩强的《C语言程序设计》。其它充斥书架的，就是类似于《21天精通XXX》、《XXX从入门到精通》、《XX宝典》这样的书籍。</span><br><span style="color: #888888;"> 回首往昔，令我比较郁闷的一件事就是在我最有学习动力的时候，看的高质量的书籍太少，就好像是在长身体的时候，天天吃的是没营养的泡面。当然，这跟没有人指导也有很大的关系，独自一个人学习，让我走了很多的弯路。</span><br><span style="color: #888888;"> 软件开发方面的书籍，我大致将其分为三类：</span></p>
-<p><span style="color: #888888;">(1)浅显的入门类书籍。</span><br><span style="color: #888888;"> 这类书的标题往往是《XX天精通XXX》、《XXX从入门到精通》、《XX开发实战》等，这类书往往从软件的安装讲起，喜欢翻译帮助文件。有人批评这类书为烂书、毫无价值，这并不公平。至少我本人，也曾从这些书中学到一些东西。即使是21天系列书，也有适合看的人群，只不过，它一般也就只能看21天而已，过后就可以扔到垃圾堆。这类书只适于还没有入门的初学者，从中学到一些入门的招式。这种书在刚起步的时候一般买上一本就可以了。如果你善于使用搜索引擎，这一本书也可以省了。</span></p>
-<p><span style="color: #888888;">(2)国内外高手写的实战类书籍。</span><br><span style="color: #888888;"> 这类书实战性很强，把技术及原理讲得很透彻。比如《windows环境下32位汇编语言程序设计》、《深入解析MFC》、《Delphi深度探索》、《深入浅出WPF》、《深入剖析Asp.net组件设计》等。以前这类书都是从国外翻译或从台湾引进，现在国内高手越来越多，出自国内作者的也越来越多。这类书如果在你学习的每个方向看个两三本，并且通过实践消化掉，那么毫无疑问，你会成为一个优秀的程序员。</span></p>
-<p><span style="color: #888888;">(3)国外大牛写的、揭露本质、有丰富思想的书。</span><br><span style="color: #888888;"> 这类书就是所谓的经典书了，例如《代码大全》、《编程珠玑》、《设计模式》、《重构》、《代码整洁之道》等。经典书就像一个有深度、有思想的朋友，他会给你启发、每次阅读都会有新的收获，这类书具有真正的收藏价值。看经典书永远是正确的选择，它绝不会浪费你的时间，因为经典书是无数人沙里淘金、帮你挑选过的结果。</span><br><span style="color: #888888;"> 然而，阅读这类书并不是一件容易的事情，读者需要有丰富的开发经验，才能与作者产生共鸣。真正能消化经典书的人其实不多，这就好像饮酒，一个新手无论如何也品不出葡萄美酒的醇香。在酒桌上，人人都把杯中酒一饮而尽，当有人点评“这个酒不错”的时候，我只能无奈的苦笑一番，真的是甘苦自知。</span><br><span style="color: #888888;"> 如果一本经典书你看得很辛苦，很有可能就是因为你功力未够，这种情况下不要着急，慢点来，不妨先将其先束之高阁，多看看第二类实战型书籍，过一段时间再回头来看，也许你会有新的惊喜。</span></p>
-<p><span style="color: #888888;"><strong>　　四.不要在上班时间看书</strong></span><br><span style="color: #888888;"> 一个善于学习的人，首先要善于利用一切时间来学习。不知是伟大的雷锋叔叔还是鲁迅爷爷曾经说过：“时间就像海绵里的水，只要愿挤，总还是有的。”然而，当我们从上班时间中挤时间学习时，就千万要注意了，不要在上班时间看书!</span><br><span style="color: #888888;"> 上班时间看书不但是一件很敏感的事情，而且非常吸引眼球，很快就会引起周遭的不爽。首先老板心里不爽，他想：“我给你钱是让你来工作的，不是来学习的!”;其次同事们也不爽：“我们工作都做不完，瞧，这小子真闲哪!”用不了多久，你就会成为被众人排斥的异类。</span><br><span style="color: #888888;"> 当然，你可能会说，“我工作已经做完了，经理没有安排，当然可以学习了”，其实不然。你完成了一件事情，不等于所有的事情都完成了。一个优秀的员工，应该是主动要工作，而不是被动的等工作。工作完成以后，你至少还可以：</span></p>
-<p><span style="color: #888888;">　(1)主动汇报给你的经理，请他来检查你的成果，并安排新的任务;</span><br><span style="color: #888888;"> 　　(2)如果公司这一段时间确实比较闲，没有什么具体的任务，可以进行代码重构、优化;</span><br><span style="color: #888888;"> 　　(3)你还可以主动请缨，承担额外的工作或更艰巨的任务。</span><br><span style="color: #888888;"> 　　(4)如果一定要学习，也只能对着电脑屏幕来学习，纸质书最多只能拿来翻阅一下，而不能一直捧着，以免影响到其他人的情绪。</span></p>
-<p><span style="color: #888888;"><strong>　　五、只学习与工作相关的东西</strong></span><br><span style="color: #888888;"> 我曾发现不少程序员在学习方面找不到方向，一会学学C#，一会学学Java，看了最新的编程语言排行榜，又觉得该学C++。这样左抓抓，右挠挠，只会让你觉得更痒。</span><br><span style="color: #888888;"> 学习最忌三心二意。俗话说：“伤其十指不如断其一指”，每门都学一点，还不如专心学好一个方向。这个道理谁都懂，可是又该学哪个方向呢?难道只能跟着感觉走吗?</span><br><span style="color: #888888;"> 不!最实际的方向，应该跟着工作走，工作需要什么，我们就学什么，把工作需要的技能熟练掌握。我们为什么要学习和工作弱相关的东西呢?是为了转行或跳槽吗?可是，如果我们连现在本职工作都不能做好，又怎么能保证到新的岗位、用新学的技能就可以做得更好呢?</span><br><span style="color: #888888;"> 学习与工作需要的的东西，有很多好处：</span></p>
-<p><span style="color: #888888;">首先，可以集中精力，在某一方面钻研得更加深入。所谓“百招会不如一招绝”，有了绝招，你还怕不能在“武林”立足吗?《天龙八部》中的慕容复武功博学无比，最后还不是被只会一招六脉神剑的段誉打得落花流水?</span></p>
-<p><span style="color: #888888;">其次，可以学得更快、更深入，因为学习更具有针对性，而且可以立即在工作中运用，可以马上检验出学习的效果，对存在的问题可以进行深入的研究，因此掌握的知识也会更加的牢固。</span></p>
-<p><span style="color: #888888;">第三，学习与工作结合在一起，工作时间也就成了学习时间，这样突破了三个8小的限制。有人说，我们每天所有拥有的时间可以分为三个8小时，工作8小时，睡觉8小时，另外还有8小时自己可以自由支配的时间。工作和睡觉的两个8小时大家都一样，决定人生高度的是另外这个8小时。当我们把学习的焦点放到与工作相关的知识上时，工作时间中的很大一部分，同时也就成了宝贵的学习时间，这真是一举两得的美事啊。</span></p>
-<p><span style="color: #888888;"><strong>　　六.织网式的学习</strong></span><br><span style="color: #888888;"> 知识的广度和深度都很重要。作为一个程序员，深入把握技术细节，是写出优质代码的保证。但对于一个项目经理而言，知识的广度更显重要。项目中碰到的问题往往是综合性的，只有具有广博的知识，才能快速的对问题进行分析和定位。在程序员通往项目经理的道路上，我们必须有意识的扩大自己的知识面，形成更完善的知识体系。</span><br><span style="color: #888888;"> 每个人的知识体系就好比是一张网，我们学习其实就是要织这样一张网。 我曾看过渔网的编织过程，渔网虽大，也是一个结点起步，一个点一个点的编出来的，编织的过程中，始终只有一根主线。</span><br><span style="color: #888888;"> 学习又何尝不是这样，知识体系的大网也是由许多小的结点组成，要结这样一张网，只能由一个点起步。牵住一条主线，织出一个个的点，由点带出面，最后才能形成这张大网。</span><br><span style="color: #888888;"> 我曾经编写过一个网络信息采集软件，这个软件可以从具有列表页网站中按字段设置采集信息，支持自定义字段、页面多级关联、下载附件、支持多种数据库、可视化定义等特性。刚开始时，觉得这个软件也是一个比较大的功能点而已，后来发现这个不起眼的功能关联着大量的知识点，在开发过程中， 我顺藤摸瓜，各个击破，对很多知识点进行了细致的学习研究，软件开发完成后，个人的知识体系网也进一步得到了补充和完善。</span></p>
-<p><span style="color: #888888;"><img src="http://blog.jobbole.com/wp-content/uploads/2012/10/programmer-to-manager-01.png" alt=""></span></p>
-<p><div align="center"><span style="color: #888888;">　图1 由知识点形成知识网</span></div><br><span style="color: #888888;"><strong>　　七.问题是最好的学习机会</strong></span><br><span style="color: #888888;"> 日本经营之神松下幸之助曾经说过：“工作就是不断发现问题、分析问题、最终解决问题的一个过程，晋升之门将永远为那些随时解决问题的人敞开着。”可见，工作过程中有问题是正常，没有问题那才是真正的问题。在发生问题能时，能勇于面对问题、解决问题的人，才是公司真正的核心骨干。</span><br><span style="color: #888888;"> 现实中，很多人总是千方百计回避问题，当上司安排一项艰巨的任务时，也是想尽办法推托。殊不知，对于个人而言，其实问题是最好的学习机会。往往那些愿意接受困难工作的人，能力会变得越来越强，那就是因为他们在克服困难的过程中取得了巨大的进步。</span><br><span style="color: #888888;"> 有一次，一位项目经理对我说：“有一个问题，客户有一台HP服务器要装磁盘阵列，没人会做，怎么办啊?”“可以学啊，没有人愿意去吗?”“我都问了，没人想去。”“哦，正好明天我有时间，我也没装过磁盘阵列，那我明天去学着弄一下。”我说的是真心话。第二天早上，当我准备出发时，项目经理告诉我不用我去了，因为项目组好几个同事都想去“学着弄一下”。</span><br><span style="color: #888888;"> 结果服务器很快就装好了，远远没有之前大家想像的那么困难嘛。更重要的是，在解决这个问题的过程中，大家都学会了怎么装磁盘阵列。</span><br><span style="color: #888888;"> 碰到困难时，迎难而上吧，千万不要拒绝这个最好的学习机会!</span></p>
-<p><span style="color: #888888;"><br><strong>　　八.经常思考总结</strong></span><br><span style="color: #888888;"> 子曰：“学而不思则罔”。只学习不思考，就会迷惑，难以把握事情的本质。这就好比一个学武之人，只习得其形，而未得其神，难以成为真正的高手。</span><br><span style="color: #888888;"> 一个程序员从入门，到成为高手的过程中，往往要经过几次顿悟。顿悟会让你跳出知识的丛林，一切豁然开朗，仿佛打通了全身的奇经八脉一般奇妙。记得我有一次，顿悟到了一个很简单的结论：“原来高级编程语言中的类库是封装了Windows API来实现的。”后来碰到一些自带类库无法实现的功能时，我就会想到，其实可以通过调用Windows API来实现。利用这个思路，我解决了一些看起来很难的问题，得到老板的赏识，从而很快获得提升。</span><br><span style="color: #888888;"> 顿悟非常可贵，然而它不是随便发生的，而是经过一次次苦苦思索之后、灵光闪现的结果。思考的过程，其实就是将外在的知识内化为自己的知识的过程，而顿悟，则是批量的实现这种内化，将无数个知识点连接在一起，达到融会贯通的境界。</span></p>
-<p><span style="color: #888888;"><strong>　　九、克服“高原现象”</strong></span><br><span style="color: #888888;"> 爱学习的人都会有这样的经历，学习持续了一段时间之后，往往会有一个瓶颈期，长时间似乎很久没有什么进步，于是内心非常着急。</span><br><span style="color: #888888;"> 这种情况实际上这是由人的学习规律决定的一种“高原现象”。据研究，学习者在刚开始进步快，随后有一个明显的或长或短的进步停顿期，后期进步慢，中间的停顿期叫高原期。</span></p>
-<p><span style="color: #888888;"><img src="http://blog.jobbole.com/wp-content/uploads/2012/10/programmer-to-manager-02.png" alt=""></span></p>
-<p><div align="center"><span style="color: #888888;">图2 技能学习练习曲线</span></div><br><span style="color: #888888;">在我看来，高原期实质是一个消化期，由于前期的学习积累了太多的知识点，这些知识点在大脑中乱作一团，还没有形成一个知识体系。这时需要一定的时间来消化它，将它融会贯通，经常思考总结可以快速帮你跨过高原期。</span><br><span style="color: #888888;"> 在处于高原期的时候，还可以换一个相关的方向来学习，例如编程语言学不下去了，你可以学习一下设计模式，设计模式也学不下去了，再换成数据库。通过学习这些相关的知识，不但补齐了知识体系中的短板，而且各个知识点之间可以互相启发，帮助你实现顿悟，跨过高原期。</span></p>
-<p><span style="color: #888888;"><strong>　　十、学习要有好心态</strong></span></p>
-<p><span style="color: #888888;">(1)学习要静心</span><br><span style="color: #888888;"> 急于求成是学习过程中普遍存在的一种心态。这可以理解，毕竟作为一个程序员，要学的东西实在太多了，而社会又是那样的浮躁，让人觉得一切都是那样的不安全、不确定，似乎只有学得快一点，才能跟上社会的脚步。</span><br><span style="color: #888888;"> 可是“欲速则不达”，想快快的学，往往会形成东一榔头、西一棒槌的学习方式，每一个点都没有吃透。心沉不下去，知识也会沉不下去。要想成为真正的高手，只能静下心来，一步一个脚印的攀登。</span></p>
-<p><span style="color: #888888;">(2)学习是一个持续一生的过程</span><br><span style="color: #888888;"> 人生的过程，就是一个自我完善过程。</span><br><span style="color: #888888;"> 孔子曾经说：“吾十有五而志于学，三十而立，四十而不惑，五十而知天命，六十而耳顺，七十而从心所欲，不逾矩。”可见孔子也不是天生的圣人，也在不停的学习、进步，从“志于学”到最后“从心所欲，不逾矩”，孔子一共花了55年的时间。</span><br><span style="color: #888888;"> 作为一个程序员，更是需要不断更新自己的知识。我们所知道的东西，就像一个白色的圆圈，圈外则是黑暗的未知的世界。当圆圈越大，所接触到的黑暗部分就越多。我们只有不停的学习，打破更多的黑暗，找到更多光明。</span></p>
-<p><span style="color: #888888;">(3)保持饥饿，保持愚蠢</span><br><span style="color: #888888;"> 看了《乔布斯传》之后，我最喜欢的一句话是“求知若饥，虚心若愚”(Stay Hungry,Stay Foolish)，其实我更喜欢它更原生态的翻译“保持饥饿，保持愚蠢”。我们只有认识到自己还很饥饿和愚蠢，才会像没吃饱一样，由衷的需要学习、爱上学习。</span><br><span style="color: #888888;"> 当然，知易行难，知行合一才是学习的最高境界。我也始终是一个学习者，一直在路上。</span></p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-10-24T06:46:33.000Z"><a href="/2012/10/24/opencore-e4-bb-8b-e7-bb-8d/">2012-10-24</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/10/24/opencore-e4-bb-8b-e7-bb-8d/">OpenCore介绍</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h2 id="一、OpenCore简介">一、OpenCore简介</h2><div>        OpenCore是Android的多媒体核心，采用C++实现，定义了全功能的操作系统移植层（OSCL），各种基本的功能均被封装成类的形式，各层次之间的接口多使用继承等方式。</div><br><div>        从宏观上来看，它主要包含了两大方面的内容：</div>
-
-<ol>
-<li>PVPlayer：提供媒体播放器的功能，完成各种音频(Audio)、视频(Video)流的回放(Playback)功能。</li>
-<li>PVAuthor：提供媒体流记录的功能，完成各种音频(Audio)、视频(Video)流的以及静态图像捕获功能 。</li>
-</ol>
-<h2 id="二、OpenCore在Android系统中的位置"><a name="t1"></a>二、OpenCore在Android系统中的位置</h2><div>        首先来一张抽象一点的图（如下）：</div><br><div><img src="http://hi.csdn.net/attachment/201105/12/0_1305170388xxRX.gif" alt=""></div><br><div>        从上图我们可以感觉到OpenCore封装了一些接口给应用程序。具体是什么呢？下面以音频/视频播放器为例，看看具体的过程：</div><br><div><img src="http://hi.csdn.net/attachment/201105/12/0_130517039657HT.gif" alt=""></div><br><div><br><div>         其中，</div>
-
-<ol>
-<li><ol>
-<li><strong>VideoView.java </strong>是一个media集成的高层的JAVA类，这个类的文件在/frameworks/base/core/java/android/widget/。它集成了MediaPlayer和SurfaceView的类，可以作为一个UI元素（View）直接放在界面中，用于视频的播放。</li>
-<li><strong>MediaPlayer.java和MediaRecorder.java</strong> 为基本的处理音频数据的Java类，它里面直接调用很多本地接口。</li>
-<li><strong>android_media_MediaPlayer.cpp</strong> 和<strong>android_media_MediaRecorder.cpp</strong> 封装了相应的JNI接口。</li>
-</ol>
-</li>
-</ol>
-<h2 id="三、多媒体播放的过程"><a name="t2"></a>三、多媒体播放的过程</h2><div>        视频文件（流）播放过程就像一个状态机。图形如下，其中椭圆形代表MediaPlayer类的状态；线代表状态变化，由源状态指向目标状态，它旁边标注有状态变化的条件，其中单箭头的线表示同步（synchronous）方法调用，双箭头表示异步（asynchronous）方法调用。</div><br></div><br><div><img src="http://hi.csdn.net/attachment/201105/12/0_1305170406yTWF.gif" alt=""></div><br><div><br><div>这幅状态运行图显示了视频播放时的各种状态之间的切换方法，除此之外，为了方便用户处理，在一些状态下，系统会调用回调函数，只要用户提前注册好相应的回调函数即可。</div><br><div><br><table border="1"><br><tbody><br><tr><br><td>状态</td><br><td>回调函数</td><br><td>注册方法</td><br></tr><br><tr><br><td>Error</td><br><td>OnErrorListener.onError()</td><br><td>setOnErrorListener(android.media.MediaPlayer.OnErrorListener)</td><br></tr><br><tr><br><td>Prepared</td><br><td>OnPreparedListener.onPrepared()</td><br><td>setOnPreparedListener(android.media.MediaPlayer.OnPreparedListener)</td><br></tr><br><tr><br><td>Started</td><br><td>OnBufferingUpdateListener.onBufferingUpdate()</td><br><td>setOnBufferingUpdateListener(OnBufferingUpdateListener)</td><br></tr><br><tr><br><td>使用seekTo(int)后</td><br><td>OnSeekComplete.onSeekComplete()</td><br><td>setOnSeekCompleteListener(OnSeekCompleteListener)</td><br></tr><br><tr><br><td>PlaybackCompleted</td><br><td>OnCompletionListener.onCompletion()</td><br><td>setOnCompletionListener(OnCompletionListener)</td><br></tr><br></tbody><br></table><br></div><br><div></div>
-
-<h2 id="四、OpenCore内部的重要概念"><a name="t3"></a>四、OpenCore内部的重要概念</h2><div>　　<strong>OSCL</strong> ：Operating System Compatibility Library (操作系统兼容库)，包含了一些操作系统底层的操作，为了更好地在不同操作系统移植。包含了基本数据类型、配置、字符串工具、IO、错误处理、线程等内容，类似一个基础的C++库。<br><strong>PVMF</strong> ：PacketVideo Multimedia Framework(PV多媒体框架)，在框架内实现一个<strong>文件解析(parser)</strong> 和<strong>组成(composer)</strong> 、<strong>编解码</strong> 的<strong>NODE</strong> ，也可以继承其通用的接口，在用户层实现一些NODE。</div><br><div></div>
-
-<h2 id="五、OpenCore的内部调度过程"><a name="t4"></a>五、OpenCore的内部调度过程</h2><div>        PlayerDriver创建后进入<strong>OSCL</strong> 线程来处理消息，<strong>engine</strong> 创建完各个<strong>node</strong> 节点并将其连接起来，剩下的就是node间的通讯问题，各node状态变化会触发oscl对其下一次调度，参与到oscl调度中的模块都必须提供一个<strong>Run函数</strong> ，oscl会去call这个函数。</div><br><div>        内部流程图如下：</div><br></div><br><div><img src="http://hi.csdn.net/attachment/201105/12/0_130517041266CP.gif" alt=""></div><br><div><br><div>       文件的播放过程如下：</div>
-
-<ol>
-<li><ol>
-<li>判断源文件的格式，根据文件格式创建对应的文件解析节点ParseNode：  PVPlayerRecognizerRegistry负责文件格式识别，并将结果返回给PVPlayerEngine；</li>
-<li>通过文件解析节点（ParseNode）来完成音视频文件格式的解析，并将文件中的音频、视频数据送到对应的解码节点进行解码；</li>
-<li>解码节点（DecNode）通过调用底层的<strong>opencoreMAX </strong>通用接口实现媒体数据的解码；对于一个普通的视频文件，存在2个解码节点：<strong>音频解码节点</strong> 和<strong>视频解码节点</strong> ；</li>
-</ol>
-</li>
-</ol>
-<h2 id="六、解码的内部流程："><a name="t5"></a>六、解码的内部流程：</h2><div>        参考OpenMax 的相关介绍。</div><br><div></div>
-
-<h2 id="七、Android上的视频输出方案"><a name="t6"></a>七、Android上的视频输出方案</h2><div>        为了使opencore的视频播放支持Android系统，谷歌定义了两套视频输出方案，一种是由硬件 厂商实现硬件加速的视频输出（ <strong>libopencorehw.so</strong> ），硬件视频输出里面可以调用硬件Overlay模块对输出的视频数据进行硬件混叠，这样输出效率会非常的高；另外一种为谷歌定义的软视频输出，该软视频输出定义为<strong>AndroidSurfaceOutput</strong> 类，这种方案中系统会调用SurfaceFilnger对输出视频数据进行混叠，该混叠为软件混叠，执行效率比较低。</div><br><div></div>
-
-<h2 id="八、OpenCore的测试方式"><a name="t7"></a>八、OpenCore的测试方式</h2><div>参考《Build OpenCORE 2.05 on x86 Linux .PDF》和《pvplayer_engine_unit_test_guide.pdf》</div><br></div>
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-10-23T23:55:22.000Z"><a href="/2012/10/24/oauth-e6-9c-8d-e5-8a-a1-e7-ab-af-e5-bc-80-e5-8f-91/">2012-10-24</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2012/10/24/oauth-e6-9c-8d-e5-8a-a1-e7-ab-af-e5-bc-80-e5-8f-91/">oauth服务端开发</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>使用开源实现，比如 spring-security-oauth 项目，或者apache Amber 等等。</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -655,7 +733,7 @@ public class HomeActivity extends Activity {
   
     <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>10</small></li>
   
-    <li><a href="/categories/android开发/">android开发</a><small>51</small></li>
+    <li><a href="/categories/android开发/">android开发</a><small>54</small></li>
   
     <li><a href="/categories/git/">git</a><small>3</small></li>
   
@@ -698,7 +776,7 @@ public class HomeActivity extends Activity {
   
     <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
   
-    <li><a href="/tags/android/">android</a><small>2</small></li>
+    <li><a href="/tags/android/">android</a><small>5</small></li>
   
     <li><a href="/tags/android动画/">android动画</a><small>1</small></li>
   
