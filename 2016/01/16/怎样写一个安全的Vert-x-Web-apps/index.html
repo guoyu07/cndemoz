@@ -1,86 +1,354 @@
-<!DOCTYPE HTML>
-<html>
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
   
-  <title>怎样写一个安全的Vert.x Web apps | 全科-不安分的码农</title>
-  <meta name="author" content="全科">
   
-  <meta name="description" content="欢迎关注http://quanke.name/
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Vert.x3,Vertx," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="全科-不安分的码农" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="欢迎关注http://quanke.name/
 交流群：231419585
 转载请注明出处，谢谢
 
 此文只是对vert.x Web应用程序的入门指导（大神请绕道）。 这绝不是对Web应用程序安全性的全面指导，如OWASP。 标准规则和惯例适用于vert.x应用程序。
-不要用root身份运行DEVOP">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+不要用root身份运行DEVOPS团队成员会经常说，只给必要的运行权限，不要多给。有些新手试图以root用户在80或443端口下运行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="怎样写一个安全的Vert.x Web apps">
+<meta property="og:url" content="http://quanke.name/2016/01/16/怎样写一个安全的Vert-x-Web-apps/index.html">
+<meta property="og:site_name" content="全科-不安分的码农">
+<meta property="og:description" content="欢迎关注http://quanke.name/
+交流群：231419585
+转载请注明出处，谢谢
 
-  <meta property="og:title" content="怎样写一个安全的Vert.x Web apps"/>
-  <meta property="og:site_name" content="全科-不安分的码农"/>
+此文只是对vert.x Web应用程序的入门指导（大神请绕道）。 这绝不是对Web应用程序安全性的全面指导，如OWASP。 标准规则和惯例适用于vert.x应用程序。
+不要用root身份运行DEVOPS团队成员会经常说，只给必要的运行权限，不要多给。有些新手试图以root用户在80或443端口下运行">
+<meta property="og:image" content="http://vertx.io/assets/blog/vertx3-secure-webapps/nocookie.png">
+<meta property="og:updated_time" content="2016-07-22T14:44:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="怎样写一个安全的Vert.x Web apps">
+<meta name="twitter:description" content="欢迎关注http://quanke.name/
+交流群：231419585
+转载请注明出处，谢谢
 
-  
-    <meta property="og:image" content="undefined"/>
-  
+此文只是对vert.x Web应用程序的入门指导（大神请绕道）。 这绝不是对Web应用程序安全性的全面指导，如OWASP。 标准规则和惯例适用于vert.x应用程序。
+不要用root身份运行DEVOPS团队成员会经常说，只给必要的运行权限，不要多给。有些新手试图以root用户在80或443端口下运行">
 
-  <link href="/favicon.png" rel="icon">
-  <link rel="alternate" href="true" title="全科-不安分的码农" type="application/atom+xml">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  
 
-  
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 421249,
+      author: '全科'
+    }
+  };
 </script>
 
+
+
+
+  <link rel="canonical" href="http://quanke.name/2016/01/16/怎样写一个安全的Vert-x-Web-apps/"/>
+
+  <title> 怎样写一个安全的Vert.x Web apps | 全科-不安分的码农 </title>
 </head>
 
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
-<body>
-  <header id="header" class="inner"><div class="alignleft">
-  <h1><a href="/">全科-不安分的码农</a></h1>
-  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">全科-不安分的码农</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</p>
 </div>
-<nav id="main-nav" class="alignright">
-  <ul>
-    
-      <li><a href="/">Home</a></li>
-    
-      <li><a href="/archives">Archives</a></li>
-    
-      <li><a href="/app">Opus</a></li>
-    
-      <li><a href="/open-source">Open Source</a></li>
-    
-      <li><a href="/todo">TODO</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
-</nav>
-<div class="clearfix"></div></header>
-  <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-01-16T08:36:32.000Z"><a href="/2016/01/16/怎样写一个安全的Vert-x-Web-apps/">2016-01-16</a></time>
-      
-      
-  
-    <h1 class="title">怎样写一个安全的Vert.x Web apps</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
   
 
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
     </header>
-    <div class="entry">
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                怎样写一个安全的Vert.x Web apps
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-01-16T16:36:32+08:00" content="2016-01-16">
+              2016-01-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Vert-x3-系列/" itemprop="url" rel="index">
+                    <span itemprop="name">Vert.x3 系列</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/16/怎样写一个安全的Vert-x-Web-apps/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/16/怎样写一个安全的Vert-x-Web-apps/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
       
         <ul>
 <li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
@@ -89,31 +357,31 @@ var _hmt = _hmt || [];
 </ul>
 <p>此文只是对vert.x Web应用程序的入门指导（大神请绕道）。 这绝不是对Web应用程序安全性的全面指导，如<a href="https://www.owasp.org" target="_blank" rel="external">OWASP</a>。 标准规则和惯例适用于vert.x应用程序。</p>
 <h3 id="不要用root身份运行">不要用root身份运行</h3><p>DEVOPS团队成员会经常说，只给必要的运行权限，不要多给。有些新手试图以root用户在80或443端口下运行，虽然这样简单，但也为坏蛋打开一扇门。 让我们看看下面的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class App extends AbstractVerticle &#123;&#10;  @Override&#10;  public void start() &#123;&#10;&#10;    Router router = Router.router(vertx);&#10;&#10;    router.route().handler(StaticHandler.create(&#34;&#34;));&#10;&#10;    vertx.createHttpServer().requestHandler(router::accept).listen(80);&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#10;public class App extends AbstractVerticle &#123;&#10;  @Override&#10;  public void start() &#123;&#10;&#10;    Router router = Router.router(vertx);&#10;&#10;    router.route().handler(StaticHandler.create(&#34;&#34;));&#10;&#10;    vertx.createHttpServer().requestHandler(router::accept).listen(80);&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
 <p>当与开始<code>CWD</code>设置为<code>/</code> (<code>java -Dvertx.cwd=/ ...</code>)你就创建了一个简单的文件服务器，给所有服务器存储。 现在，假设你要启动这个程序，会打印如下错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Aug 26, 2015 2:02:18 PM io.vertx.core.http.impl.HttpServerImpl&#10;SEVERE: java.net.SocketException: Permission denied</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Aug 26, 2015 2:02:18 PM io.vertx.core.http.impl.HttpServerImpl&#10;SEVERE: java.net.SocketException: Permission denied</span><br></pre></td></tr></table></figure>
 <p>如果你现在使用<code>root</code>运行的，浏览器输入<code>http://localhost/etc/shadow</code>，恭喜你，你的服务器<code>logins</code> 和 <code>passwords</code> 暴露了 ！</p>
 <p>有几种方法，可以root用户运行，使用<code>iptables</code>请求转发到更高的端口，使用<code>authbind</code>，配置代理服务器<code>ngnix</code>等…</p>
 <h3 id="Sessions">Sessions</h3><p>许多应用程序要处理在某些时候用户会话。</p>
 <p>会话<code>Cookie</code>应该有<code>SECURE</code>和<code>HTTPOnly</code>设置的标志，只发送<code>HTTPS</code>（在使用<code>HTTPS</code>？），也没有脚本访问<code>cookie</code>的客户端：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Router router = Router.router(vertx);&#10;&#10;    router.route().handler(CookieHandler.create());&#10;    router.route().handler(SessionHandler&#10;        .create(LocalSessionStore.create(vertx))&#10;        .setCookieHttpOnlyFlag(true)&#10;        .setCookieSecureFlag(true)&#10;    );&#10;&#10;    router.route().handler(routingContext -&#62; &#123;&#10;&#10;      Session session = routingContext.session();&#10;&#10;      Integer cnt = session.get(&#34;hitcount&#34;);&#10;      cnt = (cnt == null ? 0 : cnt) + 1;&#10;&#10;      session.put(&#34;hitcount&#34;, cnt);&#10;&#10;      routingContext.response().end(&#34;Hitcount: &#34; + cnt);&#10;    &#125;);&#10;&#10;    vertx.createHttpServer().requestHandler(router::accept).listen(8080);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Router router = Router.router(vertx);&#10;&#10;    router.route().handler(CookieHandler.create());&#10;    router.route().handler(SessionHandler&#10;        .create(LocalSessionStore.create(vertx))&#10;        .setCookieHttpOnlyFlag(true)&#10;        .setCookieSecureFlag(true)&#10;    );&#10;&#10;    router.route().handler(routingContext -&#62; &#123;&#10;&#10;      Session session = routingContext.session();&#10;&#10;      Integer cnt = session.get(&#34;hitcount&#34;);&#10;      cnt = (cnt == null ? 0 : cnt) + 1;&#10;&#10;      session.put(&#34;hitcount&#34;, cnt);&#10;&#10;      routingContext.response().end(&#34;Hitcount: &#34; + cnt);&#10;    &#125;);&#10;&#10;    vertx.createHttpServer().requestHandler(router::accept).listen(8080);</span><br></pre></td></tr></table></figure>
 <p>在这种情况下，检查浏览器，应该看到：</p>
 <p><img src="http://vertx.io/assets/blog/vertx3-secure-webapps/nocookie.png" alt="image"></p>
 <p>你的浏览器的脚本有读取的能力，可以嗅探劫持或篡改您的会话。</p>
 <h3 id="Security_Headers">Security Headers</h3><p>有很多的安全<code>headers</code>有助于提高安全性，只需几行代码。 没有必要在这里解释，因为网上有很好的文章说的做得可能会比我更好。</p>
 <p>怎么实现：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class App extends AbstractVerticle &#123;&#10;&#10;  @Override&#10;  public void start() &#123;&#10;&#10;    Router router = Router.router(vertx);&#10;    router.route().handler(ctx -&#62; &#123;&#10;      ctx.response()&#10;          // do not allow proxies to cache the data&#10;          .putHeader(&#34;Cache-Control&#34;, &#34;no-store, no-cache&#34;)&#10;          // prevents Internet Explorer from MIME - sniffing a&#10;          // response away from the declared content-type&#10;          .putHeader(&#34;X-Content-Type-Options&#34;, &#34;nosniff&#34;)&#10;          // Strict HTTPS (for about ~6Months)&#10;          .putHeader(&#34;Strict-Transport-Security&#34;, &#34;max-age=&#34; + 15768000)&#10;          // IE8+ do not allow opening of attachments in the context of this resource&#10;          .putHeader(&#34;X-Download-Options&#34;, &#34;noopen&#34;)&#10;          // enable XSS for IE&#10;          .putHeader(&#34;X-XSS-Protection&#34;, &#34;1; mode=block&#34;)&#10;          // deny frames&#10;          .putHeader(&#34;X-FRAME-OPTIONS&#34;, &#34;DENY&#34;);&#10;    &#125;);&#10;&#10;    vertx.createHttpServer().requestHandler(router::accept).listen(8080);&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class App extends AbstractVerticle &#123;&#10;&#10;  @Override&#10;  public void start() &#123;&#10;&#10;    Router router = Router.router(vertx);&#10;    router.route().handler(ctx -&#62; &#123;&#10;      ctx.response()&#10;          // do not allow proxies to cache the data&#10;          .putHeader(&#34;Cache-Control&#34;, &#34;no-store, no-cache&#34;)&#10;          // prevents Internet Explorer from MIME - sniffing a&#10;          // response away from the declared content-type&#10;          .putHeader(&#34;X-Content-Type-Options&#34;, &#34;nosniff&#34;)&#10;          // Strict HTTPS (for about ~6Months)&#10;          .putHeader(&#34;Strict-Transport-Security&#34;, &#34;max-age=&#34; + 15768000)&#10;          // IE8+ do not allow opening of attachments in the context of this resource&#10;          .putHeader(&#34;X-Download-Options&#34;, &#34;noopen&#34;)&#10;          // enable XSS for IE&#10;          .putHeader(&#34;X-XSS-Protection&#34;, &#34;1; mode=block&#34;)&#10;          // deny frames&#10;          .putHeader(&#34;X-FRAME-OPTIONS&#34;, &#34;DENY&#34;);&#10;    &#125;);&#10;&#10;    vertx.createHttpServer().requestHandler(router::accept).listen(8080);&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="保护跨站请求伪造（CSRF）">保护跨站请求伪造（CSRF）</h3><p><code>Vert.x web</code>在<code>handler</code>里提供了<code>CSRF</code>保护。下面代码增加CSRF保护：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class App extends AbstractVerticle &#123;&#10;&#10;  @Override&#10;  public void start() &#123;&#10;&#10;    Router router = Router.router(vertx);&#10;&#10;    router.route().handler(CookieHandler.create());&#10;    router.route().handler(SessionHandler&#10;        .create(LocalSessionStore.create(vertx))&#10;        .setCookieHttpOnlyFlag(true)&#10;        .setCookieSecureFlag(true)&#10;    );&#10;    router.route().handler(CSRFHandler.create(&#34;not a good secret&#34;));&#10;&#10;    router.route().handler(ctx -&#62; &#123;&#10;      ...&#10;    &#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class App extends AbstractVerticle &#123;&#10;&#10;  @Override&#10;  public void start() &#123;&#10;&#10;    Router router = Router.router(vertx);&#10;&#10;    router.route().handler(CookieHandler.create());&#10;    router.route().handler(SessionHandler&#10;        .create(LocalSessionStore.create(vertx))&#10;        .setCookieHttpOnlyFlag(true)&#10;        .setCookieSecureFlag(true)&#10;    );&#10;    router.route().handler(CSRFHandler.create(&#34;not a good secret&#34;));&#10;&#10;    router.route().handler(ctx -&#62; &#123;&#10;      ...&#10;    &#125;);</span><br></pre></td></tr></table></figure>
 <p>该处理器(handler)增加了一个CSRF令牌(token)。 为了改变<code>cookie</code>（XSRF-TOKEN），设置了一个独一无二的<code>token</code>，即预计返回一个（X-XSRF-TOKEN）header。</p>
 <h3 id="限制上传">限制上传</h3><p>上传处理一定要定义一个上限，否则你会很容易受到DDoS攻击。 例如，看看下面的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class App extends AbstractVerticle &#123;&#10;&#10;  @Override&#10;  public void start() &#123;&#10;&#10;    Router router = Router.router(vertx);&#10;&#10;    router.route().handler(BodyHandler.create());&#10;&#10;    router.route().handler(ctx -&#62; &#123;&#10;      ...</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class App extends AbstractVerticle &#123;&#10;&#10;  @Override&#10;  public void start() &#123;&#10;&#10;    Router router = Router.router(vertx);&#10;&#10;    router.route().handler(BodyHandler.create());&#10;&#10;    router.route().handler(ctx -&#62; &#123;&#10;      ...</span><br></pre></td></tr></table></figure>
 <p>现在，“好心人”可以随机生成一个1GB的垃圾文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd if=/dev/urandom of=ddos bs=1G count=1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dd if=/dev/urandom of=ddos bs=1G count=1</span><br></pre></td></tr></table></figure>
 <p>然后把它上传到你的服务器：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --data-binary &#34;@ddos&#34; -H &#34;Content-Type: application/octet-stream&#34; -X POST http://localhost:8080/</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl --data-binary &#34;@ddos&#34; -H &#34;Content-Type: application/octet-stream&#34; -X POST http://localhost:8080/</span><br></pre></td></tr></table></figure>
 <p>您的应用程序将愉快地处理，上面两步不断重复，它会耗尽磁盘空间或内存。 为了减轻这些类型的攻击，始终指定的最大允许上传的大小：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class App extends AbstractVerticle &#123;&#10;&#10;  private static final int KB = 1024;&#10;  private static final int MB = 1024 * KB;&#10;&#10;  @Override&#10;  public void start() &#123;&#10;&#10;    Router router = Router.router(vertx);&#10;    router.route().handler(BodyHandler.create().setBodyLimit(50 * MB));</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class App extends AbstractVerticle &#123;&#10;&#10;  private static final int KB = 1024;&#10;  private static final int MB = 1024 * KB;&#10;&#10;  @Override&#10;  public void start() &#123;&#10;&#10;    Router router = Router.router(vertx);&#10;    router.route().handler(BodyHandler.create().setBodyLimit(50 * MB));</span><br></pre></td></tr></table></figure>
 <h3 id="最后">最后</h3><p>虽然只有几点，也应该记住。</p>
 <p>当程序要用于生产，你还要注意更多：</p>
 <ul>
@@ -124,165 +392,339 @@ var _hmt = _hmt || [];
 
       
     </div>
-    <footer>
+
+    <div>
       
         
-  
-  <div class="categories">
-    <a href="/categories/Vert-x3-系列/">Vert.x3 系列</a>
-  </div>
-
-        
-  
-  <div class="tags">
-    <a href="/tags/Vert-x3/">Vert.x3</a>, <a href="/tags/Vertx/">Vertx</a>
-  </div>
-
-        
-<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
-<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 
       
-      <div class="clearfix"></div>
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Vert-x3/" rel="tag">#Vert.x3</a>
+          
+            <a href="/tags/Vertx/" rel="tag">#Vertx</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/16/LiveOak-系列不再更新/" rel="next" title="LiveOak 系列不再更新">
+                <i class="fa fa-chevron-left"></i> LiveOak 系列不再更新
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/01/16/Vert-x-通过异步的方式使用JDBC连接SQL/" rel="prev" title="Vert.x 通过异步的方式使用JDBC连接SQL">
+                Vert.x 通过异步的方式使用JDBC连接SQL <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
     </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
-</article>
 
 
-<section id="comment">
-  <h1 class="title">留言</h1>
-
-<!-- 多说评论框 start -->
-  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
-<!-- 多说评论框 end -->
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"quanke"};
-  (function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0] 
-     || document.getElementsByTagName('body')[0]).appendChild(ds);
-  })();
-  </script>
-<!-- 多说公共JS代码 end -->
+          </div>
+          
 
 
-</section>
-
-</div></div>
-    <aside id="sidebar" class="alignright">
-  <div class="search">
-  <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="搜索">
-    <input type="hidden" name="q" value="site:quanke.name">
-  </form>
-</div>
-
-  
-<div class="widget tag">
-  <h3 class="title">分类</h3>
-  <ul class="entry">
-  
-    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
-  
-    <li><a href="/categories/Java/">Java</a><small>1</small></li>
-  
-    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
-  
-    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>10</small></li>
-  
-    <li><a href="/categories/android开发/">android开发</a><small>54</small></li>
-  
-    <li><a href="/categories/git/">git</a><small>3</small></li>
-  
-    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
-  
-    <li><a href="/categories/使用/">使用</a><small>4</small></li>
-  
-    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
-  
-    <li><a href="/categories/设计模式/">设计模式</a><small>1</small></li>
-  
-    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
-  
-    <li><a href="/categories/随笔/">随笔</a><small>12</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tag">
-  <h3 class="title">标签</h3>
-  <ul class="entry">
-  
-    <li><a href="/tags/JAVA/">JAVA</a><small>1</small></li>
-  
-    <li><a href="/tags/Java/">Java</a><small>1</small></li>
-  
-    <li><a href="/tags/Java-编程思想/">Java 编程思想</a><small>1</small></li>
-  
-    <li><a href="/tags/LiveOak/">LiveOak</a><small>3</small></li>
-  
-    <li><a href="/tags/MBaaS/">MBaaS</a><small>4</small></li>
-  
-    <li><a href="/tags/Vert-x-Core手册-for-Java/">Vert.x Core手册 for Java</a><small>1</small></li>
-  
-    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>10</small></li>
-  
-    <li><a href="/tags/Vertx/">Vertx</a><small>10</small></li>
-  
-    <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
-  
-    <li><a href="/tags/android/">android</a><small>5</small></li>
-  
-    <li><a href="/tags/android动画/">android动画</a><small>1</small></li>
-  
-    <li><a href="/tags/gitbook/">gitbook</a><small>1</small></li>
-  
-    <li><a href="/tags/ios/">ios</a><small>1</small></li>
-  
-    <li><a href="/tags/开源/">开源</a><small>1</small></li>
-  
-    <li><a href="/tags/总结/">总结</a><small>1</small></li>
-  
-    <li><a href="/tags/注意/">注意</a><small>1</small></li>
-  
-    <li><a href="/tags/职业规划/">职业规划</a><small>1</small></li>
-  
-    <li><a href="/tags/设计模式/">设计模式</a><small>1</small></li>
-  
-    <li><a href="/tags/资料/">资料</a><small>2</small></li>
-  
-  </ul>
-</div>
-
-</aside>
-    <div class="clearfix"></div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/01/16/怎样写一个安全的Vert-x-Web-apps/"
+           data-title="怎样写一个安全的Vert.x Web apps" data-url="http://quanke.name/2016/01/16/怎样写一个安全的Vert-x-Web-apps/">
+      </div>
+    
   </div>
-  <footer id="footer" class="inner"><div class="alignleft">
+
+
+        </div>
+        
+          
   
-  &copy; 2016 全科
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="全科" />
+          <p class="site-author-name" itemprop="name">全科</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/quanke" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#不要用root身份运行"><span class="nav-number">1.</span> <span class="nav-text">不要用root身份运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sessions"><span class="nav-number">2.</span> <span class="nav-text">Sessions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Security_Headers"><span class="nav-number">3.</span> <span class="nav-text">Security Headers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#保护跨站请求伪造（CSRF）"><span class="nav-number">4.</span> <span class="nav-text">保护跨站请求伪造（CSRF）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#限制上传"><span class="nav-number">5.</span> <span class="nav-text">限制上传</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-number">6.</span> <span class="nav-text">最后</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
   
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">全科</span>
 </div>
-<div class="clearfix"></div></footer>
-  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
 
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
 
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
 
+        
 
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
 <script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
 </script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"quanke"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
 
 </body>
 </html>

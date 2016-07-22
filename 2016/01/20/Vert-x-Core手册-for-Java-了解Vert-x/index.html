@@ -1,12 +1,92 @@
-<!DOCTYPE HTML>
-<html>
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
   
-  <title>[Vert.x Core手册 for Java]-了解Vert.x | 全科-不安分的码农</title>
-  <meta name="author" content="全科">
   
-  <meta name="description" content="欢迎关注http://quanke.name/
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Vert.x Core手册 for Java,Vert.x3,Vertx," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="全科-不安分的码农" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="欢迎关注http://quanke.name/
 交流群：231419585
 转载请注明出处，谢谢
 
@@ -16,76 +96,285 @@ Vert.x Core提供的功能：
 编写TCP客户端和服务器
 编写 HTTP 客户端和服务器包括 Websocket 支持
 事件总线(Event bus)
-共享的数据-本地的m">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+共享的数据-本地的map和分布式的map
+定时和延时运行
+部署和非部署 Verticles
+Sockets
+DNS 客户">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Vert.x Core手册 for Java]-了解Vert.x">
+<meta property="og:url" content="http://quanke.name/2016/01/20/Vert-x-Core手册-for-Java-了解Vert-x/index.html">
+<meta property="og:site_name" content="全科-不安分的码农">
+<meta property="og:description" content="欢迎关注http://quanke.name/
+交流群：231419585
+转载请注明出处，谢谢
 
-  <meta property="og:title" content="[Vert.x Core手册 for Java]-了解Vert.x"/>
-  <meta property="og:site_name" content="全科-不安分的码农"/>
+源码在github上
+Vert.x Core提供的功能：
 
-  
-    <meta property="og:image" content="undefined"/>
-  
+编写TCP客户端和服务器
+编写 HTTP 客户端和服务器包括 Websocket 支持
+事件总线(Event bus)
+共享的数据-本地的map和分布式的map
+定时和延时运行
+部署和非部署 Verticles
+Sockets
+DNS 客户">
+<meta property="og:updated_time" content="2016-01-20T12:46:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Vert.x Core手册 for Java]-了解Vert.x">
+<meta name="twitter:description" content="欢迎关注http://quanke.name/
+交流群：231419585
+转载请注明出处，谢谢
 
-  <link href="/favicon.png" rel="icon">
-  <link rel="alternate" href="true" title="全科-不安分的码农" type="application/atom+xml">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  
+源码在github上
+Vert.x Core提供的功能：
 
-  
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
+编写TCP客户端和服务器
+编写 HTTP 客户端和服务器包括 Websocket 支持
+事件总线(Event bus)
+共享的数据-本地的map和分布式的map
+定时和延时运行
+部署和非部署 Verticles
+Sockets
+DNS 客户">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 421249,
+      author: '全科'
+    }
+  };
 </script>
 
+
+
+
+  <link rel="canonical" href="http://quanke.name/2016/01/20/Vert-x-Core手册-for-Java-了解Vert-x/"/>
+
+  <title> [Vert.x Core手册 for Java]-了解Vert.x | 全科-不安分的码农 </title>
 </head>
 
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
-<body>
-  <header id="header" class="inner"><div class="alignleft">
-  <h1><a href="/">全科-不安分的码农</a></h1>
-  <h2><a href="/">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</a></h2>
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?853906ed403c461b2dbf1df696bdf998";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">全科-不安分的码农</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">android，ios，html5，微服务架构，XP，scrum，项目管理（PMP）</p>
 </div>
-<nav id="main-nav" class="alignright">
-  <ul>
-    
-      <li><a href="/">Home</a></li>
-    
-      <li><a href="/archives">Archives</a></li>
-    
-      <li><a href="/app">Opus</a></li>
-    
-      <li><a href="/open-source">Open Source</a></li>
-    
-      <li><a href="/todo">TODO</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
-</nav>
-<div class="clearfix"></div></header>
-  <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-01-20T12:39:49.000Z"><a href="/2016/01/20/Vert-x-Core手册-for-Java-了解Vert-x/">2016-01-20</a></time>
-      
-      
-  
-    <h1 class="title">[Vert.x Core手册 for Java]-了解Vert.x</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
   
 
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
     </header>
-    <div class="entry">
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                [Vert.x Core手册 for Java]-了解Vert.x
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-01-20T20:39:49+08:00" content="2016-01-20">
+              2016-01-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Vert-x3-系列/" itemprop="url" rel="index">
+                    <span itemprop="name">Vert.x3 系列</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/20/Vert-x-Core手册-for-Java-了解Vert-x/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/20/Vert-x-Core手册-for-Java-了解Vert-x/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
       
         <ul>
 <li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
@@ -115,31 +404,31 @@ var _hmt = _hmt || [];
 <ul>
 <li>Maven (在你的pom.xml中):</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;dependency&#62;&#10;  &#60;groupId&#62;io.vertx&#60;/groupId&#62;&#10;  &#60;artifactId&#62;vertx-core&#60;/artifactId&#62;&#10;  &#60;version&#62;3.2.0&#60;/version&#62;&#10;&#60;/dependency&#62;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#60;dependency&#62;&#10;  &#60;groupId&#62;io.vertx&#60;/groupId&#62;&#10;  &#60;artifactId&#62;vertx-core&#60;/artifactId&#62;&#10;  &#60;version&#62;3.2.0&#60;/version&#62;&#10;&#60;/dependency&#62;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>Gradle (在您的build.gradle文件):</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compile io.vertx:vertx-core:3.2.0</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">compile io.vertx:vertx-core:3.2.0</span><br></pre></td></tr></table></figure>
 <p>下面让我们来讨论 <code>core</code> 的不同概念和功能。</p>
 <h3 id="从Vert-x开始">从Vert.x开始</h3><p><em>注意：这大部分是Java特有的-需要语言特有的调用方法</em></p>
 <p>如果没有获得<a href="http://vertx.io/docs/apidocs/io/vertx/core/Vertx.html" target="_blank" rel="external">Vertx</a>对象，Vert.x做不了什么。</p>
 <p>Vertx对象是 Vert.x 的控制中心，几乎可以做所有事，包括创建客户端和服务器，获取引用到事件总线（event bus）、 设置计时器等。</p>
 <p>所以怎么获得Vertx实例?</p>
 <p>如果已经嵌入了 Vert.x，然后只需创建一个实例，如下所示:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Vertx vertx = Vertx.vertx();</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Vertx vertx = Vertx.vertx();</span><br></pre></td></tr></table></figure>
 <p>如果使用 Verticles</p>
 <p><em>注意:大多数应用程序只需要一个单一的 Vert.x 实例，但如果你需要，可以创建多个 Vert.x 实例，例如，事件总线或不同的服务器和客户端之间的隔离。</em></p>
 <h4 id="创建一个指定选项的Vertx_对象">创建一个指定选项的Vertx 对象</h4><p>创建一个 Vertx 对象时，如果默认值不是正确的选择，你还可以指定选项:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Vertx vertx = Vertx.vertx(new VertxOptions().setWorkerPoolSize(40));</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Vertx vertx = Vertx.vertx(new VertxOptions().setWorkerPoolSize(40));</span><br></pre></td></tr></table></figure>
 <p><a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html" target="_blank" rel="external">VertxOptions</a>对象有许多设置，可以配置集群、 高可用性、 池的大小等。所有设置细节在Javadoc 中有描述。</p>
 <h4 id="创建群集_Vert-x_对象">创建群集 Vert.x 对象</h4><p>如果您正在创建clustered（群集） Vert.x (更多集群相关的请参阅事件总线（ event bus）)，然后通常会使用异步方式创建 Vertx 对象。</p>
 <p>这是因为不同的 Vert.x 实例在群集中组合在一起，通常需要一些时间 (也许几秒钟) 的。在这段时间，我们不想阻止调用线程，所以我们把结果以异步方式给你。</p>
 <h3 id="你是傻瓜吗?">你是傻瓜吗?</h3><p>你可能注意到，在前面使用fluent API（fluent API：流API，更易使用的API，也称傻瓜式API）的例子。</p>
 <p>fluent API 是支持链式调用的。例如:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request.response().putHeader(&#34;Content-Type&#34;, &#34;text/plain&#34;).write(&#34;some text&#34;).end();</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">request.response().putHeader(&#34;Content-Type&#34;, &#34;text/plain&#34;).write(&#34;some text&#34;).end();</span><br></pre></td></tr></table></figure>
 <p>整个 Vert.x Api都是这种模式，，所以要去适应它。</p>
 <p>可以链式编写代码，当然你也可以按自己的喜欢，写上这样的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HttpServerResponse response = request.response();&#10;response.putHeader(&#34;Content-Type&#34;, &#34;text/plain&#34;);&#10;response.write(&#34;some text&#34;);&#10;response.end();</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">HttpServerResponse response = request.response();&#10;response.putHeader(&#34;Content-Type&#34;, &#34;text/plain&#34;);&#10;response.write(&#34;some text&#34;);&#10;response.end();</span><br></pre></td></tr></table></figure>
 <h3 id="不要call（调用、打电话）我们，我们会call给你。">不要call（调用、打电话）我们，我们会call给你。</h3><p>Vert.x Api 是很大程度上由事件驱动的。这意味着，当事情发生在你感兴趣的Vert.x，Vert.x 会通过回调方式向您发送events。</p>
 <p>一些示例events:</p>
 <ul>
@@ -150,9 +439,9 @@ var _hmt = _hmt || [];
 <li>HTTP 服务器收到请求</li>
 </ul>
 <p>通过向 Vert.x Api 提供处理程序来处理事件。例如要接收一个计时器事件每一秒你会做:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vertx.setPeriodic(1000, id -&#62; &#123;&#10;  // This handler will get called every second&#10;  System.out.println(&#34;timer fired!&#34;);&#10;&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vertx.setPeriodic(1000, id -&#62; &#123;&#10;  // This handler will get called every second&#10;  System.out.println(&#34;timer fired!&#34;);&#10;&#125;);</span><br></pre></td></tr></table></figure>
 <p>或接收到 HTTP 请求:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server.requestHandler(request -&#62; &#123;&#10;  // This handler will be called every time an HTTP request is received at the server&#10;  request.response().end(&#34;hello world!&#34;);&#10;&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server.requestHandler(request -&#62; &#123;&#10;  // This handler will be called every time an HTTP request is received at the server&#10;  request.response().end(&#34;hello world!&#34;);&#10;&#125;);</span><br></pre></td></tr></table></figure>
 <p>一段时间后当 Vert.x 有一个事件，它将传递到您的处理程序 Vert.x 将它异步调用.</p>
 <p>这将引导我们进入Vert.x 中的一些重要概念:</p>
 <h3 id="不要阻塞我!">不要阻塞我!</h3><p>除了极少数例外 (一些文件系统操作的“同步”结束)，没有一个 Vert.x Api 阻塞调用线程。</p>
@@ -198,7 +487,7 @@ var _hmt = _hmt || [];
 <p>如果你有一个单一的事件循环，并且你想要处理每秒 10000 的 http 请求，然后很明显，每个请求不能超过 0.1 ms 要处理，所以你不能阻塞比这更多的时间。</p>
 <p><strong>这道数学题并不是困难，作为练习留给读者。</strong></p>
 <p>如果您的应用程序不响应，可能你阻塞的事件循环的地方。为了帮助您诊断此类问题，如果它检测到一段时间后事件循环还没有恢复，Vert.x会自动记录警告。如果你在日志中看到这样的警告，那么你就应该去检查应用。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Thread vertx-eventloop-thread-3 has been blocked for 20458 ms</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Thread vertx-eventloop-thread-3 has been blocked for 20458 ms</span><br></pre></td></tr></table></figure>
 <p>Vert.x 还将提供<code>堆栈跟踪</code>来确定阻塞发生的位置。</p>
 <p>如果你想关闭这些警告或更改设置，你可以在创建Vertx对象之前，使用<a href="http://vertx.io/docs/apidocs/io/vertx/core/VertxOptions.html" target="_blank" rel="external">VertxOptions</a>配置。</p>
 <h3 id="运行阻塞代码">运行阻塞代码</h3><p>在完美的世界，将没有战争或饥饿，所有 Api 将使用异步写，阳光明媚，绿色的草地有跳来跳去的兔子和手牵手的小羊羔。</p>
@@ -208,7 +497,7 @@ var _hmt = _hmt || [];
 <p>如前所述，直接在事件循环里调用阻塞操作，会妨碍它做任何其他有用的工作。所以你怎么能这样呢?</p>
 <p>它是通过调用<code>executeBlocking</code>指定要执行的阻塞的代码和在执行阻塞的代码时调用返回异步结果处理程序。</p>
 <p>通过调用<code>executeblocking</code>，执行阻塞代码，当阻塞代码执行完成后通过异步回调的方式返回</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vertx.executeBlocking(future -&#62; &#123;&#10;  // Call some blocking API that takes a significant amount of time to return&#10;  String result = someAPI.blockingMethod(&#34;hello&#34;);&#10;  future.complete(result);&#10;&#125;, res -&#62; &#123;&#10;  System.out.println(&#34;The result is: &#34; + res.result());&#10;&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vertx.executeBlocking(future -&#62; &#123;&#10;  // Call some blocking API that takes a significant amount of time to return&#10;  String result = someAPI.blockingMethod(&#34;hello&#34;);&#10;  future.complete(result);&#10;&#125;, res -&#62; &#123;&#10;  System.out.println(&#34;The result is: &#34; + res.result());&#10;&#125;);</span><br></pre></td></tr></table></figure>
 <p>默认情况下，如果 <code>executeBlocking</code> 从相同的上下文 (例如同一垂直实例) 调用几次不同的 executeBlocking 则以串行方式执行 (即一个接一个)。</p>
 <p>默认情况下，如果<code>executeBlocking</code>在同一环境（例如同一个verticle实例）多次调用，那么不同的<code>executeBlocking</code>将串行执行（即一个接一个）。</p>
 <p>如果不关系执行顺序，调用<code>executeBlocking</code>时可以制定<code>ordered</code>参数为<code>false</code>。在这种情况下 <code>executeBlocking</code> 会与worker pool并行执行。</p>
@@ -218,165 +507,341 @@ var _hmt = _hmt || [];
 
       
     </div>
-    <footer>
+
+    <div>
       
         
-  
-  <div class="categories">
-    <a href="/categories/Vert-x3-系列/">Vert.x3 系列</a>
-  </div>
-
-        
-  
-  <div class="tags">
-    <a href="/tags/Vert-x-Core手册-for-Java/">Vert.x Core手册 for Java</a>, <a href="/tags/Vert-x3/">Vert.x3</a>, <a href="/tags/Vertx/">Vertx</a>
-  </div>
-
-        
-<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
-<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 
       
-      <div class="clearfix"></div>
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Vert-x-Core手册-for-Java/" rel="tag">#Vert.x Core手册 for Java</a>
+          
+            <a href="/tags/Vert-x3/" rel="tag">#Vert.x3</a>
+          
+            <a href="/tags/Vertx/" rel="tag">#Vertx</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/16/Vert-x-通过异步的方式使用JDBC连接SQL/" rel="next" title="Vert.x 通过异步的方式使用JDBC连接SQL">
+                <i class="fa fa-chevron-left"></i> Vert.x 通过异步的方式使用JDBC连接SQL
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/04/Vert-x配置项VertxOptions的使用/" rel="prev" title="Vert-x配置项VertxOptions的使用">
+                Vert-x配置项VertxOptions的使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
     </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
-</article>
 
 
-<section id="comment">
-  <h1 class="title">留言</h1>
-
-<!-- 多说评论框 start -->
-  <div class="ds-thread" data-thread-key="" data-title="" data-url=""></div>
-<!-- 多说评论框 end -->
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"quanke"};
-  (function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0] 
-     || document.getElementsByTagName('body')[0]).appendChild(ds);
-  })();
-  </script>
-<!-- 多说公共JS代码 end -->
+          </div>
+          
 
 
-</section>
-
-</div></div>
-    <aside id="sidebar" class="alignright">
-  <div class="search">
-  <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="搜索">
-    <input type="hidden" name="q" value="site:quanke.name">
-  </form>
-</div>
-
-  
-<div class="widget tag">
-  <h3 class="title">分类</h3>
-  <ul class="entry">
-  
-    <li><a href="/categories/Go语言/">Go语言</a><small>4</small></li>
-  
-    <li><a href="/categories/Java/">Java</a><small>1</small></li>
-  
-    <li><a href="/categories/MBaaS-LiveOak系列/">MBaaS-LiveOak系列</a><small>4</small></li>
-  
-    <li><a href="/categories/Vert-x3-系列/">Vert.x3 系列</a><small>10</small></li>
-  
-    <li><a href="/categories/android开发/">android开发</a><small>54</small></li>
-  
-    <li><a href="/categories/git/">git</a><small>3</small></li>
-  
-    <li><a href="/categories/ios开发/">ios开发</a><small>3</small></li>
-  
-    <li><a href="/categories/使用/">使用</a><small>4</small></li>
-  
-    <li><a href="/categories/服务端开发/">服务端开发</a><small>9</small></li>
-  
-    <li><a href="/categories/设计模式/">设计模式</a><small>1</small></li>
-  
-    <li><a href="/categories/软件工程/">软件工程</a><small>1</small></li>
-  
-    <li><a href="/categories/随笔/">随笔</a><small>12</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tag">
-  <h3 class="title">标签</h3>
-  <ul class="entry">
-  
-    <li><a href="/tags/JAVA/">JAVA</a><small>1</small></li>
-  
-    <li><a href="/tags/Java/">Java</a><small>1</small></li>
-  
-    <li><a href="/tags/Java-编程思想/">Java 编程思想</a><small>1</small></li>
-  
-    <li><a href="/tags/LiveOak/">LiveOak</a><small>3</small></li>
-  
-    <li><a href="/tags/MBaaS/">MBaaS</a><small>4</small></li>
-  
-    <li><a href="/tags/Vert-x-Core手册-for-Java/">Vert.x Core手册 for Java</a><small>1</small></li>
-  
-    <li><a href="/tags/Vert-x3/">Vert.x3</a><small>10</small></li>
-  
-    <li><a href="/tags/Vertx/">Vertx</a><small>10</small></li>
-  
-    <li><a href="/tags/Windows10安装/">Windows10安装</a><small>1</small></li>
-  
-    <li><a href="/tags/android/">android</a><small>5</small></li>
-  
-    <li><a href="/tags/android动画/">android动画</a><small>1</small></li>
-  
-    <li><a href="/tags/gitbook/">gitbook</a><small>1</small></li>
-  
-    <li><a href="/tags/ios/">ios</a><small>1</small></li>
-  
-    <li><a href="/tags/开源/">开源</a><small>1</small></li>
-  
-    <li><a href="/tags/总结/">总结</a><small>1</small></li>
-  
-    <li><a href="/tags/注意/">注意</a><small>1</small></li>
-  
-    <li><a href="/tags/职业规划/">职业规划</a><small>1</small></li>
-  
-    <li><a href="/tags/设计模式/">设计模式</a><small>1</small></li>
-  
-    <li><a href="/tags/资料/">资料</a><small>2</small></li>
-  
-  </ul>
-</div>
-
-</aside>
-    <div class="clearfix"></div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/01/20/Vert-x-Core手册-for-Java-了解Vert-x/"
+           data-title="[Vert.x Core手册 for Java]-了解Vert.x" data-url="http://quanke.name/2016/01/20/Vert-x-Core手册-for-Java-了解Vert-x/">
+      </div>
+    
   </div>
-  <footer id="footer" class="inner"><div class="alignleft">
+
+
+        </div>
+        
+          
   
-  &copy; 2016 全科
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="全科" />
+          <p class="site-author-name" itemprop="name">全科</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/quanke" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#从Vert-x开始"><span class="nav-number">1.</span> <span class="nav-text">从Vert.x开始</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建一个指定选项的Vertx_对象"><span class="nav-number">1.1.</span> <span class="nav-text">创建一个指定选项的Vertx 对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建群集_Vert-x_对象"><span class="nav-number">1.2.</span> <span class="nav-text">创建群集 Vert.x 对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#你是傻瓜吗?"><span class="nav-number">2.</span> <span class="nav-text">你是傻瓜吗?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不要call（调用、打电话）我们，我们会call给你。"><span class="nav-number">3.</span> <span class="nav-text">不要call（调用、打电话）我们，我们会call给你。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不要阻塞我!"><span class="nav-number">4.</span> <span class="nav-text">不要阻塞我!</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reactor和多Reactor"><span class="nav-number">5.</span> <span class="nav-text">Reactor和多Reactor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#黄金法则_—_不要阻塞事件循环"><span class="nav-number">6.</span> <span class="nav-text">黄金法则 — 不要阻塞事件循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行阻塞代码"><span class="nav-number">7.</span> <span class="nav-text">运行阻塞代码</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
   
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">全科</span>
 </div>
-<div class="clearfix"></div></footer>
-  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
 
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
 
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
 
+        
 
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
 <script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
 </script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"quanke"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
 
 </body>
 </html>
