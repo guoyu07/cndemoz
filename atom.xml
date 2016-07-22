@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://quanke.name/"/>
-  <updated>2016-07-19T13:55:56.000Z</updated>
+  <updated>2016-07-22T16:15:47.000Z</updated>
   <id>http://quanke.name/</id>
   
   <author>
@@ -14,6 +14,47 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android Studio Service AIDL 详解</title>
+    <link href="http://quanke.name/2016/07/22/Android-Studio-Service-AIDL-%E8%AF%A6%E8%A7%A3/"/>
+    <id>http://quanke.name/2016/07/22/Android-Studio-Service-AIDL-详解/</id>
+    <published>2016-07-22T15:35:30.000Z</published>
+    <updated>2016-07-22T16:15:47.000Z</updated>
+    
+    <content type="html"><![CDATA[<ul>
+<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
+<li>转载请注明出处，谢谢</li>
+</ul>
+<p>公司产品之前IM这块存在很多问题，消息到达率低，加上协议上有些问题，都消息频繁，所以需要重构IM，AIDL不能解决以上问题。好吧！那AIDL可以解决什么问题？什么是AIDL？</p>
+<h3 id="什么是AIDL？">什么是AIDL？</h3><p><code>AIDL</code>是 <code>Android Interface definition language</code>的缩写，它是一种<code>Android</code>内部进程通信接口的描述语言，通过它我们可以定义进程间的通信接口</p>
+<h3 id="AIDL可以解决什么问题？">AIDL可以解决什么问题？</h3><ul>
+<li>可以实现多个应用程序共享同一个Service的功能，比如IM服务可以提供给多个APP使用，先在推送基本都是采取这种方案</li>
+<li>可以跨进程调用服务里的方法</li>
+</ul>
+<h3 id="Android_Studio_AIDL_实战">Android Studio AIDL 实战</h3><p>大部分文章介绍都是在eclipse下介绍的，现在 Android Studio 作为开发工具比较普及了，所以我在Android Studio 下介绍（其实区别不大）。</p>
+<p>言归正传，我们需要使用Android Studio实现一个远程Service，并且建立AIDL进行通信。</p>
+<h4 id="搭建了简单的Service框架">搭建了简单的Service框架</h4><h4 id="建立AIDL">建立AIDL</h4><h4 id="传递自定义的类型">传递自定义的类型</h4><blockquote>
+<p>AIDL 编译报can be an out parameter, so you must declare it as in, out or inout原因探究</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;ul&gt;
+&lt;li&gt;欢迎关注&lt;a href=&quot;http://quanke.name/&quot;&gt;http://quanke.name/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;转载请注明出处，谢谢&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;公司产品之前IM这块存在很多问题，消息到达率低，加上协议上有些问题，都消息频繁
+    
+    </summary>
+    
+      <category term="android开发" scheme="http://quanke.name/categories/android%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="android" scheme="http://quanke.name/tags/android/"/>
+    
+  </entry>
   
   <entry>
     <title>完美解决 Android 6 java.lang.AbstractMethodError</title>
@@ -1381,96 +1422,6 @@ Repository Settings</code> ，把这个设置成为刚才导到<code>github</cod
 &lt;li&gt;转载请注明出处，谢谢&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;在上篇
-    
-    </summary>
-    
-      <category term="Vert.x3 系列" scheme="http://quanke.name/categories/Vert-x3-%E7%B3%BB%E5%88%97/"/>
-    
-    
-      <category term="Vert.x3" scheme="http://quanke.name/tags/Vert-x3/"/>
-    
-      <category term="Vertx" scheme="http://quanke.name/tags/Vertx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>我的第一个Vert.x 3 应用</title>
-    <link href="http://quanke.name/2016/01/12/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAVert-x-3-%E5%BA%94%E7%94%A8/"/>
-    <id>http://quanke.name/2016/01/12/我的第一个Vert-x-3-应用/</id>
-    <published>2016-01-12T11:44:56.000Z</published>
-    <updated>2016-01-15T05:21:52.000Z</updated>
-    
-    <content type="html"><![CDATA[<ul>
-<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
-<li>交流群：<code>231419585</code></li>
-<li>转载请注明出处，谢谢</li>
-</ul>
-<p>如果，你听到有人说Vert.x 是牛逼的。非常好！但是你自己想要尝试的话，Ok great，那么下一个问题自然是“从哪里开始？”，这篇文章是一个很好的起点。文章展示了怎么构建一个非常简单的 vert.x 应用（这没什么大不了的），怎样测试和执行vert.x应用。</p>
-<p>文章里提到的代码在<a href="https://github.com/quanke/vertx3_study_demo/tree/master/my-vertx-first-app" target="_blank" rel="external">github</a> 。</p>
-<h3 id="开始">开始</h3><p>首先，创建一个项目，在这篇文章中使用<code>Apache Maven</code>,当然你可以使用<code>Gradle</code> 或者其他工具，使用<code>Maven jar archetype</code> 创建结构，但基本上只需要一个目录。</p>
-<ul>
-<li><code>src/main/java</code> 目录</li>
-<li><code>src/test/java</code> 目录</li>
-<li><code>pom.xml</code> 文件</li>
-</ul>
-<p>会得到一个像这样的结构</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#10;&#9500;&#9472;&#9472; pom.xml&#10;&#9500;&#9472;&#9472; src&#10;&#9474;   &#9500;&#9472;&#9472; main&#10;&#9474;   &#9474;   &#9492;&#9472;&#9472; java&#10;&#9474;   &#9492;&#9472;&#9472; test&#10;&#9474;       &#9492;&#9472;&#9472; java</span><br></pre></td></tr></table></figure>
-<p><code>pom.xml</code> 文件的内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#60;project xmlns=&#34;http://maven.apache.org/POM/4.0.0&#34;&#10;         xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34;&#10;         xsi:schemaLocation=&#34;http://maven.apache.org/POM/4.0.0&#10;                      http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;&#62;&#10;  &#60;modelVersion&#62;4.0.0&#60;/modelVersion&#62;&#10;  &#60;groupId&#62;name.quanke.study.vertx.first&#60;/groupId&#62;&#10;  &#60;artifactId&#62;my-first-app&#60;/artifactId&#62;&#10;  &#60;version&#62;1.0-SNAPSHOT&#60;/version&#62;&#10;&#10;  &#60;dependencies&#62;&#10;    &#60;dependency&#62;&#10;      &#60;groupId&#62;io.vertx&#60;/groupId&#62;&#10;      &#60;artifactId&#62;vertx-core&#60;/artifactId&#62;&#10;      &#60;version&#62;3.0.0&#60;/version&#62;&#10;    &#60;/dependency&#62;&#10;  &#60;/dependencies&#62;&#10;&#10;  &#60;build&#62;&#10;    &#60;plugins&#62;&#10;      &#60;plugin&#62;&#10;        &#60;artifactId&#62;maven-compiler-plugin&#60;/artifactId&#62;&#10;        &#60;version&#62;3.3&#60;/version&#62;&#10;        &#60;configuration&#62;&#10;          &#60;source&#62;1.8&#60;/source&#62;&#10;          &#60;target&#62;1.8&#60;/target&#62;&#10;        &#60;/configuration&#62;&#10;      &#60;/plugin&#62;&#10;    &#60;/plugins&#62;&#10;  &#60;/build&#62;&#10;&#10;&#60;/project&#62;</span><br></pre></td></tr></table></figure>
-<p>这个 pom.xml 文件非常简单：</p>
-<ul>
-<li>声明了一个 vertx-core 依赖</li>
-<li>配置了maven-compiler-plugin 插件（使用的是<code>Java 8</code>）.</li>
-</ul>
-<blockquote>
-<p>第二点非常重要，<code>Vert.x</code> 只支持<code>Java 8</code>。</p>
-</blockquote>
-<h3 id="编码！">编码！</h3><p>OK，我们已经创建了一个<code>pom.xml</code> 文件，接下来正式开始编码，创建 <code>src/main/java/name/quanke/study/vertx/first/MyFirstVerticle.java</code>文件，内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">package name.quanke.study.vertx.first;&#10;&#10;import io.vertx.core.AbstractVerticle;&#10;import io.vertx.core.Future;&#10;&#10;public class MyFirstVerticle extends AbstractVerticle &#123;&#10;&#10;  @Override&#10;  public void start(Future&#60;Void&#62; fut) &#123;&#10;    vertx&#10;        .createHttpServer()&#10;        .requestHandler(r -&#62; &#123;&#10;          r.response().end(&#34;&#60;h1&#62;Hello from my first &#34; +&#10;              &#34;Vert.x 3 application&#60;/h1&#62;&#34;);&#10;        &#125;)&#10;        .listen(8080, result -&#62; &#123;&#10;          if (result.succeeded()) &#123;&#10;            fut.complete();&#10;          &#125; else &#123;&#10;            fut.fail(result.cause());&#10;          &#125;&#10;        &#125;);&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<p>这个实际上不是最优秀的应用，这个类继承<code>AbstractVerticle</code>，在<code>Vert.x</code>的世界里<code>verticle</code>就是组件（是Vert.x的之行单元），通过继承<code>AbstractVerticle</code>类，获得<code>vertx</code>的入口。</p>
-<p>当<code>verticle</code>部署后会调用<code>start</code>方法，我们也能实现 <code>stop</code> 方法，在这个方法里回收资源，<code>start</code>方法接收<code>Future</code>对象的参数，可以告诉用户是执行完成还是报出错误，<code>Vert.x</code>是异步执行的，运行的时候不会等到<code>start</code>方法执行完成，所以 <code>Future</code> 参数是非常重要的，可以通知是否已经执行完成。</p>
-<p>在<code>start</code>方法里创建了一个HTTP 服务和一个请求处理器（handler），这个请求处理器使用lambda表达式，通过<code>requestHandler</code>方法，每次服务器收到请求，都会返回“Hello。。。”（也没有什么其他可以告诉你的东西了。。。），最后服务器绑定了一个8080端口，这里可能会失败（因为8080端口可能被使用了），通过lambda表达式检查是否连接成功，就想上面说的，调用fut.complete表示成功，调用 fut.fail 报告失败。</p>
-<p>使用下面的命令尝试着编译应用（首先你要安装好了maven，此命令在pom.xml目录下执行，知道使用maven的都懂得）：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mvn clean compile</span><br></pre></td></tr></table></figure>
-<p>如果幸运，编译应该是成功的。</p>
-<p>应用就编写到这里，是不是很简单？</p>
-<h3 id="测试">测试</h3><p>应用开发完成了，但是我们从来都不是很认真的，所有我们需要测试一下，测试使用<code>JUnit</code> 和 <code>vertx-unit</code>。</p>
-<p>打开<code>pom.xml</code>文件，增加两个依赖（dependencies）：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#60;dependency&#62;&#10;  &#60;groupId&#62;junit&#60;/groupId&#62;&#10;  &#60;artifactId&#62;junit&#60;/artifactId&#62;&#10;  &#60;version&#62;4.12&#60;/version&#62;&#10;  &#60;scope&#62;test&#60;/scope&#62;&#10;&#60;/dependency&#62;&#10;&#60;dependency&#62;&#10;  &#60;groupId&#62;io.vertx&#60;/groupId&#62;&#10;  &#60;artifactId&#62;vertx-unit&#60;/artifactId&#62;&#10;  &#60;version&#62;3.0.0&#60;/version&#62;&#10;  &#60;scope&#62;test&#60;/scope&#62;&#10;&#60;/dependency&#62;</span><br></pre></td></tr></table></figure>
-<p>创建 <code>src/main/java/name/quanke/study/vertx/first/MyFirstVerticleTest.java</code> 文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">package name.quanke.study.vertx.first;&#10;import io.vertx.core.Vertx;&#10;import io.vertx.ext.unit.Async;&#10;import io.vertx.ext.unit.TestContext;&#10;import io.vertx.ext.unit.junit.VertxUnitRunner;&#10;import org.junit.After;&#10;import org.junit.Before;&#10;import org.junit.Test;&#10;import org.junit.runner.RunWith;&#10;&#10;@RunWith(VertxUnitRunner.class)&#10;public class MyFirstVerticleTest &#123;&#10;&#10;  private Vertx vertx;&#10;&#10;  @Before&#10;  public void setUp(TestContext context) &#123;&#10;    vertx = Vertx.vertx();&#10;    vertx.deployVerticle(MyFirstVerticle.class.getName(),&#10;        context.asyncAssertSuccess());&#10;  &#125;&#10;&#10;  @After&#10;  public void tearDown(TestContext context) &#123;&#10;    vertx.close(context.asyncAssertSuccess());&#10;  &#125;&#10;&#10;  @Test&#10;  public void testMyApplication(TestContext context) &#123;&#10;    final Async async = context.async();&#10;&#10;    vertx.createHttpClient().getNow(8080, &#34;localhost&#34;, &#34;/&#34;,&#10;     response -&#62; &#123;&#10;      response.handler(body -&#62; &#123;&#10;        context.assertTrue(body.toString().contains(&#34;Hello&#34;));&#10;        async.complete();&#10;      &#125;);&#10;    &#125;);&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<p>在这里使用<code>JUnit</code>测试<code>verticle</code>，也会使用到 <code>vertx-unit</code> 自定义的<code>runner</code>，<code>vert.x-unit</code>很容易测试异步的<code>vert.x</code>应用。</p>
-<p>在<code>setUp</code>方法里，创建了一个<code>Vertx</code>实例，<code>deploy</code>了<code>verticle</code> ,你可能已经注意到了，这与传统<code>JUnit</code>的<code>@Before</code>不一样，它接收了一个<code>TestContext</code>参数，<code>TestContext</code>对象让我们可以控制异步的测试，例如：当我们<code>deploy</code>了异步<code>verticle</code>，多个<code>Vertx</code>实例相互作用时，不能检测它的正确性，<code>deployVerticle</code>方法的第二个参数返回一个handler：<code>context.asyncAssertSuccess()</code>，如果<code>verticle</code>的状态是失败，那这个测试就是失败的，此外会等待<code>verticle</code>完成启动，还记得，在<code>verticle</code>里，我们调用了<code>fut.complete()</code>方法，直到等到调用<code>fut.complete()</code>方法才返回状态。</p>
-<p><code>tearDown</code>方法比较简单，负责回收我们创建的<code>vertx</code>对象。</p>
-<p>现在我们看一下测试应用的<code>testMyApplication</code>方法，给应用发出请求并且拦截一个返回，发出请求和接收答复都是异步的，我们需要一种方法来控制，<code>setUp</code>和<code>tearDown</code>方法接收一个<code>TestContext</code>对象，当这个测试完成的时候，通过我们这个对象创建的异步的处理器（<code>async</code>），通知测试框架（使用<code>async.complete()</code>）</p>
-<p>像这样，一个异步处理器创建好了，我们使用<code>getNow()</code>方法（<code>getNow()</code>方法是<code>get(...).end()</code>的捷径），创建一个HTTP客户端和发一个HTTP请求给我们的应用，响应使用<code>lambda</code>处理，通过另一个<code>lambda</code>的<code>handler</code>方法接收一个<code>response body</code>，这个<code>body</code>参数是这个<code>response body</code>（如<code>buffer</code>对象），检测<code>body</code>是否等于<code>“Hello”</code>字符串，并且宣布测试完成（<code>async.complete()</code>）。</p>
-<p>让我们花一个分钟的时间提一下这个断言，不像传统的使用<code>context.assert...</code>断言，如果断言失败，它会立即中断测试，因为<code>Vert.x</code> 程序各方面都是异步的,所以使用这种方式断言测试很重要。</p>
-<p>可以使用IDE或者Maven运行测试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mvn clean test</span><br></pre></td></tr></table></figure>
-<h3 id="打包">打包</h3><p>总结一下，我们有了应用程序和测试，接下来，给应用打包，在这篇文章中我们把应用打 成<code>fat jar</code>包，一个 <code>fat jar</code>包是一个可以独立执行的<code>jar</code>文件，它包含所有的运行程序所需要的依赖，<code>Vert.x</code>使用这种打包的方式非常方便，仅仅只有一个文件，这使它非常容易执行。</p>
-<p>创建一个 <code>fat jar</code> 便捷<code>pom.xml</code>文件，把下面的的代码增加到<code>&lt;/plugins&gt;</code>标签之前：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#60;plugin&#62;&#10;        &#60;groupId&#62;org.apache.maven.plugins&#60;/groupId&#62;&#10;        &#60;artifactId&#62;maven-shade-plugin&#60;/artifactId&#62;&#10;        &#60;version&#62;2.3&#60;/version&#62;&#10;        &#60;executions&#62;&#10;          &#60;execution&#62;&#10;            &#60;phase&#62;package&#60;/phase&#62;&#10;            &#60;goals&#62;&#10;              &#60;goal&#62;shade&#60;/goal&#62;&#10;            &#60;/goals&#62;&#10;            &#60;configuration&#62;&#10;              &#60;transformers&#62;&#10;                &#60;transformer&#10;                  implementation=&#34;org.apache.maven.plugins.shade.resource.ManifestResourceTransformer&#34;&#62;&#10;                  &#60;manifestEntries&#62;&#10;                    &#60;Main-Class&#62;io.vertx.core.Starter&#60;/Main-Class&#62;&#10;                    &#60;Main-Verticle&#62;name.quanke.study.vertx.first.MyFirstVerticle&#60;/Main-Verticle&#62;&#10;                  &#60;/manifestEntries&#62;&#10;                &#60;/transformer&#62;&#10;              &#60;/transformers&#62;&#10;              &#60;artifactSet/&#62;&#10;              &#60;outputFile&#62;$&#123;project.build.directory&#125;/$&#123;project.artifactId&#125;-$&#123;project.version&#125;-fat.jar&#60;/outputFile&#62;&#10;            &#60;/configuration&#62;&#10;          &#60;/execution&#62;&#10;        &#60;/executions&#62;&#10;      &#60;/plugin&#62;</span><br></pre></td></tr></table></figure>
-<p>使用<a href="https://maven.apache.org/plugins/maven-shade-plugin/" target="_blank" rel="external">maven-shade-plugin</a> 创建<code>fat jar</code>。在<code>manifestEntries</code>标签里声明我们的<code>verticle</code>，你也许不知道从哪里来的<code>Starter</code>类，实际上，它是在<code>vertx</code>实例化和部署<code>verticle</code>的时候就有创建。</p>
-<p>这个插件的配置就是这样，我们执行：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mvn clean package</span><br></pre></td></tr></table></figure>
-<p>应该会创建一个<code>target/my-first-app-1.0-SNAPSHOT-fat.jar</code>，里面嵌入了应用所有的依赖（包含<code>vert.x</code>自己）。</p>
-<h3 id="执行">执行</h3><p>嗯，很高兴拥有一个 <code>fal jar</code>,但我们希望看到我们的应用程序的运行！正如上面所说，多亏了<code>fat jar</code>包装，运行vert.x应用程序是容易的：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">java -jar target/my-first-app-1.0-SNAPSHOT-fat.jar</span><br></pre></td></tr></table></figure>
-<p>然后，打开浏览器访问 <a href="http://localhost:8080。" target="_blank" rel="external">http://localhost:8080。</a></p>
-<p><code>CTRL+C</code>停止应用运行。</p>
-<h3 id="总结">总结</h3><p>这个Vert.x 3速成班告诉你，怎么使用Vert.x 3开发一个简单的应用，怎么测试、打包和运行，现在知道了在Vert.x 3 上任意创建令人惊奇的系统。接下来的时间看看<a href="http://quanke.name/2016/01/15/Vert-x-应用的配置/">怎么配置我们的应用</a>。</p>
-<p><em>Happy coding &amp; Stay tuned !</em></p>
-<p>本人英语比较烂，建议看<a href="http://vertx.io/blog/my-first-vert-x-3-application/index.html" target="_blank" rel="external">原文</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;ul&gt;
-&lt;li&gt;欢迎关注&lt;a href=&quot;http://quanke.name/&quot;&gt;http://quanke.name/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;交流群：&lt;code&gt;231419585&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;转载请注明出处，谢谢&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;如果，
     
     </summary>
     

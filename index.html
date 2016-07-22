@@ -270,6 +270,140 @@
             
               
                 
+                <a class="post-title-link" href="/2016/07/22/Android-Studio-Service-AIDL-详解/" itemprop="url">
+                  Android Studio Service AIDL 详解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-22T23:35:30+08:00" content="2016-07-22">
+              2016-07-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android开发/" itemprop="url" rel="index">
+                    <span itemprop="name">android开发</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/22/Android-Studio-Service-AIDL-详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/22/Android-Studio-Service-AIDL-详解/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
+<li>转载请注明出处，谢谢</li>
+</ul>
+<p>公司产品之前IM这块存在很多问题，消息到达率低，加上协议上有些问题，都消息频繁，所以需要重构IM，AIDL不能解决以上问题。好吧！那AIDL可以解决什么问题？什么是AIDL？</p>
+<h3 id="什么是AIDL？">什么是AIDL？</h3><p><code>AIDL</code>是 <code>Android Interface definition language</code>的缩写，它是一种<code>Android</code>内部进程通信接口的描述语言，通过它我们可以定义进程间的通信接口</p>
+<h3 id="AIDL可以解决什么问题？">AIDL可以解决什么问题？</h3><ul>
+<li>可以实现多个应用程序共享同一个Service的功能，比如IM服务可以提供给多个APP使用，先在推送基本都是采取这种方案</li>
+<li>可以跨进程调用服务里的方法</li>
+</ul>
+<h3 id="Android_Studio_AIDL_实战">Android Studio AIDL 实战</h3><p>大部分文章介绍都是在eclipse下介绍的，现在 Android Studio 作为开发工具比较普及了，所以我在Android Studio 下介绍（其实区别不大）。</p>
+<p>言归正传，我们需要使用Android Studio实现一个远程Service，并且建立AIDL进行通信。</p>
+<h4 id="搭建了简单的Service框架">搭建了简单的Service框架</h4><h4 id="建立AIDL">建立AIDL</h4><h4 id="传递自定义的类型">传递自定义的类型</h4><blockquote>
+<p>AIDL 编译报can be an out parameter, so you must declare it as in, out or inout原因探究</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/07/19/完美解决-Android-6-java-lang-AbstractMethodError/" itemprop="url">
                   完美解决 Android 6 java.lang.AbstractMethodError
                 </a>
@@ -1625,133 +1759,6 @@ Repository Settings</code> ，把这个设置成为刚才导到<code>github</cod
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/04/23/Android-ObjectAnimator-无限循环播放，实现上下左右浮动效果/" itemprop="url">
-                  Android ObjectAnimator 无限循环播放，实现上下左右浮动效果
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-04-23T19:04:41+08:00" content="2016-04-23">
-              2016-04-23
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android开发/" itemprop="url" rel="index">
-                    <span itemprop="name">android开发</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/04/23/Android-ObjectAnimator-无限循环播放，实现上下左右浮动效果/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/23/Android-ObjectAnimator-无限循环播放，实现上下左右浮动效果/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
-<li>转载请注明出处，谢谢</li>
-</ul>
-<p><code>Android Property Animation</code> 动画有很多大神写过，都非常好，这里只通过ObjectAnimator /ValueAnimator实现上下左右浮动效果。</p>
-<p>很简单看代码就好</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private void floatAnim(View view,int delay)&#123;&#10;    List&#60;Animator&#62; animators = new ArrayList&#60;&#62;();&#10;    ObjectAnimator translationXAnim = ObjectAnimator.ofFloat(view, &#34;translationX&#34;, -6.0f,6.0f,-6.0f);&#10;    translationXAnim.setDuration(1500);&#10;    translationXAnim.setRepeatCount(ValueAnimator.INFINITE);//&#26080;&#38480;&#24490;&#29615;&#10;    translationXAnim.setRepeatMode(ValueAnimator.INFINITE);//&#10;    translationXAnim.start();&#10;    animators.add(translationXAnim);&#10;    ObjectAnimator translationYAnim = ObjectAnimator.ofFloat(view, &#34;translationY&#34;, -3.0f,3.0f,-3.0f);&#10;    translationYAnim.setDuration(1000);&#10;    translationYAnim.setRepeatCount(ValueAnimator.INFINITE);&#10;    translationYAnim.setRepeatMode(ValueAnimator.INFINITE);&#10;    translationYAnim.start();&#10;    animators.add(translationYAnim);&#10;&#10;    AnimatorSet btnSexAnimatorSet = new AnimatorSet();&#10;    btnSexAnimatorSet.playTogether(animators);&#10;    btnSexAnimatorSet.setStartDelay(delay);&#10;    btnSexAnimatorSet.start();&#10;&#125;</span><br></pre></td></tr></table></figure>
-<p>开始设置<code>setRepeatMode(ValueAnimator.INFINITE);</code>方法没有效果，只有设置<code>setRepeatCount(ValueAnimator.INFINITE)</code>才可以。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1797,7 +1804,7 @@ Repository Settings</code> ，把这个设置成为刚才导到<code>github</cod
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-count">107</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

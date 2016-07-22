@@ -270,6 +270,186 @@
             
               
                 
+                <a class="post-title-link" href="/2016/01/12/我的第一个Vert-x-3-应用/" itemprop="url">
+                  我的第一个Vert.x 3 应用
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-01-12T19:44:56+08:00" content="2016-01-12">
+              2016-01-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Vert-x3-系列/" itemprop="url" rel="index">
+                    <span itemprop="name">Vert.x3 系列</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/12/我的第一个Vert-x-3-应用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/12/我的第一个Vert-x-3-应用/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
+<li>交流群：<code>231419585</code></li>
+<li>转载请注明出处，谢谢</li>
+</ul>
+<p>如果，你听到有人说Vert.x 是牛逼的。非常好！但是你自己想要尝试的话，Ok great，那么下一个问题自然是“从哪里开始？”，这篇文章是一个很好的起点。文章展示了怎么构建一个非常简单的 vert.x 应用（这没什么大不了的），怎样测试和执行vert.x应用。</p>
+<p>文章里提到的代码在<a href="https://github.com/quanke/vertx3_study_demo/tree/master/my-vertx-first-app" target="_blank" rel="external">github</a> 。</p>
+<h3 id="开始">开始</h3><p>首先，创建一个项目，在这篇文章中使用<code>Apache Maven</code>,当然你可以使用<code>Gradle</code> 或者其他工具，使用<code>Maven jar archetype</code> 创建结构，但基本上只需要一个目录。</p>
+<ul>
+<li><code>src/main/java</code> 目录</li>
+<li><code>src/test/java</code> 目录</li>
+<li><code>pom.xml</code> 文件</li>
+</ul>
+<p>会得到一个像这样的结构</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#10;&#9500;&#9472;&#9472; pom.xml&#10;&#9500;&#9472;&#9472; src&#10;&#9474;   &#9500;&#9472;&#9472; main&#10;&#9474;   &#9474;   &#9492;&#9472;&#9472; java&#10;&#9474;   &#9492;&#9472;&#9472; test&#10;&#9474;       &#9492;&#9472;&#9472; java</span><br></pre></td></tr></table></figure>
+<p><code>pom.xml</code> 文件的内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#60;project xmlns=&#34;http://maven.apache.org/POM/4.0.0&#34;&#10;         xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34;&#10;         xsi:schemaLocation=&#34;http://maven.apache.org/POM/4.0.0&#10;                      http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;&#62;&#10;  &#60;modelVersion&#62;4.0.0&#60;/modelVersion&#62;&#10;  &#60;groupId&#62;name.quanke.study.vertx.first&#60;/groupId&#62;&#10;  &#60;artifactId&#62;my-first-app&#60;/artifactId&#62;&#10;  &#60;version&#62;1.0-SNAPSHOT&#60;/version&#62;&#10;&#10;  &#60;dependencies&#62;&#10;    &#60;dependency&#62;&#10;      &#60;groupId&#62;io.vertx&#60;/groupId&#62;&#10;      &#60;artifactId&#62;vertx-core&#60;/artifactId&#62;&#10;      &#60;version&#62;3.0.0&#60;/version&#62;&#10;    &#60;/dependency&#62;&#10;  &#60;/dependencies&#62;&#10;&#10;  &#60;build&#62;&#10;    &#60;plugins&#62;&#10;      &#60;plugin&#62;&#10;        &#60;artifactId&#62;maven-compiler-plugin&#60;/artifactId&#62;&#10;        &#60;version&#62;3.3&#60;/version&#62;&#10;        &#60;configuration&#62;&#10;          &#60;source&#62;1.8&#60;/source&#62;&#10;          &#60;target&#62;1.8&#60;/target&#62;&#10;        &#60;/configuration&#62;&#10;      &#60;/plugin&#62;&#10;    &#60;/plugins&#62;&#10;  &#60;/build&#62;&#10;&#10;&#60;/project&#62;</span><br></pre></td></tr></table></figure>
+<p>这个 pom.xml 文件非常简单：</p>
+<ul>
+<li>声明了一个 vertx-core 依赖</li>
+<li>配置了maven-compiler-plugin 插件（使用的是<code>Java 8</code>）.</li>
+</ul>
+<blockquote>
+<p>第二点非常重要，<code>Vert.x</code> 只支持<code>Java 8</code>。</p>
+</blockquote>
+<h3 id="编码！">编码！</h3><p>OK，我们已经创建了一个<code>pom.xml</code> 文件，接下来正式开始编码，创建 <code>src/main/java/name/quanke/study/vertx/first/MyFirstVerticle.java</code>文件，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">package name.quanke.study.vertx.first;&#10;&#10;import io.vertx.core.AbstractVerticle;&#10;import io.vertx.core.Future;&#10;&#10;public class MyFirstVerticle extends AbstractVerticle &#123;&#10;&#10;  @Override&#10;  public void start(Future&#60;Void&#62; fut) &#123;&#10;    vertx&#10;        .createHttpServer()&#10;        .requestHandler(r -&#62; &#123;&#10;          r.response().end(&#34;&#60;h1&#62;Hello from my first &#34; +&#10;              &#34;Vert.x 3 application&#60;/h1&#62;&#34;);&#10;        &#125;)&#10;        .listen(8080, result -&#62; &#123;&#10;          if (result.succeeded()) &#123;&#10;            fut.complete();&#10;          &#125; else &#123;&#10;            fut.fail(result.cause());&#10;          &#125;&#10;        &#125;);&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>这个实际上不是最优秀的应用，这个类继承<code>AbstractVerticle</code>，在<code>Vert.x</code>的世界里<code>verticle</code>就是组件（是Vert.x的之行单元），通过继承<code>AbstractVerticle</code>类，获得<code>vertx</code>的入口。</p>
+<p>当<code>verticle</code>部署后会调用<code>start</code>方法，我们也能实现 <code>stop</code> 方法，在这个方法里回收资源，<code>start</code>方法接收<code>Future</code>对象的参数，可以告诉用户是执行完成还是报出错误，<code>Vert.x</code>是异步执行的，运行的时候不会等到<code>start</code>方法执行完成，所以 <code>Future</code> 参数是非常重要的，可以通知是否已经执行完成。</p>
+<p>在<code>start</code>方法里创建了一个HTTP 服务和一个请求处理器（handler），这个请求处理器使用lambda表达式，通过<code>requestHandler</code>方法，每次服务器收到请求，都会返回“Hello。。。”（也没有什么其他可以告诉你的东西了。。。），最后服务器绑定了一个8080端口，这里可能会失败（因为8080端口可能被使用了），通过lambda表达式检查是否连接成功，就想上面说的，调用fut.complete表示成功，调用 fut.fail 报告失败。</p>
+<p>使用下面的命令尝试着编译应用（首先你要安装好了maven，此命令在pom.xml目录下执行，知道使用maven的都懂得）：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mvn clean compile</span><br></pre></td></tr></table></figure>
+<p>如果幸运，编译应该是成功的。</p>
+<p>应用就编写到这里，是不是很简单？</p>
+<h3 id="测试">测试</h3><p>应用开发完成了，但是我们从来都不是很认真的，所有我们需要测试一下，测试使用<code>JUnit</code> 和 <code>vertx-unit</code>。</p>
+<p>打开<code>pom.xml</code>文件，增加两个依赖（dependencies）：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#60;dependency&#62;&#10;  &#60;groupId&#62;junit&#60;/groupId&#62;&#10;  &#60;artifactId&#62;junit&#60;/artifactId&#62;&#10;  &#60;version&#62;4.12&#60;/version&#62;&#10;  &#60;scope&#62;test&#60;/scope&#62;&#10;&#60;/dependency&#62;&#10;&#60;dependency&#62;&#10;  &#60;groupId&#62;io.vertx&#60;/groupId&#62;&#10;  &#60;artifactId&#62;vertx-unit&#60;/artifactId&#62;&#10;  &#60;version&#62;3.0.0&#60;/version&#62;&#10;  &#60;scope&#62;test&#60;/scope&#62;&#10;&#60;/dependency&#62;</span><br></pre></td></tr></table></figure>
+<p>创建 <code>src/main/java/name/quanke/study/vertx/first/MyFirstVerticleTest.java</code> 文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">package name.quanke.study.vertx.first;&#10;import io.vertx.core.Vertx;&#10;import io.vertx.ext.unit.Async;&#10;import io.vertx.ext.unit.TestContext;&#10;import io.vertx.ext.unit.junit.VertxUnitRunner;&#10;import org.junit.After;&#10;import org.junit.Before;&#10;import org.junit.Test;&#10;import org.junit.runner.RunWith;&#10;&#10;@RunWith(VertxUnitRunner.class)&#10;public class MyFirstVerticleTest &#123;&#10;&#10;  private Vertx vertx;&#10;&#10;  @Before&#10;  public void setUp(TestContext context) &#123;&#10;    vertx = Vertx.vertx();&#10;    vertx.deployVerticle(MyFirstVerticle.class.getName(),&#10;        context.asyncAssertSuccess());&#10;  &#125;&#10;&#10;  @After&#10;  public void tearDown(TestContext context) &#123;&#10;    vertx.close(context.asyncAssertSuccess());&#10;  &#125;&#10;&#10;  @Test&#10;  public void testMyApplication(TestContext context) &#123;&#10;    final Async async = context.async();&#10;&#10;    vertx.createHttpClient().getNow(8080, &#34;localhost&#34;, &#34;/&#34;,&#10;     response -&#62; &#123;&#10;      response.handler(body -&#62; &#123;&#10;        context.assertTrue(body.toString().contains(&#34;Hello&#34;));&#10;        async.complete();&#10;      &#125;);&#10;    &#125;);&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>在这里使用<code>JUnit</code>测试<code>verticle</code>，也会使用到 <code>vertx-unit</code> 自定义的<code>runner</code>，<code>vert.x-unit</code>很容易测试异步的<code>vert.x</code>应用。</p>
+<p>在<code>setUp</code>方法里，创建了一个<code>Vertx</code>实例，<code>deploy</code>了<code>verticle</code> ,你可能已经注意到了，这与传统<code>JUnit</code>的<code>@Before</code>不一样，它接收了一个<code>TestContext</code>参数，<code>TestContext</code>对象让我们可以控制异步的测试，例如：当我们<code>deploy</code>了异步<code>verticle</code>，多个<code>Vertx</code>实例相互作用时，不能检测它的正确性，<code>deployVerticle</code>方法的第二个参数返回一个handler：<code>context.asyncAssertSuccess()</code>，如果<code>verticle</code>的状态是失败，那这个测试就是失败的，此外会等待<code>verticle</code>完成启动，还记得，在<code>verticle</code>里，我们调用了<code>fut.complete()</code>方法，直到等到调用<code>fut.complete()</code>方法才返回状态。</p>
+<p><code>tearDown</code>方法比较简单，负责回收我们创建的<code>vertx</code>对象。</p>
+<p>现在我们看一下测试应用的<code>testMyApplication</code>方法，给应用发出请求并且拦截一个返回，发出请求和接收答复都是异步的，我们需要一种方法来控制，<code>setUp</code>和<code>tearDown</code>方法接收一个<code>TestContext</code>对象，当这个测试完成的时候，通过我们这个对象创建的异步的处理器（<code>async</code>），通知测试框架（使用<code>async.complete()</code>）</p>
+<p>像这样，一个异步处理器创建好了，我们使用<code>getNow()</code>方法（<code>getNow()</code>方法是<code>get(...).end()</code>的捷径），创建一个HTTP客户端和发一个HTTP请求给我们的应用，响应使用<code>lambda</code>处理，通过另一个<code>lambda</code>的<code>handler</code>方法接收一个<code>response body</code>，这个<code>body</code>参数是这个<code>response body</code>（如<code>buffer</code>对象），检测<code>body</code>是否等于<code>“Hello”</code>字符串，并且宣布测试完成（<code>async.complete()</code>）。</p>
+<p>让我们花一个分钟的时间提一下这个断言，不像传统的使用<code>context.assert...</code>断言，如果断言失败，它会立即中断测试，因为<code>Vert.x</code> 程序各方面都是异步的,所以使用这种方式断言测试很重要。</p>
+<p>可以使用IDE或者Maven运行测试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mvn clean test</span><br></pre></td></tr></table></figure>
+<h3 id="打包">打包</h3><p>总结一下，我们有了应用程序和测试，接下来，给应用打包，在这篇文章中我们把应用打 成<code>fat jar</code>包，一个 <code>fat jar</code>包是一个可以独立执行的<code>jar</code>文件，它包含所有的运行程序所需要的依赖，<code>Vert.x</code>使用这种打包的方式非常方便，仅仅只有一个文件，这使它非常容易执行。</p>
+<p>创建一个 <code>fat jar</code> 便捷<code>pom.xml</code>文件，把下面的的代码增加到<code>&lt;/plugins&gt;</code>标签之前：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#60;plugin&#62;&#10;        &#60;groupId&#62;org.apache.maven.plugins&#60;/groupId&#62;&#10;        &#60;artifactId&#62;maven-shade-plugin&#60;/artifactId&#62;&#10;        &#60;version&#62;2.3&#60;/version&#62;&#10;        &#60;executions&#62;&#10;          &#60;execution&#62;&#10;            &#60;phase&#62;package&#60;/phase&#62;&#10;            &#60;goals&#62;&#10;              &#60;goal&#62;shade&#60;/goal&#62;&#10;            &#60;/goals&#62;&#10;            &#60;configuration&#62;&#10;              &#60;transformers&#62;&#10;                &#60;transformer&#10;                  implementation=&#34;org.apache.maven.plugins.shade.resource.ManifestResourceTransformer&#34;&#62;&#10;                  &#60;manifestEntries&#62;&#10;                    &#60;Main-Class&#62;io.vertx.core.Starter&#60;/Main-Class&#62;&#10;                    &#60;Main-Verticle&#62;name.quanke.study.vertx.first.MyFirstVerticle&#60;/Main-Verticle&#62;&#10;                  &#60;/manifestEntries&#62;&#10;                &#60;/transformer&#62;&#10;              &#60;/transformers&#62;&#10;              &#60;artifactSet/&#62;&#10;              &#60;outputFile&#62;$&#123;project.build.directory&#125;/$&#123;project.artifactId&#125;-$&#123;project.version&#125;-fat.jar&#60;/outputFile&#62;&#10;            &#60;/configuration&#62;&#10;          &#60;/execution&#62;&#10;        &#60;/executions&#62;&#10;      &#60;/plugin&#62;</span><br></pre></td></tr></table></figure>
+<p>使用<a href="https://maven.apache.org/plugins/maven-shade-plugin/" target="_blank" rel="external">maven-shade-plugin</a> 创建<code>fat jar</code>。在<code>manifestEntries</code>标签里声明我们的<code>verticle</code>，你也许不知道从哪里来的<code>Starter</code>类，实际上，它是在<code>vertx</code>实例化和部署<code>verticle</code>的时候就有创建。</p>
+<p>这个插件的配置就是这样，我们执行：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mvn clean package</span><br></pre></td></tr></table></figure>
+<p>应该会创建一个<code>target/my-first-app-1.0-SNAPSHOT-fat.jar</code>，里面嵌入了应用所有的依赖（包含<code>vert.x</code>自己）。</p>
+<h3 id="执行">执行</h3><p>嗯，很高兴拥有一个 <code>fal jar</code>,但我们希望看到我们的应用程序的运行！正如上面所说，多亏了<code>fat jar</code>包装，运行vert.x应用程序是容易的：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">java -jar target/my-first-app-1.0-SNAPSHOT-fat.jar</span><br></pre></td></tr></table></figure>
+<p>然后，打开浏览器访问 <a href="http://localhost:8080。" target="_blank" rel="external">http://localhost:8080。</a></p>
+<p><code>CTRL+C</code>停止应用运行。</p>
+<h3 id="总结">总结</h3><p>这个Vert.x 3速成班告诉你，怎么使用Vert.x 3开发一个简单的应用，怎么测试、打包和运行，现在知道了在Vert.x 3 上任意创建令人惊奇的系统。接下来的时间看看<a href="http://quanke.name/2016/01/15/Vert-x-应用的配置/">怎么配置我们的应用</a>。</p>
+<p><em>Happy coding &amp; Stay tuned !</em></p>
+<p>本人英语比较烂，建议看<a href="http://vertx.io/blog/my-first-vert-x-3-application/index.html" target="_blank" rel="external">原文</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/08/04/盗版windows7高速免费安装windows10/" itemprop="url">
                   盗版windows7高速免费安装windows10
                 </a>
@@ -1649,155 +1829,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/06/22/android/android-change-system/" itemprop="url">
-                  Android中如何修改系统时间（应用程序获得系统权限）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-06-22T02:10:43+08:00" content="2014-06-22">
-              2014-06-22
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android开发/" itemprop="url" rel="index">
-                    <span itemprop="name">android开发</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/06/22/android/android-change-system/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/06/22/android/android-change-system/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在 android 的API中有提供 SystemClock.setCurrentTimeMillis()函数来修改系统时间，可惜无论你怎么调用这个函数都是没用的，无论模拟器还是真机，在logcat中总会得到”Unable to open alarm driver: Permission denied “.这个函数需要root权限或者运行与系统进程中才可以用。</p>
-<pre><code>本来以为就没有办法在应用程序这一层改系统时间了，后来在网上搜了好久，知道这个目的还是可以达到的。
-
-第一个方法简单点，不过需要在<span class="constant">Android</span>系统源码的环境下用make来编译：
-
-<span class="number">1</span>\. 在应用程序的<span class="constant">Android</span>Manifest.xml中的<span class="literal">manifest</span>节点中加入android:sharedUserId=<span class="string">"android.uid.system"</span>这个属性。
-
-<span class="number">2</span>\. 修改<span class="constant">Android</span>.mk文件，加入<span class="constant">L</span>OCAL_CERTIFICATE := <span class="literal">platform</span>这一行
-
-<span class="number">3</span>\. 使用mm命令来编译，生成的apk就有修改系统时间的权限了。
-
-第二个方法麻烦点，不过不用开虚拟机跑到源码环境下用make来编译：
-
-<span class="number">1</span>\. 同上，加入android:sharedUserId=<span class="string">"android.uid.system"</span>这个属性。
-
-<span class="number">2</span>\. 使用eclipse编译出apk文件，但是这个apk文件是不能用的。
-
-<span class="number">3</span>\. 用压缩软件打开apk文件，删掉<span class="constant">M</span>ETA-<span class="constant">I</span>NF目录下的<span class="constant">C</span>ERT.<span class="constant">S</span>F和<span class="constant">C</span>ERT.<span class="constant">R</span>SA两个文件。
-
-<span class="number">4</span>\. 使用目标系统的<span class="literal">platform</span>密钥来重新给apk文件签名。这步比较麻烦，首先找到密钥文件，在我的<span class="constant">Android</span>源码目录中的位置是<span class="string">"build/target/product/security"</span>，下面的<span class="literal">platform</span>.pk8和<span class="literal">platform</span>.x509.pem两个文件。然后用<span class="constant">Android</span>提供的<span class="constant">Signapk</span>工具来签名，signapk的源代码是在<span class="string">"build/tools/signapk"</span>下，用法为<span class="string">"signapk platform.x509.pem platform.pk8 input.apk output.apk"</span>，文件名最好使用绝对路径防止找不到，也可以修改源代码直接使用。
-
-这样最后得到的apk和第一个方法是一样的。
-
-最后解释一下原理，首先加入android:sharedUserId=<span class="string">"android.uid.system"</span>这个属性。通过<span class="constant">Shared</span> <span class="constant">User</span> <span class="built_in">id</span>,拥有同一个<span class="constant">User</span> <span class="built_in">id</span>的多个<span class="constant">A</span>PK可以配置成运行在同一个进程中。那么把程序的<span class="constant">U</span>ID配成android.<span class="literal">uid</span>.<span class="literal">system</span>，也就是要让程序运行在系统进程中，这样就有权限来修改系统时间了。
-
-只是加入<span class="constant">U</span>ID还不够，如果这时候安装<span class="constant">A</span>PK的话发现无法安装，提示签名不符，原因是程序想要运行在系统进程中还要有目标系统的<span class="literal">platform</span> key，就是上面第二个方法提到的<span class="literal">platform</span>.pk8和<span class="literal">platform</span>.x509.pem两个文件。用这两个key签名后apk才真正可以放入系统进程中。第一个方法中加入<span class="constant">L</span>OCAL_CERTIFICATE := <span class="literal">platform</span>其实就是用这两个key来签名。
-
-这也有一个问题，就是这样生成的程序只有在原始的<span class="constant">Android</span>系统或者是自己编译的系统中才可以用，因为这样的系统才可以拿到<span class="literal">platform</span>.pk8和<span class="literal">platform</span>.x509.pem两个文件。要是别家公司做的<span class="constant">Android</span>上连安装都安装不了。试试原始的<span class="constant">Android</span>中的key来签名，程序在模拟器上运行<span class="constant">O</span>K，不过放到<span class="constant">G</span>3上安装直接提示<span class="string">"Package ... has no signatures that match those in shared user android.uid.system"</span>，这样也是保护了系统的安全。
-
-最最后还说下，这个android:sharedUserId属性不只可以把apk放到系统进程中，也可以配置多个<span class="constant">A</span>PK运行在一个进程中，这样可以共享数据，应该会很有用的。
-</code></pre>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1843,7 +1874,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-count">107</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
