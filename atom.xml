@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://quanke.name/"/>
-  <updated>2016-07-22T16:15:47.000Z</updated>
+  <updated>2016-07-23T01:38:53.000Z</updated>
   <id>http://quanke.name/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://quanke.name/2016/07/22/Android-Studio-Service-AIDL-%E8%AF%A6%E8%A7%A3/"/>
     <id>http://quanke.name/2016/07/22/Android-Studio-Service-AIDL-详解/</id>
     <published>2016-07-22T15:35:30.000Z</published>
-    <updated>2016-07-22T16:15:47.000Z</updated>
+    <updated>2016-07-23T01:38:53.000Z</updated>
     
     <content type="html"><![CDATA[<ul>
 <li>欢迎关注<a href="http://quanke.name/">http://quanke.name/</a></li>
@@ -34,8 +34,46 @@
 </ul>
 <h3 id="Android_Studio_AIDL_实战">Android Studio AIDL 实战</h3><p>大部分文章介绍都是在eclipse下介绍的，现在 Android Studio 作为开发工具比较普及了，所以我在Android Studio 下介绍（其实区别不大）。</p>
 <p>言归正传，我们需要使用Android Studio实现一个远程Service，并且建立AIDL进行通信。</p>
-<h4 id="搭建了简单的Service框架">搭建了简单的Service框架</h4><h4 id="建立AIDL">建立AIDL</h4><h4 id="传递自定义的类型">传递自定义的类型</h4><blockquote>
-<p>AIDL 编译报can be an out parameter, so you must declare it as in, out or inout原因探究</p>
+<h4 id="搭建了简单的Service框架">搭建了简单的Service框架</h4><p>1.继承Service</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">package name.quanke.aidldemo;&#10;&#10;import android.app.Service;&#10;import android.content.Intent;&#10;import android.os.IBinder;&#10;&#10;&#10;/**&#10; *&#10; * Created by http://quanke.name on 16/7/23.&#10; */&#10;public class PushService extends Service &#123;&#10;    public PushService() &#123;&#10;&#10;    &#125;&#10;&#10;    @Override&#10;    public IBinder onBind(Intent intent) &#123;&#10;        return new LibHandler();&#10;    &#125;&#10;&#10;&#10;    @Override&#10;    public boolean onUnbind(Intent intent) &#123;&#10;        return super.onUnbind(intent);&#10;    &#125;&#10;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>2.在AndroidManifest.xml里注册 </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#60;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&#62;&#10;&#60;manifest xmlns:android=&#34;http://schemas.android.com/apk/res/android&#34;&#10;          package=&#34;name.quanke.aidldemo&#34;&#62;&#10;&#10;    &#60;application&#10;            android:allowBackup=&#34;true&#34;&#10;            android:icon=&#34;@mipmap/ic_launcher&#34;&#10;            android:label=&#34;@string/app_name&#34;&#10;            android:name=&#34;.App&#34;&#10;            android:supportsRtl=&#34;true&#34;&#10;            android:theme=&#34;@style/AppTheme&#34;&#62;&#10;        &#60;activity android:name=&#34;.MainActivity&#34;&#62;&#10;            &#60;intent-filter&#62;&#10;                &#60;action android:name=&#34;android.intent.action.MAIN&#34;/&#62;&#10;&#10;                &#60;category android:name=&#34;android.intent.category.LAUNCHER&#34;/&#62;&#10;            &#60;/intent-filter&#62;&#10;        &#60;/activity&#62;&#10;&#10;        &#60;service&#10;                android:name=&#34;.PushService&#34;&#10;                android:enabled=&#34;true&#34;&#10;                android:process=&#34;:push&#34;&#10;                android:exported=&#34;true&#34;&#62;&#10;        &#60;/service&#62;&#10;    &#60;/application&#62;&#10;&#10;&#60;/manifest&#62;</span><br></pre></td></tr></table></figure>
+<h4 id="建立AIDL">建立AIDL</h4><h5 id="1-创建AIDL文件夹">1.创建AIDL文件夹</h5><img src="/2016/07/22/Android-Studio-Service-AIDL-详解/1.png" alt="1.创建AIDL文件夹" title="1.创建AIDL文件夹">
+<h5 id="2-创建AIDL文件">2.创建AIDL文件</h5><img src="/2016/07/22/Android-Studio-Service-AIDL-详解/2.png" alt="2.创建AIDL文件" title="2.创建AIDL文件">
+<h5 id="3-编写AIDL文件">3.编写AIDL文件</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// IHandler.aidl&#10;package name.quanke.aidldemo;&#10;&#10;// Declare any non-default types here with import statements&#10;&#10;interface IHandler &#123;&#10;    void connect();&#10;&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="4-AIDL文件_生成接口">4.AIDL文件 生成接口</h5><img src="/2016/07/22/Android-Studio-Service-AIDL-详解/4.png" alt="4.AIDL文件 生成接口" title="4.AIDL文件 生成接口">
+<p>生成后的样子</p>
+<img src="/2016/07/22/Android-Studio-Service-AIDL-详解/3.png" alt="4.AIDL文件 生成后的样子" title="4.AIDL文件 生成后的样子">
+<h5 id="5-编写客户端_ServiceConnection">5.编写客户端 ServiceConnection</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">package name.quanke.aidldemo;&#10;&#10;import android.app.Application;&#10;import android.content.ComponentName;&#10;import android.content.Context;&#10;import android.content.Intent;&#10;import android.content.ServiceConnection;&#10;import android.os.IBinder;&#10;import android.os.RemoteException;&#10;import android.util.Log;&#10;&#10;/**&#10; * Created by quanke on 16/7/23.&#10; */&#10;public class PushManager &#123;&#10;&#10;    private static final String TAG = &#34;PushManager.class&#34;;&#10;    private IHandler iHandler;&#10;&#10;    private static PushManager ourInstance = new PushManager();&#10;&#10;    public static PushManager getInstance() &#123;&#10;        return ourInstance;&#10;    &#125;&#10;&#10;    private PushManager() &#123;&#10;&#10;    &#125;&#10;&#10;    public void init(Application app)&#123;&#10;&#10;        Intent binderIntent = new Intent(app,PushService.class);&#10;        app.bindService(binderIntent, serviceConnection, Context.BIND_AUTO_CREATE);&#10;    &#125;&#10;&#10;    public void connect()&#123;&#10;        try &#123;&#10;            //&#36890;&#36807;AIDL&#36828;&#31243;&#35843;&#29992;&#10;            Log.d(TAG,&#34;++start Remote++&#34;);&#10;            iHandler.connect();&#10;        &#125; catch (RemoteException e) &#123;&#10;            e.printStackTrace();&#10;        &#125;&#10;&#10;    &#125;&#10;&#10;&#10;    private ServiceConnection serviceConnection = new ServiceConnection() &#123;&#10;        @Override&#10;        public void onServiceConnected(ComponentName name, IBinder service) &#123;&#10;            iHandler = IHandler.Stub.asInterface(service);&#10;            //&#36830;&#25509;&#25104;&#21151;&#35843;&#21160;&#10;        &#125;&#10;&#10;        @Override&#10;        public void onServiceDisconnected(ComponentName name) &#123;&#10;            //&#26029;&#24320;&#36830;&#25509;&#35843;&#29992;&#10;        &#125;&#10;    &#125;;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="6-编写服务端实现connect方法">6.编写服务端实现connect方法</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">package name.quanke.aidldemo;&#10;&#10;import android.os.IBinder;&#10;import android.os.RemoteException;&#10;import android.util.Log;&#10;&#10;/**&#10; *&#10; * Created by quanke on 16/7/23.&#10; */&#10;public class LibHandler extends IHandler.Stub&#123;&#10;&#10;&#10;    @Override&#10;    public void connect() throws RemoteException &#123;&#10;        Log.d(&#34;&#34;,&#34;connect()&#34;);&#10;    &#125;&#10;&#10;    @Override&#10;    public IBinder asBinder() &#123;&#10;        return null;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>以上实现了简单的连接，接下来我们实现传递自定义类型</p>
+<h4 id="传递自定义的类型">传递自定义的类型</h4><p>AIDL默认支持的类型包括Java基本类型（int、long、boolean等），和（String、List、Map、CharSequence），如果要传递自定义的类型需要实现android.os.Parcelable接口。自己写了一个实体类public class Message implements Parcelable。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">package name.quanke.aidldemo.model;&#10;&#10;import android.os.Parcel;&#10;import android.os.Parcelable;&#10;&#10;/**&#10; * &#10; * Created by quanke on 16/7/23.&#10; */&#10;public class Message implements Parcelable &#123;&#10;    private long id;&#10;    private String content;&#10;&#10;&#10;    public long getId() &#123;&#10;        return id;&#10;    &#125;&#10;&#10;    public void setId(long id) &#123;&#10;        this.id = id;&#10;    &#125;&#10;&#10;    public String getContent() &#123;&#10;        return content;&#10;    &#125;&#10;&#10;    public void setContent(String content) &#123;&#10;        this.content = content;&#10;    &#125;&#10;&#10;    @Override&#10;    public String toString() &#123;&#10;        return &#34;Message&#123;&#34; +&#10;                &#34;id=&#34; + id +&#10;                &#34;, content=&#39;&#34; + content + &#39;\&#39;&#39; +&#10;                &#39;&#125;&#39;;&#10;    &#125;&#10;&#10;    @Override&#10;    public int describeContents() &#123;&#10;        return 0;&#10;    &#125;&#10;&#10;    @Override&#10;    public void writeToParcel(Parcel dest, int flags) &#123;&#10;        dest.writeLong(this.id);&#10;        dest.writeString(this.content);&#10;    &#125;&#10;&#10;    public Message() &#123;&#10;    &#125;&#10;&#10;    protected Message(Parcel in) &#123;&#10;        this.id = in.readLong();&#10;        this.content = in.readString();&#10;    &#125;&#10;&#10;    public static final Creator&#60;Message&#62; CREATOR = new Creator&#60;Message&#62;() &#123;&#10;        @Override&#10;        public Message createFromParcel(Parcel source) &#123;&#10;            return new Message(source);&#10;        &#125;&#10;&#10;        @Override&#10;        public Message[] newArray(int size) &#123;&#10;            return new Message[size];&#10;        &#125;&#10;    &#125;;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>修改IHandler</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// IHandler.aidl&#10;package name.quanke.aidldemo;&#10;&#10;// Declare any non-default types here with import statements&#10;&#10;import name.quanke.aidldemo.model.Message;&#10;&#10;interface IHandler &#123;&#10;    void connect();&#10;&#10;    void sendMessage(Message message);&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>编译项目，报错</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/Users/quanke/Dev/android/src/AIDLDemo/app/src/main/aidl/name/quanke/aidldemo/IHandler.aidl&#10;Error:(6) couldn&#39;t find import for class name.quanke.aidldemo.model.Message&#10;Error:Execution failed for task &#39;:app:compileDebugAidl&#39;.&#10;&#62; java.lang.RuntimeException: com.android.ide.common.process.ProcessException: org.gradle.process.internal.ExecException: Process &#39;command &#39;/Users/quanke/Dev/android/tools/android-sdks/build-tools/23.0.3/aidl&#39;&#39; finished with non-zero exit value 1&#10;Information:BUILD FAILED</span><br></pre></td></tr></table></figure>
+<p>因为自定义类型不仅要定义实现android.os.Parcelable接口的类，还得为该实现类定义一个aidl文件，如下：</p>
+<img src="/2016/07/22/Android-Studio-Service-AIDL-详解/5.png" alt="自定义类aidl文件" title="自定义类aidl文件">
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// IHandler.aidl&#10;package name.quanke.aidldemo.model;&#10;&#10;// Declare any non-default types here with import statements&#10;&#10;import name.quanke.aidldemo.model.Message;&#10;&#10;parcelable Message ;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>切记</code> 自定类型aidl文件名字、路径需要和自定义类名字、路径保持一致，</p>
+</blockquote>
+<p>编译项目，还是报错</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">parameter 1: &#39;Message message&#39; can be an out parameter, so you must declare it as in, out or inout.</span><br></pre></td></tr></table></figure>
+<p><code>AIDL</code>不是 Java。它是真的很接近，但它不是 Java。</p>
+<p>Java 参数没有方向的概念，AIDL 参数有方向，参数可以从客户端传到服务端，再返回来。</p>
+<p>如果<code>sendMessage</code>方法的<code>message</code>参数是纯粹的输入参数—这意味着是从客户端到服务器的数据，你需要在AIDL声明：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">void sendMessage(in Message message);</span><br></pre></td></tr></table></figure>
+<p>如果<code>sendMessage</code>方法的<code>message</code>参数是纯粹的输出-这意味着它的数据是通过从服务器到客户端，使用：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">void sendMessage(out Message message);</span><br></pre></td></tr></table></figure>
+<p>如果<code>sendMessage</code>方法的<code>message</code>参数是输入也是输出-客户端的值在服务可能会修改，使用：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">void sendMessage(inout Message message);</span><br></pre></td></tr></table></figure>
+<h3 id="总结">总结</h3><p>Android Studio Service AIDL 详解 就到这里，现在应该可以使用AIDL实现想要的功能了，实现简答的AIDL很简单，主要是在自定义类型的时候，有几个坑注意就好。</p>
+<p><code>源码地址：</code> <a href="https://github.com/quanke/AIDLDemo.git" target="_blank" rel="external">https://github.com/quanke/AIDLDemo.git</a> </p>
+<blockquote>
+<p>有什么问题欢迎留言。</p>
+<p>如果喜欢请关注我，赞我，来抚平我虚荣的心</p>
 </blockquote>
 ]]></content>
     
